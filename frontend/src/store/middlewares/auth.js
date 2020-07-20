@@ -63,7 +63,7 @@ export default (store) => (next) => (action) => {
             store.dispatch({ type: SYNC_MOVES, moves});
             store.dispatch(enterMove(action.history));
             //console.log('Authenticated');
-            store.dispatch(successAuth());
+            successAuth();
           }
           if(res.status == 400) {
             store.dispatch(errorAuth());
