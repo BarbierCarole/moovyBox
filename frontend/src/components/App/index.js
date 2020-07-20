@@ -17,7 +17,7 @@ import Contact from '../Contact';
 import CreateBox from 'src/components/CreateBox';
 import BoxesByMove from 'src/components/BoxesByMove';
 import Item from 'src/components/Item';
-
+import NotFound from 'src/components/Notfound';
 
 // == Composant
 const App = () => {
@@ -56,27 +56,47 @@ const App = () => {
         <Route exact path="/signup">
           <SignUp />
         </Route>
-        <Route exact path="/profile">
-          <Profile />
-        </Route>
+        <Route
+        exact
+        path="/profile"
+        render={() => {
+            //if ((email === '') || (password === '')) {
+            if (!isLogged) {
+              console.log('isLogged',isLogged);
+              //console.log('email,password page App/index',email,password);
+              return <Redirect to="/signin" />;
+
+            }
+            //console.log('email,password,',email,password);
+            return  <Profile />;
+          }}
+        />
+
         <Route exact path="/ResetPassword">
           <ResetPassword />
         </Route>
-        {/* <Route exact path="/move">
-          <Move />
-        </Route> */}
-        <Route exact path="/create-move">
-          <FormMove />
-        </Route>
+        <Route
+        exact
+        path="/create-move"
+        render={() => {
+            //if ((email === '') || (password === '')) {
+            if (!isLogged) {
+              console.log('isLogged',isLogged);
+              //console.log('email,password page App/index',email,password);
+              return <Redirect to="/signin" />;
+
+            }
+            //console.log('email,password,',email,password);
+            return  <FormMove />;
+          }}
+        />
         <Route exact path="/contact">
           <Contact />
         </Route>
         <Route exact path="/move/:id" component={BoxesByMove} />
         <Route exact path="/create-box" component={CreateBox} />
         <Route exact path="/box/:id" component={Item} />
-
-
-        <Route>404</Route>
+        <Route exact path="*"><NotFound /></Route>
       </Switch>
     </div>
   );

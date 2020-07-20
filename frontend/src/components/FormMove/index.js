@@ -1,5 +1,5 @@
 import 'date-fns';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import withRoot from '../modules/withRoot';
 import { useHistory } from "react-router-dom";
@@ -17,6 +17,10 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
   } from '@material-ui/pickers';
+import { loadCSS } from 'fg-loadcss'; // for th icons
+import Icon from '@material-ui/core/Icon';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 axios.defaults.withCredentials = true;
 
@@ -44,57 +48,90 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    title: {
+      textAlign: 'center',
+      paddingTop: theme.spacing(1),
+      margin: theme.spacing(1),
+    },
+    paperButton: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
   }));
 
+  toast.configure();
 
 const FormMove = () => {
-    const classes = useStyles();
-    let history = useHistory();
-    const [label, setLabel] = useState('');
-    const [address, setAddress] = useState('');
-    const [date, setDate] = useState(new Date());
+  const classes = useStyles();
+  let history = useHistory();
+  const [label, setLabel] = useState('');
+  const [address, setAddress] = useState('');
+  const [date, setDate] = useState(new Date());
 
 
-    // const [reminder, setReminder] = useState({checked: true});
+  // const [reminder, setReminder] = useState({checked: true});
 
-    // const handleReminderChange = (e) => {
-    //     setReminder({ ...reminder, [event.target.name]: event.target.checked});
-    // }
+  // const handleReminderChange = (e) => {
+  //     setReminder({ ...reminder, [event.target.name]: event.target.checked});
+  // }
 
-    const handleDateChange = (date) => {
-      setDate(date);
-    };
+  const successMove = () => {
+    toast.success('Votre déménagement a bien été créé !', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+      closeOnClick: true
+    })
+  }
 
-    const handleLabelChange = (e) => {
+  const errorMove = () => {
+    toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+      closeOnClick: true
+    })
+  }
 
-        setLabel(e.target.value);
-    }
+  const handleDateChange = (date) => {
+    setDate(date);
+  };
 
-    const handleAddressChange = (e) => {
+  const handleLabelChange = (e) => {
 
-        setAddress(e.target.value);
-    }
+      setLabel(e.target.value);
+  };
 
+  const handleAddressChange = (e) => {
 
+      setAddress(e.target.value);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  const handleSubmit = (e) => {
+      e.preventDefault();
 
-        const data = {label, address, date};
+      const data = {label, address, date};
 
-        console.log(data)
+      console.log(data)
 
-        axios.post('http://localhost:5050/move', data)
-             .then(res => {
-                console.log('coincoin')
-                console.log(res);
-                history.push({
-                  pathname:"/move/"})
-             }).catch(err => {
-               console.log('pouet');
-               console.log(err);
-             });
-    }
+      axios.post('http://localhost:5050/move', data)
+            .then(res => {
+              console.log(res);
+              history.push({
+                pathname:"/move/"})
+              successMove();
+            }).catch(err => {
+              console.log(err);
+              errorMove();
+            });
+  };
+
+  // for the font awesome heavy
+  useEffect(() => {
+    loadCSS(
+      'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
+      document.querySelector('#font-awesome-css'),
+    );
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -102,10 +139,11 @@ const FormMove = () => {
     <Header />
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Typography component="h1" variant="h4">
-            Création d'un déménagement
-        </Typography>
       <div className={classes.paper}>
+        <Icon className="fas fa-truck" color="secondary" style={{ fontSize: 30, width: 45 }}/>
+        <Typography component="h1" variant="h4"  className={classes.title}>
+        Création d'un déménagement
+        </Typography>
         <form
           className={classes.form}
           noValidate
@@ -117,6 +155,7 @@ const FormMove = () => {
                 variant="outlined"
                 required
                 fullWidth
+                helperText="* Requis"
                 label="Entrez un nom pour votre déménagement"
                 value={label}
                 onChange={handleLabelChange}
@@ -128,6 +167,7 @@ const FormMove = () => {
                 required
                 fullWidth
                 label="Adresse"
+                helperText="* Requis"
                 value={address}
                 onChange={handleAddressChange}
               />
@@ -138,9 +178,10 @@ const FormMove = () => {
                 <KeyboardDatePicker
                     disableToolbar
                     variant="inline"
-                    format="yyyy-MM-dd"
+                    format="dd-MM-yyyy"
                     // type="date.format"
                     margin="normal"
+                    helperText="* Requis"
                     id="date-picker-inline"
                     value={date}
                     onChange={handleDateChange}
@@ -164,18 +205,33 @@ const FormMove = () => {
             />
             </Grid> */}
           </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={4}>
+              <Link to="/move">
+                <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                className={classes.submit}
+                >
+                  Annuler
+                </Button>
+              </Link>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="secondary"
-            className={classes.submit}
-            // href="/move"
-          >
-            Valider
-          </Button>
-
+            </Grid>
+            <Grid item xs={8}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={classes.submit}
+                // href="/move"
+              >
+                Valider
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </div>
     </Container>

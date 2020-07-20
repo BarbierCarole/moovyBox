@@ -5,8 +5,7 @@ CREATE TABLE "user" (
     "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "pseudo" TEXT NOT NULL, 
     "email" TEXT NOT NULL CHECK ("email" ~* '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$') UNIQUE,
-    "password" TEXT NOT NULL CHECK ("password" ~* '^.{60}$'),
-    "confirmed" BOOLEAN NOT NULL DEFAULT false
+    "password" TEXT NOT NULL CHECK ("password" ~* '^.{60}$')
 ); 
 
 CREATE TABLE "move" (

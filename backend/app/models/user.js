@@ -20,8 +20,8 @@ class User {
             const results = await client.query(query, [email]); 
             
             // Returns a boolean 
-            // - true : mail exists
-            // - false : mail does not exist
+            // - true : Email exists
+            // - false : Email does not exist
             return !!results.rowCount; 
         } catch (error) {
             return console.trace(error); 

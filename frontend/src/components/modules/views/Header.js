@@ -8,10 +8,6 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
-
-
-// import Link from '@material-ui/core/Link';
 import { withRouter } from 'react-router-dom';
 import GoBack from '../components/GoBack'
 
@@ -51,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   linkSecondary: {
     color: theme.palette.secondary.main,
-  },
+  }
 }));
 
 const Header = () => {
@@ -98,7 +94,9 @@ const Header = () => {
         <Link to="/move">
           <MenuItem onClick={handleClose}>Mes déménagements</MenuItem>
         </Link>
-        <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
+        <Link to="/signin">
+        <MenuItem className={classes.linkText} onClick={handleClose}>Déconnexion</MenuItem>
+        </Link>
       </Menu>
           </div>
         </Toolbar>

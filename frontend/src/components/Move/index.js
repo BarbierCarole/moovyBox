@@ -27,6 +27,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ButtonCustom from '../modules/components/Button';
+import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     fontWeight: 500,
 
+
   },
   title: {
     textAlign: 'center',
@@ -62,15 +65,20 @@ const useStyles = makeStyles((theme) => ({
   dialogTitle: {
     backgroundColor: theme.palette.secondary.main,
   },
-  
+
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
-  
+  fab: {
+    marginRight: theme.spacing(3),
+  }
+
 }));
+
+toast.configure();
 
 const Move = () => {
   const classes = useStyles();
@@ -78,6 +86,22 @@ const Move = () => {
   // to confirm
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
+
+  const successDelete = () => {
+    toast.success('Votre déménagement a bien été supprimé !', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+      closeOnClick: true
+    })
+  }
+
+  const errorDelete = () => {
+    toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+      closeOnClick: true
+    })
+  }
 
   useEffect(() => {
     axios.get('http://localhost:5050/move')
@@ -90,22 +114,22 @@ const Move = () => {
          })
   }, []);
 
-    
+
   const handleDelete = (props) => {
 
     console.log('cliqué, props', props);
     const id = props.selectedId;
     console.log('id : ', id);
-    
+
 
     axios.delete(`http://localhost:5050/move/${id}`)
          .then(res => {
-
-           console.log("ok");
           setMoves(moves.filter((move)=>(move.id !== id)));
           setOpen(false);
+          successDelete();
          }).catch(err => {
           console.log(err);
+          errorDelete();
         })
   };
 
@@ -113,7 +137,7 @@ const Move = () => {
   const handleClickOpen = (value) => {
     setOpen(true);
     setSelectedId(value)
-    
+
   };
 
   const handleClose = () => {
@@ -135,20 +159,20 @@ const Move = () => {
         <CssBaseline />
         <div className={classes.paper}>
           <Icon className="fas fa-truck" color="secondary" style={{ fontSize: 30, width: 45 }}/>
-          
+
           <Typography component="h1" variant="h4"  className={classes.title}>
             Mes déménagements
           </Typography>
           <Link to="/create-move">
             <Typography component="h1" variant="h5" className={classes.title}>
               <Tooltip title="Ajouter" aria-label="Add">
-                <Fab color="primary" className={classes.fab}>
+                <Fab color="secondary" className={classes.fab}>
                   <AddIcon />
                 </Fab>
               </Tooltip>
               <Button size="medium" variant="outlined" color="primary" >Ajouter un déménagement</Button>
             </Typography>
-          
+
           </Link>
             <ul className={classes.liste}>
               {moves.map(move => <li key={move.id}>
@@ -158,12 +182,12 @@ const Move = () => {
                     id: move.id,
                   }
                   }}>
-                <Button 
-                variant="outlined" 
-                color="primary" 
+                <Button
+                variant="outlined"
+                color="primary"
                 //href={"/move/"+move.id} mettre LINK
                 // href={"/create-box"}
-                className={classes.btn} 
+                className={classes.btn}
                 >
                 <Grid container>
                   <Grid item xs={12}>
@@ -173,18 +197,13 @@ const Move = () => {
                   <Typography>{move.address}</Typography>
                   </Grid>
                   <Grid item xs={12}>
-                  <Typography> {moment(move.date).format('MM-DD-YYYY')}</Typography>
+                  <Typography> {moment(move.date).format('DD-MM-YYYY')}</Typography>
                   </Grid>
-                  {/* <Typography>{move.label}</Typography>
-                  <Typography>{move.address}</Typography>
-                  <Typography> {moment(move.date).format('MM-DD-YYYY')}</Typography> */}
+
                 </Grid>
                 </Button>
                 </Link>
                 <DeleteIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(move.id)}}/>
-                {/* <Button variant="outlined" color="primary" onClick={() => {handleClickOpen(move.id)}}>
-                  Open alert dialog
-                </Button> */}
                 <Dialog
                   open={open}
                   onClose={handleClose}
@@ -194,7 +213,7 @@ const Move = () => {
                   <DialogTitle id="alert-dialog-title" className={classes.dialogTitle} color="secondary">{"Confirmation de suppression"}</DialogTitle>
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                      Etes-vous sûr de vouloir supprimer ce déménagement ?
+                      Etes-vous sûr de vouloir supprimer ce déménagement ? Cette action entrainera la suppression de tous les cartons et leur contenu.
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>

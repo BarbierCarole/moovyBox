@@ -5,18 +5,21 @@ require('dotenv').config();
 const password = process.env.SMTPPASSWORD; 
 const mailUser = process.env.SMTPUSER;
 
+let infoServerMail = {
+ /*host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,*/
+  service: 'gmail',
 
-let transportGmail  = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-       user: mailUser,
-       pass: password
-    }, 
-    tls: 443
-});
+  auth: {
+     user: mailUser,
+     pass: password
+  }, 
+  // tls: 443
+};
+console.log (infoServerMail);
 
+let transportGmail  = nodemailer.createTransport(infoServerMail);
 
 const sendMail = async (emailData) => {
 

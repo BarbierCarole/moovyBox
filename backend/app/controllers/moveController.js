@@ -28,6 +28,7 @@ const moveController = {
             const moves = await Move.getAllFromUserId(userId); 
             
             res.send(moves); 
+            console.log('cb -> getUserMoves ');
           
         } catch (error) {
             console.trace(error);
@@ -41,7 +42,7 @@ const moveController = {
 
             const payloadValidation = await moveSchema.validate(req.body);
 
-            console.log('req.body', req.body); 
+            console.log(' **CB** : req.body', req.body); 
             
             // if no error found then create Move instance and insert data. 
             if (!!payloadValidation.error) {

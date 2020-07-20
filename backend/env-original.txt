@@ -1,0 +1,11 @@
+PORT=5050
+PGUSER=moovybox
+PGDATABASE=moovybox
+PGPASSWORD=Moovybox83460**&
+PGHOST=localhost
+SALT=10
+
+SMTPUSER=cb83460@gmail.com
+SMTPPASSWORD=Carole83460*
+
+TOKENKEY=kdjlkaj1083oiq0sdf1093KMnzxcv

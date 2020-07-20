@@ -41,7 +41,7 @@ app.use(session({
     // maxAge: month|days|hours|seconds|milliseconds
     httpOnly: false,
     secure: false, // false : http and https / true : only https 
-    sameSite:'none',
+    //sameSite:'none',
   }
 })); 
 

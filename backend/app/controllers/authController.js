@@ -114,6 +114,7 @@ const authControlleur = {
             emailInfo.token = jwt.sign(payload, process.env.TOKENKEY, {expiresIn: '1d'}); 
             
             // - Use the email function ({pseudo, email, UserToken})
+
             sendAccountConfirmationEmail(emailInfo); 
             
             res.status(201).send(storedUser); // Status 201 : resosurces created
