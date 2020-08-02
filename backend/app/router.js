@@ -87,6 +87,10 @@ router.route('/box/:id')
     // Delete the pointed box
     .delete(authCheckerMW, boxController.deleteBox);
 
+router.route('/box/search')
+    // get boxes which content item
+    .get(authCheckerMW,boxController.getSearchMoveBoxes);
+
 /* ITEM RELATED ROUTES  */
 
 router.route('/item')

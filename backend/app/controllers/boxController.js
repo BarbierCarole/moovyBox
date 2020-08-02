@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
 const Box = require('../models/box');
-
+const { normalize } = require('diacritics-normalizr');
 
 
 const boxSchema = Joi.object({
@@ -67,9 +67,45 @@ const boxController = {
             
             const boxes = await Box.getAllFromMove(req.params.id); 
             
-            console.log('boxes', boxes)
+            console.log('boxes :', boxes)
             
             return res.send(boxes); 
+            
+        } catch (error) {
+            console.trace(error);
+        }
+    },
+
+    //* CB : search
+    getSearchMoveBoxes: async(req,res) => {
+        //* Find and send all the boxes from a user move
+        try {
+            const research = await normalize(req.query.research); 
+            
+            /*
+            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.id); 
+            
+            
+            if (!matchedMove.length) {
+                // Abort operation and send error to client;
+                return res.status(403).send({
+                    error : {
+                        statusCode: 403,
+                        message: {
+                            en:"Forbidden action - The requested move doesn't belongs to current user", 
+                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
+                        }
+                    }
+                });
+            }
+            // We found a matching move id !
+            
+            const boxes = await Box.getAllFromMove(req.params.id); 
+            
+            console.log('boxes :', boxes)
+            
+            return res.send(boxes); 
+            */
             
         } catch (error) {
             console.trace(error);
