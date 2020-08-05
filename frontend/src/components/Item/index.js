@@ -95,7 +95,7 @@ const Item = (props) => {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:5050/box/${props.location.state.id}`)
+        axios.get(`http://localhost:5050/api/box/${props.location.state.id}/item`)
              .then(res => {
                console.log(res.data);
                setItem(res.data);
@@ -106,7 +106,7 @@ const Item = (props) => {
       }, []);
 
       useEffect(() => {
-        axios.get(`http://localhost:5050/box/${props.location.state.id}`)
+        axios.get(`http://localhost:5050/api/box/${props.location.state.id}/item`)
              .then(res => {
                console.log(res.data);
                setItem(res.data);
@@ -132,7 +132,7 @@ const Item = (props) => {
         e.preventDefault();
         const data = {name, box_id};
         console.log('data :', data);
-        axios.post('http://localhost:5050/item', data)
+        axios.post('http://localhost:5050/api/box/${props.location.state.id}/item', data)
              .then(res => {
                  console.log('ici les items', res.data);
                  setGetItem(true)
@@ -147,7 +147,7 @@ const Item = (props) => {
 
         console.log('cliqué');
 
-        axios.delete(`http://localhost:5050/item/${id}`)
+        axios.delete(`http://localhost:5050/api/box/${props.location.state.id}/item/${id}`)
              .then(res => {
               setItem(item.filter((ite)=>(ite.id !== id)));
               successDelete();
@@ -174,12 +174,9 @@ const Item = (props) => {
             </form>
             <ul>
                 {item.map(elt =>
-                <li key={elt.id}>
-                    <Button variant="outlined" color="primary" className={classes.item}>
-                        {elt.name}
-                        {/* <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/> */}
-                    </Button>
-                    <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
+                <li key={elt.id}> 
+                  {elt.name}
+                  <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
                 </li>)
                 }
             </ul>

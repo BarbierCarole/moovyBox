@@ -100,7 +100,7 @@ const moveController = {
     updateMove: async (req, res) => {
         //* Update the moves parameters
         
-        const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.id); 
+        const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
         
         if (!matchedMove.length) {
             // Abort operation and send error to client;
@@ -177,7 +177,7 @@ const moveController = {
         try {                    
             // Filter user move to check if he can use the ressources
             
-            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.id); 
+            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             
             if (!matchedMove.length) {
                 // Abort operation and send error to client;

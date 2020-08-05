@@ -104,7 +104,7 @@ const Move = () => {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:5050/move')
+    axios.get('http://localhost:5050/api/move')
          .then(res => {
            console.log(res.data);
            setMoves(res.data);
@@ -121,8 +121,8 @@ const Move = () => {
     const id = props.selectedId;
     console.log('id : ', id);
 
-
-    axios.delete(`http://localhost:5050/move/${id}`)
+  
+    axios.delete(`http://localhost:5050/api/move/${id}`)
          .then(res => {
           setMoves(moves.filter((move)=>(move.id !== id)));
           setOpen(false);

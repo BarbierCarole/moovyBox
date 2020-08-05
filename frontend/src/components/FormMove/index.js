@@ -113,7 +113,7 @@ const FormMove = () => {
 
       console.log(data)
 
-      axios.post('http://localhost:5050/move', data)
+      axios.post('http://localhost:5050/api/move', data)
             .then(res => {
               console.log(res);
               history.push({

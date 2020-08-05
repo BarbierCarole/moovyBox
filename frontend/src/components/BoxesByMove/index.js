@@ -192,7 +192,7 @@ const BoxesByMove = (props) => {
 
 // requeste to display all the boxes of 1 move selected
 useEffect(() => {
-  axios.get(`http://localhost:5050/move/${props.location.state.id}`)
+  axios.get(`http://localhost:5050/api/move/${props.location.state.id}/box`)
   .then(res => {
     setBoxes(res.data);
   })
@@ -209,16 +209,6 @@ useEffect(() => {
   );
 }, [search, boxes]); 
 
-// delete a box selected
-// const handleBoxDelete = (id) => {
-
-//   axios.delete(`http://localhost:5050/box/${id}`)
-//        .then(res => {
-//         setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
-//        }).catch(err => {
-//         console.log(err);
-//       })
-// };
 const handleDelete = (props) => {
 
   console.log('cliqué, props', props);
@@ -226,7 +216,7 @@ const handleDelete = (props) => {
   console.log('id : ', id);
   
 
-  axios.delete(`http://localhost:5050/box/${id}`)
+  axios.delete(`http://localhost:5050/api/move/${props.location.state.id}/box/${id}`)
        .then(res => {
         setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
         setOpen(false);

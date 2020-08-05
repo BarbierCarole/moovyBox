@@ -12,7 +12,7 @@ export default (store) => (next) => (action) => {
   switch (action.type) {
     case MOVESLECTED: {
       axios
-        .get('http://localhost:5050/move/', )
+        .get('http://localhost:5050/api/move/', )
         .then((res) => {
           console.log("res.data",res.data)
           const { pseudo, id, moves} = res.data;

@@ -41,7 +41,7 @@ const boxController = {
         }
     },
     
-    getMoveBoxes: async(req,res) => {
+    getBoxes: async(req,res) => {
         //* Find and send all the boxes from a user move
         try {
             // At this stage, a middleware has checked user's presence. 
@@ -49,7 +49,7 @@ const boxController = {
             
             // compare requested move with saved move from user 
             
-            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.id); 
+            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             
             if (!matchedMove.length) {
                 // Abort operation and send error to client;
@@ -65,7 +65,7 @@ const boxController = {
             }
             // We found a matching move id !
             
-            const boxes = await Box.getAllFromMove(req.params.id); 
+            const boxes = await Box.getAllFromMove(req.params.moveId); 
             
             console.log('boxes :', boxes)
             
@@ -83,7 +83,7 @@ const boxController = {
             const research = await normalize(req.query.research); 
             
             /*
-            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.id); 
+            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             
             
             if (!matchedMove.length) {
@@ -228,7 +228,7 @@ const boxController = {
             //console.log('req.params.id', req.params.id); 
             
             // Get pointed box from DB 
-            const storedBox = await Box.getByPk(req.params.id); 
+            const storedBox = await Box.getByPk(req.params.boxId); 
             
             console.log('storedBox', storedBox); 
             
@@ -287,7 +287,7 @@ const boxController = {
         // At this stage user IS authentified (authCheckerMW.js)
         try {
             // retrieve box from id
-            const storedBox = await Box.getByPk(req.params.id); 
+            const storedBox = await Box.getByPk(req.params.BoxId); 
             
             // If move belongs to user continue 
             // else send error

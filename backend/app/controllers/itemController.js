@@ -17,13 +17,13 @@ const itemSchema = Joi.object({
 
 const itemController = {
     
-    getBoxItems: async (req,res) => {
-        //* Find a send all the item from a user
+    getItems: async (req,res) => {
+        //* Find a send all the item from a box (CB : and not an user)
         try {
             // At this stage, a middleware has checked user authorization. 
             
             // get box id  from params
-            const boxId = req.params.id; 
+            const boxId = req.params.boxId; 
             
             const storedBox = await Box.getByPk(boxId); 
             
@@ -174,7 +174,7 @@ const itemController = {
             
             // Form is valid !
             
-            const storedItem = await Item.getByPk(req.params.id); 
+            const storedItem = await Item.getByPk(req.params.itemId); 
             
             // If no box was found 
             if (!storedItem) {
@@ -470,9 +470,9 @@ const itemController = {
         try {
             
             // Retrieve item id from url
-            const itemId = req.params.id; 
+            //const itemId = req.params.itemId;  CB : deleted because it is not used
             
-            const storedItem = await Item.getByPk(req.params.id); 
+            const storedItem = await Item.getByPk(req.params.itemId); 
             
             // If no box was found 
             if (!storedItem) {
