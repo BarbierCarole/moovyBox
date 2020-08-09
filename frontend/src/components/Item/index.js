@@ -93,29 +93,30 @@ const Item = (props) => {
         closeOnClick: true
       })
     }
+    // to see all the items of a box selected
+    useEffect(() => {
+      axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
+           .then(res => {
+             console.log(res.data);
+             setItem(res.data);
+           })
+           .catch(err => {
+             console.log(err);
+           })
+    }, []);
 
     useEffect(() => {
-        axios.get(`http://localhost:5050/api/box/${props.location.state.id}/item`)
-             .then(res => {
-               console.log(res.data);
-               setItem(res.data);
-             })
-             .catch(err => {
-               console.log(err);
-             })
-      }, []);
+      axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
+           .then(res => {
+             console.log(res.data);
+             setItem(res.data);
+             setGetItem(false)
+           })
+           .catch(err => {
+             console.log(err);
+           })
+    }, [getItem]);
 
-      useEffect(() => {
-        axios.get(`http://localhost:5050/api/box/${props.location.state.id}/item`)
-             .then(res => {
-               console.log(res.data);
-               setItem(res.data);
-               setGetItem(false)
-             })
-             .catch(err => {
-               console.log(err);
-             })
-      }, [getItem]);
 
     const addItem = name => {
       const newItems = [...item, {name}];
@@ -123,7 +124,7 @@ const Item = (props) => {
     }
 
     const handleItemChange = (e) => {
-        console.log(e.target.value);
+        console.log("CB contenu  : ",e.target.value);
         setName(e.target.value);
     }
 
@@ -132,7 +133,7 @@ const Item = (props) => {
         e.preventDefault();
         const data = {name, box_id};
         console.log('data :', data);
-        axios.post('http://localhost:5050/api/box/${props.location.state.id}/item', data)
+        axios.post('http://localhost:5050/api/box/${props.location.state.id}/items', data)
              .then(res => {
                  console.log('ici les items', res.data);
                  setGetItem(true)
