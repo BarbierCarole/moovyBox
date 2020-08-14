@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LOGIN, toSignin, SIGNUP, TO_SIGNIN, SYNC_PSEUDO, SYNC_PASSWORD, SYNC_ISLOGGED, SYNC_USER_ID, enterMove,SYNC_MOVES } from 'src/store/actions';
 
-const prodURL = 'http://18.206.96.118';
+// const prodURL = 'http://18.206.96.118';
 
 axios.defaults.withCredentials = true;
 

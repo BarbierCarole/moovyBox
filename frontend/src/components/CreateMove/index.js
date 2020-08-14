@@ -17,7 +17,7 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
   } from '@material-ui/pickers';
-import { loadCSS } from 'fg-loadcss'; // for th icons
+import { loadCSS } from 'fg-loadcss'; // for the icons
 import Icon from '@material-ui/core/Icon';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
   toast.configure();
 
-const FormMove = () => {
+const CreateMove = () => {
   const classes = useStyles();
   let history = useHistory();
   const [label, setLabel] = useState('');
@@ -240,4 +240,4 @@ const FormMove = () => {
   );
 };
 
-export default withRoot(FormMove);
+export default withRoot(CreateMove);

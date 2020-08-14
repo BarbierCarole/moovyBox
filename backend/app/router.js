@@ -62,14 +62,6 @@ router.route('/api/move')
     // Create a new move
     .post(authCheckerMW, moveController.createMove);
 
-// router.route('/move/:id')
-//     // Get all boxes in the given move
-// TODO in box .get(authCheckerMW, boxController.getMoveBoxes) 
-//     // Update the data of the pointed move
-//     .put(authCheckerMW, moveController.updateMove)
-//     // Delete the pointed move 
-//     .delete(authCheckerMW, moveController.deleteMove);
-
 router.route('/api/move/:moveId')
     // Update the data of the pointed move
     .put(authCheckerMW, moveController.updateMove)
@@ -78,25 +70,30 @@ router.route('/api/move/:moveId')
 
 /* BOX RELATED ROUTES */
 
-router.route('/api/move/:moveId/box/')
+router.route('/api/move/:moveId/boxes/')
     // Get all boxes in the given move
     .get(authCheckerMW, boxController.getBoxes)
     // Create a new box
     .post(authCheckerMW, boxOptionFillMW, boxController.createBox); 
 
-router.route('/api/move/:moveId/box/:boxId')  
+router.route('/api/box/:boxId')  
     // Update the data of the pointed box
     .put(authCheckerMW, boxOptionFillMW, boxController.updateBox)
     // Delete the pointed box
     .delete(authCheckerMW, boxController.deleteBox);
 
-router.route('/api/box/search')
-    // get boxes which content item
-    .get(authCheckerMW,boxController.getSearchMoveBoxes);
+// router.route('/api/box/item/:search')
+//     // get boxes which content item
+//     .get(authCheckerMW,boxController.getSearchMoveBoxes);
+
+/* SEARCH */
+// CB : /api/box/${props.location.state.id}/search/${item}
+router.route('/api/move/:moveId/boxes/searchedItem/:searchedItem')
+.get(authCheckerMW, boxController.getSearchItemInBoxes);
 
 /* ITEM RELATED ROUTES  */
 
-router.route('/api/box/:boxId/item') // CB : before modif : "/item"
+router.route('/api/box/:boxId/items') // CB : before modif : "/item"
     // get all item of a pointed box
     .get(authCheckerMW, itemController.getItems)
     // Create a new item in a box
@@ -108,11 +105,7 @@ router.route('/api/box/:boxId/item/:itemId')
     // Delete the pointed item   
     .delete(authCheckerMW, itemController.deleteItem);
 
-/* SEARCH */
 
-router.route('/search')
-    //! enable "authCheckerMW" middleware after development 
-    .get(authCheckerMW, itemController.searchItem);
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});
 

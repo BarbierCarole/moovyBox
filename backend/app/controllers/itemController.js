@@ -301,7 +301,7 @@ const itemController = {
             
             //? The is prepared in DB and would prevent SQL script inclusion
             
-            console.time("search through");
+            console.time();
             
             // Retrieve data from query string 
             const research = await normalize(req.query.research); 
@@ -332,7 +332,7 @@ const itemController = {
             if (req.session.user.contentUpdated || !move.boxes) {
                 // Save the move content in the move object
                 move.boxes = await Item.search({user_id, move_id}); 
-                console.log("On est aller dans la base de données"); 
+                console.log("We are in BDD"); 
                 req.session.user.contentUpdated = false; 
             }
             
@@ -456,7 +456,7 @@ const itemController = {
                 Box{}        //box match (label OR destination room)
             ]
             */
-            console.timeEnd("search through");
+            console.timeEnd();
             res.send(filledBoxes); 
             
         } catch (error) {

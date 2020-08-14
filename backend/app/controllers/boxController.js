@@ -1,6 +1,7 @@
 const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
 const Box = require('../models/box');
 const { normalize } = require('diacritics-normalizr');
+const Item = require('../models/item');
 
 
 const boxSchema = Joi.object({
@@ -67,7 +68,7 @@ const boxController = {
             
             const boxes = await Box.getAllFromMove(req.params.moveId); 
             
-            console.log('boxes :', boxes)
+            console.log('CB boxController : boxes :', boxes)
             
             return res.send(boxes); 
             
@@ -77,36 +78,17 @@ const boxController = {
     },
 
     //* CB : search
-    getSearchMoveBoxes: async(req,res) => {
-        //* Find and send all the boxes from a user move
+    getSearchItemInBoxes: async(req,res) => {
+        //* research an item in all the boxes of an move
         try {
-            const research = await normalize(req.query.research); 
+            const searchedItem = await normalize(req.params.searchedItem); 
+            console.log("CB : in controller : searchedItem : ",searchedItem);
             
-            /*
-            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
+            const resultBoxesWithItem = await Box.search(searchedItem); 
+            console.log('resultBoxesWithItem :', resultBoxesWithItem) 
             
-            
-            if (!matchedMove.length) {
-                // Abort operation and send error to client;
-                return res.status(403).send({
-                    error : {
-                        statusCode: 403,
-                        message: {
-                            en:"Forbidden action - The requested move doesn't belongs to current user", 
-                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
-                        }
-                    }
-                });
-            }
-            // We found a matching move id !
-            
-            const boxes = await Box.getAllFromMove(req.params.id); 
-            
-            console.log('boxes :', boxes)
-            
-            return res.send(boxes); 
-            */
-            
+            return res.send(resultBoxesWithItem); 
+                        
         } catch (error) {
             console.trace(error);
         }
@@ -287,7 +269,7 @@ const boxController = {
         // At this stage user IS authentified (authCheckerMW.js)
         try {
             // retrieve box from id
-            const storedBox = await Box.getByPk(req.params.BoxId); 
+            const storedBox = await Box.getByPk(req.params.boxId); 
             
             // If move belongs to user continue 
             // else send error

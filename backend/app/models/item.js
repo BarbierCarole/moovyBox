@@ -33,11 +33,11 @@ class Item {
         for(const row of results.rows) {
             instances.push(new this(row)); 
         }
-
         return instances; 
     }
 
     static async itemNameExistsInBox (form) {
+        console.log("CB from", form)
         //* Check the existence of the item in the same box in the DB
         try {
             // request to find an associated user
@@ -53,24 +53,26 @@ class Item {
         }
     }
 
-    static async search (data) {
-        //* Research function
-        try {
+    // static async search (data) {
+    //     //* Research function
+    //     try {
 
-            const query = `SELECT row_to_json(get_move_boxes_and_content($1, $2)); `; 
-            // TODO  : accept 
-            const values = [data.user_id, data.move_id]; 
+    //         const query = `SELECT row_to_json(get_move_boxes_and_content($1, $2)); `; 
+    //         // TODO  : accept 
+    //         const values = [data.user_id, data.move_id]; 
 
-            const answerFromDB = await client.query(query, values); 
+    //         const answerFromDB = await client.query(query, values); 
 
-            const results = answerFromDB.rows.map(entry => entry.row_to_json); 
+    //         const results = answerFromDB.rows.map(entry => entry.row_to_json); 
 
-            return results; 
+    //         return results; 
              
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
+    
 
     async insert() {
         // Insert a item in DB 

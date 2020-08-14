@@ -173,7 +173,7 @@ const moveController = {
     deleteMove: async (req, res) => {
         //* Delete a move from DB matching user id
         // At this stage user IS authentified (authCheckerMW.js)
-      
+        console.log('CB req.params.moveId',req.params.moveId)
         try {                    
             // Filter user move to check if he can use the ressources
             
@@ -195,7 +195,7 @@ const moveController = {
             // The pointed move was found !! 
 
             // get move from DB 
-            const moveId = req.params.id; 
+            const moveId = req.params.moveId; 
             const move = await Move.getByPk(moveId); 
             
             if (!move) {

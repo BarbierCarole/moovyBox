@@ -149,9 +149,8 @@ toast.configure();
 const BoxesByMove = (props) => {
   const classes = useStyles();
   const [boxes, setBoxes] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filteredItems, setFilteredItems] = useState([]);
-  // For confirm
+  
+  // To confirm
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
   // for the research
@@ -201,25 +200,26 @@ useEffect(() => {
   })
 }, []);
 
-//! -------------------------- to end ---------------------------------------- !
-
+//! -------------------------- search ---------------------------------------- !
+// to see 
 const handleSearchedItemChange = (e) => {
-  setSearchedItem(e.target.value);
-  console.log("CB e.target.value",setSearchedItem);
+  setSearchedItem(e.target.value);  
 }
 
 const handleSubmit = (e) => {
   e.preventDefault();
   
-  console.log("setSearchedItem :",setSearchedItem)
-  axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/:searchedItem`) 
-       .then(res => {
-        
-       }).catch(err => {
+  const data = {searchedItem};
+
+  console.log("CB data.searchedItem", data.searchedItem);
+
+  axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
+        .then(res => {
+          console.log("CB res :",res);
+        }).catch(err => {
           console.log(err);
-          errorDelete();
         });
-}
+};
 //! -------------------------------------------------------------------------- !
 //search function
 // useEffect(() => {
