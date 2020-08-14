@@ -1,46 +1,36 @@
-import React from 'react';
+// index-Chris.js sur modèle Chris
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import {
-  SYNC_LABEL_MOVE,
-  SYNC_DESTINATION_ROOM,
-  SYNC_FRAGILE,
-  SYNC_HEAVY,
-  SYNC_FLOOR,
-  SYNC_MOVE_ID,
-} from 'src/store/actions';
-
+import {BrowserRouter as Router, Link, Redirect} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
-
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import QueueIcon from '@material-ui/icons/Queue';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormGroup from '@material-ui/core/FormGroup';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
+import Checkbox from '@material-ui/core/Checkbox';
 import withRoot from '../modules/withRoot';
-import Button from '../modules/components/Button';
+// import Button from '../modules/components/Button';
 import Footer from '../modules/views/Footer';
-import HeaderHome from '../modules/views/HeaderHome';
+import Header from '../modules/views/Header';
+import TextField from '@material-ui/core/TextField';
+import { loadCSS } from 'fg-loadcss'; // for th icons
+import Icon from '@material-ui/core/Icon';
+// to redirection signin
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
+    '& > .fa': {
+      margin: theme.spacing(2),
+    },
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -59,178 +49,207 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  formGroup: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  formLabel: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  titreNumero: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  Numero: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  margin302: {
-    margin: theme.spacing(3, 0, 2),
+  margin: {
+    margin: theme.spacing(1, 0, 2),
   },
 }));
 
-const filter = createFilterOptions(); // to add in the room list
+axios.defaults.withCredentials = true;
 
+toast.configure();
 
-const CreateBox = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const moveId = useSelector((state) => state.moveId);
-  const labelBox = useSelector((state) => state.labelBox);
-  const destination_room = useSelector((state) => state.destination_room);
-  const fragile = useSelector((state) => state.fragile);
-  const floor = useSelector((state) => state.floor);
-  const heavy = useSelector((state) => state.heavy);
-  const move_id = useSelector((state) => state.move_id);
-  const [value, setValue] = React.useState(null); // for the autocomplete
-  const [open, toggleOpen] = React.useState(false); // for the autocomplete
-
-  // for the autocomplete
-  const handleClose = () => {
-    setDialogValue({
-      nameRoom: '',
-    });
-
-    toggleOpen(true);
-  };
-
-  const [dialogValue, setDialogValue] = React.useState({
-    nameRoom: '',
-  });
+function CreateBox(props) {
+  let history = useHistory(); // to return on move/:id
 
   const classes = useStyles();
+  const [label, setLabel] = useState('');
+  const [destination_room, setDestinationRoom] = useState('');
+  const [fragile, setFragile] = useState(true);
+  const [floor, setFloor] = useState(true);
+  const [heavy, setHeavy] = useState(true);
+
+  const [move_id, setMoveId] = useState(props.location.state.id);
+
+  const isLogged = useSelector((state) => state.isLogged);
+  if (!isLogged) {
+    console.log('isLogged',isLogged);
+    //console.log('email,password page App/index',email,password);
+    return <Redirect to="/signin" />;
+  };
+
+  const successBox = () => {
+    toast.success('Votre carton a bien été créé !', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+      closeOnClick: true
+    })
+  }
+
+  const errorBox = () => {
+    toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+      closeOnClick: true
+    })
+  }
+
+  function handleLabelChange(e) {
+    console.log('input au onChange label ', e.target.value);
+    setLabel(e.target.value);
+  }
+  function handleDestinationRoomChange(e) {
+    console.log('input au onChange', e.target.value);
+    setDestinationRoom(e.target.value);
+  }
+  function handleFragileChange(e) {
+    console.log('input au onChange', e.target.checked);
+    setFragile(e.target.checked);
+  }
+  function handleFloorChange(e) {
+    console.log('input au onChange', e.target.checked);
+    setFloor(e.target.checked);
+  }
+  function handleHeavyChange(e) {
+    console.log('input au onChange', e.target.checked);
+    setHeavy(e.target.checked);
+  }
+  // for the font awesome heavy
+  useEffect(() => {
+    loadCSS(
+      'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
+      document.querySelector('#font-awesome-css'),
+    );
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault(); // stops default reloading behaviour
-    console.log('input on onSubmit', move_id, labelBox, destination_room, fragile, heavy, floor);
-    const label = labelBox;
-    setValue({
-      nameRoom: dialogValue.nameRoom,
-    });
-    handleClose();
+
     axios
-      .post('http://18.206.96.118/box', {
-        move_id, label, destination_room, fragile, heavy, floor,
+      .post(`http://localhost:5050/api/move/:moveID/box`, { label, destination_room, fragile, heavy, floor, move_id})
+      .then((res => {
+        console.log(res);
+        console.log(res.data);
+        console.log("move_id", move_id);
+        history.push({
+          pathname:"/move/"+move_id,
+          state: {
+            id: move_id,
+          }
+        });
+        successBox();
+        // () => (() => history.push('/move/'+move_id));
+        // () => history.goBack();
+        // return (() => history.push('/move/'+move_id))();
+
       })
-      .then((res) => {
-        if (res.status === 201) {
-          console.log('response.status', res.status);
-        }
-        else {
-          console.error('erreur', res);
-        }
-        console.log('res : ', res);
-        console.log('res.data : ', res.data);
-      })
-      .catch((error) => {
-        console.log('very big error');
+      )
+      .catch(err => {
+        console.log(err);
+        errorBox();
       });
+
   }
-  const [state, setState] = React.useState({
-    heavy: false,
-    fragile: false,
-    floor: false,
-  });
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
-
-  const room = [
-    { nameRoom: 'Salle de bain' },
-    { nameRoom: 'Salon' },
-    { nameRoom: 'Cuisine' },
-    { nameRoom: 'Chambre 1' },
-    { nameRoom: 'Chambre 2' },
-    { nameRoom: 'Cellier' },
-    { nameRoom: 'Cave' },
-    { nameRoom: 'Buanderie' },
-  ];
-
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <HeaderHome />
+      <Header />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <QueueIcon />
+           <QueueIcon />
           </Avatar>
           <Typography component="h1" variant="h3">
             J'ajoute un carton
           </Typography>
-          <Typography className="titreNumero" component="h2" variant="h5">
-            Numéro à écrire sur le carton
-          </Typography>
-          <Avatar className={classes.avatar}>
-            11
-          </Avatar>
           <form
             className={classes.form}
             noValidate
             onSubmit={handleSubmit}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Autocomplete
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+            <TextField
+                  autoComplete="label"
+                  name="label"
+                  variant="outlined"
+                  required
                   fullWidth
-                  freeSolo
-                  autoHighlight
-                  id="destination_room"
-                  options={room}
-                  getOptionLabel={(option) => option.nameRoom}
-                  renderInput={(params) => <TextField {...params} label="Pièce de destination" variant="outlined" />}
-                  onChange={(evt) => {
-                    const newDestination_room = evt.target.value;
-                    dispatch({ type: SYNC_DESTINATION_ROOM, destination_room: newDestination_room });
-                  }}
-                />
-              </Grid>
-              <Grid>
-                <FormControl component="fieldset">
-                  <Typography className={classes.formLabel} variant="h5">Ce carton est :</Typography>
-                  <FormGroup className={classes.formGroup}>
-                    <FormControlLabel
-                      control={<Switch checked={state.heavy} onChange={handleChange} name="heavy" />}
-                      label="Lourd"
-                    />
-                    <FormControlLabel
-                      control={<Switch checked={state.fragile} onChange={handleChange} name="fragile" />}
-                      label="Fragile"
-                    />
-                    <FormControlLabel
-                      control={<Switch checked={state.floor} onChange={handleChange} name="floor" />}
-                      label="A l'étage"
-                    />
-                  </FormGroup>
+                  id="label"
+                  label="Nom du carton"
+                  autoFocus
+                  helperText="Un nom est requis"
+                  value={label}
+                  onChange={handleLabelChange}
+                />{' '}
 
-                </FormControl>
-              </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="secondary"
-              className={classes.submit}
-            >
-              Ajouter
-            </Button>
+            <Grid item xs={12}>
+            <TextField
+                  autoComplete="Pièce de destination"
+                  name="destinationRoom"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="destinationRoom"
+                  label="Pièce de destination"
+                  autoFocus
+                  helperText="Un nom est requis"
+                  value={destination_room}
+                  onChange={handleDestinationRoomChange}
+                />{' '}
+              </Grid>
+            <Grid item xs={12} className={classes.margin} container
+              direction="row"
+              justify="center"
+              >
+              <Typography component="h1" variant="h5" className={classes.margin}>
+                Mon carton est :
+              </Typography>
+              <Grid item xs={12}>
+                <Checkbox
+                  checked={fragile}
+                  onChange={handleFragileChange}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
 
-          </form>
-        </div>
+                /> Fragile <Icon className="fas fa-wine-glass" color="secondary" />
+              </Grid>
+              <Grid item xs={12}>
+                <Checkbox
+                  checked={heavy}
+                  onChange={handleHeavyChange}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+
+                />  Lourd <Icon className="fas fa-weight-hanging" color="secondary" />
+              </Grid>
+              <Grid item xs={12}>
+                <Checkbox
+                  checked={floor}
+                  onChange={handleFloorChange}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+
+                /> A l'étage <Icon className="fas fa-level-up-alt" color="secondary" />
+              </Grid>
+
+            </Grid>
+            <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  className={classes.submit}
+                >
+                  Ajouter
+                </Button>
+
+            </Grid>
+          </Grid>
+        </form>
+      </div>
       </Container>
       <Footer />
     </div>
   );
-};
-
+}
 export default withRoot(CreateBox);

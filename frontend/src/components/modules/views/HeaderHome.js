@@ -1,4 +1,5 @@
 import React from 'react';
+import {BrowserRouter as Router, Link} from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -36,7 +37,7 @@ export default function HeaderHome() {
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
         <Toolbar className={classes.toolbar}>
-          
+        <Link to="/move">
           <div className={classes.center}>
             <CardMedia
               className={classes.media}
@@ -47,7 +48,7 @@ export default function HeaderHome() {
               MoovyBox
             </Typography>
           </div>
-          
+          </Link>
         </Toolbar>
       </AppBar>
     </div>

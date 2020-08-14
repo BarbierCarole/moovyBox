@@ -11,6 +11,8 @@ import Link from '@material-ui/core/Link';
 import Icon from '@material-ui/core/Icon';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
+import imgCecile from './cecile.png';
+import imgNico from './nico.jpg';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,7 +69,7 @@ const Contact = () => {
                     <Grid item xs={12}  sm={6}>
                         <Paper className={classes.paper}>
                             <Grid>
-                                <Avatar src="/broken-image.jpg" className={classes.large} />
+                                <Avatar src={imgCecile} className={classes.large} />
                                 <Typography className={classes.name}>Cécile Duhain</Typography>
                                 <Typography className={classes.describe} variant='body2'>Product owner</Typography>
                                 <Link href="https://github.com/scroutch?tab=repositories" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
@@ -78,7 +80,7 @@ const Contact = () => {
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <Grid>
-                                <Avatar src="/broken-image.jpg" className={classes.large} />
+                                <Avatar src={imgNico} className={classes.large} />
                                 <Typography className={classes.name}>Nicolas Garçon</Typography>
                                 <Typography className={classes.describe} variant='body2'>Scrum master</Typography>
                                 <Link href="https://github.com/ngarcon" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>

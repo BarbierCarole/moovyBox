@@ -1,8 +1,7 @@
-
 import React,{useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { login, SYNC_EMAIL, SYNC_PASSWORD } from 'src/store/actions';
+import { login, SYNC_EMAIL, SYNC_PASSWORD} from 'src/store/actions';
 
 import Avatar from '@material-ui/core/Avatar';
 
@@ -55,7 +54,10 @@ const SignIn = () => {
   const history = useHistory();
   const email = useSelector((state) => state.email);
   const password = useSelector((state) => state.password);
+  const pseudo = useSelector(state => state.pseudo);
+  
   const classes = useStyles();
+  
   return (
     <div className={classes.root}>
       <CssBaseline />

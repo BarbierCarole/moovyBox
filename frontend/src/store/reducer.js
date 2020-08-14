@@ -13,18 +13,19 @@ import {
   SYNC_ADDRESS,
   SYNC_NAME_INVENTORY,
   SYNC_NAME_ITEM,
-  SYNC_MOVE_ID,
   SYNC_USER_ID,
   SYNC_CODE,
+  SYNC_ISLOGGED,
+  SYNC_MOVES,
+  SYNC_MOVE_ID_SELECTED,
 } from './actions';
 
 const initialState = {
   counter: 0,
   pseudo: '',
-  email: 'carole@gmail.com',
-  password: 'Azerty83*',
+  email: '',
+  password: '',
   passwordVal: '',
-  move_id: '5',
   labelBox: '',
   labelMove: '',
   destination_room: '',
@@ -35,15 +36,24 @@ const initialState = {
   address: '',
   nameInventory: '',
   nameItem: '',
-  user_id: '3',
-  code: '0000000C',
+  user_id: '',
+  code: '',
+  isLogged: false,
+  boxesByMove: '',
+  moves: [],
+  moveIdSelected:'',
 };
 
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case SYNC_PSEUDO: {
-      return { ...state, pseudo: action.pseudo };
+      console.log('from signin', action)
+      return { ...state, pseudo: action.pseudo }; // ...state, pseudo: action.history.pseudo
+    }
+    case SYNC_MOVES: {
+      console.log('from signin moves', action)
+      return { ...state, moves: action.moves };
     }
     case SYNC_EMAIL: {
       return { ...state, email: action.email };
@@ -84,15 +94,19 @@ export default (state = initialState, action = {}) => {
     case SYNC_NAME_ITEM: {
       return { ...state, nameItem: action.nameItem };
     }
-    case SYNC_MOVE_ID: {
-      return { ...state, move_id: action.move_id };
-    }
     case SYNC_USER_ID: {
       return { ...state, user_id: action.user_id };
     }
     case SYNC_CODE: {
       return { ...state, code: action.code };
     }
+    case SYNC_ISLOGGED: {
+      return { ...state, isLogged: action.isLogged };
+    }
+    case SYNC_MOVE_ID_SELECTED :{
+      return { ...state, moveIdSelected: action.moveIdSelected };
+    }
+    
     case 'INCREMENT': {
       return {
         ...state,

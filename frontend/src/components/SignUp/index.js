@@ -2,27 +2,33 @@ import React from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { login, SYNC_EMAIL, SYNC_PASSWORD, SYNC_PSEUDO, SYNC_PASSWORDVAL } from 'src/store/actions';
+import { signup, SYNC_EMAIL, SYNC_PASSWORD, SYNC_PSEUDO, SYNC_PASSWORDVAL } from 'src/store/actions';
 
 import Avatar from '@material-ui/core/Avatar';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import withRoot from '../modules/withRoot';
 import Button from '../modules/components/Button';
 import Footer from '../modules/views/Footer';
 import HeaderHome from '../modules/views/HeaderHome';
 // 1 - l'api YUP utilise ces objets pour la validation des données
+
+//* To see in clear the password
+import clsx from 'clsx';
+import IconButton from '@material-ui/core/IconButton';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +53,13 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  //* the rest of the code is to see the password
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: '25ch',
+  },
 }));
 
 const SignUp = () => {
@@ -57,31 +70,24 @@ const SignUp = () => {
   const pseudo = useSelector((state) => state.pseudo);
   const passwordVal = useSelector((state) => state.passwordVal);
   const classes = useStyles();
- 
-  function handleSubmit(e) {
-    e.preventDefault(); // stops default reloading behaviour
-    console.log('input on onSubmit', email, password, pseudo);
-    axios
-      .post(`http://18.206.96.118/signup`, { email, password, pseudo })
-      .then(res => {
-        if (res.status === 201) {
-          dispatch(login(history));
-          console.log('response.status',res.status);
-        }
-        else {
-          console.error('erreur', res);
-        };
-        console.log('res : ',res);
-        console.log('res.data : ',res.data);
+  const [values, setValues] = React.useState({    
+    password: '',
+    showPassword: false,
+  });
 
-      })
-      .catch ((error) => {
-        console.log("very big error");
-        alert('Probleme de server');
+  //* to see the password
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
 
-      });
-  }
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
 
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  //*  end
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -98,8 +104,11 @@ const SignUp = () => {
           <form
             className={classes.form}
             noValidate
-            onSubmit={handleSubmit}
-          >   
+            onSubmit={(evt) => {
+              evt.preventDefault();
+              dispatch(signup(history));
+            }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -116,6 +125,7 @@ const SignUp = () => {
                   onChange={(evt) => {
                     const newPseudo = evt.target.value;
                     dispatch({ type: SYNC_PSEUDO, pseudo : newPseudo });
+                   
                   }}
                 />
               </Grid>
@@ -153,8 +163,43 @@ const SignUp = () => {
                     const newPassword = evt.target.value;
                     dispatch({ type: SYNC_PASSWORD, password: newPassword });
                   }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
               </Grid>
+         
+              {/* <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? 'text' : 'password'}
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  labelWidth={70}
+                />
+              </FormControl> */}
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -175,13 +220,14 @@ const SignUp = () => {
               </Grid>
             </Grid>
             <Button
+              sizeLarge
               type="submit"
               fullWidth
               variant="contained"
               color="secondary"
               className={classes.submit}
             >
-              Connexion
+              Je valide et j'active mon compte avec le mail reçu.
             </Button>
             <Grid container>
               <Grid item xs>

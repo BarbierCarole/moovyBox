@@ -55,7 +55,7 @@ const Home = () => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button className={classes.button} size="small" variant="contained" color="primary" href="/signIn">Je suis déjà inscris, je me connecte</Button>
+                    <Button className={classes.button} size="small" variant="contained" color="primary" href="/signIn">Je suis déjà inscrit-e, je me connecte</Button>
                 </CardActions>
                 <CardActions>
                     <Button className={classes.button2} size="small" variant="contained" color="primary" href="/signUp">Je m'inscris</Button>

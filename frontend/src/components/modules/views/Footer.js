@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
+import {BrowserRouter as Router, Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -19,11 +20,11 @@ export default function Footer() {
   return (
     <footer className={classes.footer}>
       <Container maxWidth="sm" align="center">
-        <Link href="/contact" color="inherit">
+        <Link to="/contact" color="inherit">
           Nous contacter
         </Link>
         <br />
-        <Link href="/disclaimer" color="inherit">
+        <Link to="/disclaimer" color="inherit">
           Mentions légales | Cookies
         </Link>
       </Container>
