@@ -75,7 +75,7 @@ class Item {
     
 
     async insert() {
-        // Insert a item in DB 
+        // Insert an item in DB 
         try {
             
             const query = `INSERT INTO "item" (name, user_id, box_id) VALUES ($1, $2, $3) RETURNING *`; 
@@ -91,7 +91,7 @@ class Item {
     }
 
     async update() {
-        // Insert a item in DB 
+        // Insert an item in DB 
         try {
             
             const query = `UPDATE "item" SET ("name", "box_id") = ($1, $2) WHERE "id" = $3 RETURNING *;`; 

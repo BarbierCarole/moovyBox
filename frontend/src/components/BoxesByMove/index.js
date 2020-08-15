@@ -149,7 +149,8 @@ toast.configure();
 const BoxesByMove = (props) => {
   const classes = useStyles();
   const [boxes, setBoxes] = useState([]);
-  
+  // const [search, setSearch] = useState(""); --------------------> to delete if function well without
+  // const [filteredItems, setFilteredItems] = useState([]);-------> to delete if function well without
   // To confirm
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
@@ -215,6 +216,7 @@ const handleSubmit = (e) => {
 
   axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
         .then(res => {
+          setBoxes(res.data);
           console.log("CB res :",res);
         }).catch(err => {
           console.log(err);

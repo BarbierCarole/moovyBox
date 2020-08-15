@@ -84,10 +84,8 @@ const boxController = {
             const searchedItem = await normalize(req.params.searchedItem); 
             console.log("CB : in controller : searchedItem : ",searchedItem);
             
-            const resultBoxesWithItem = await Box.search(searchedItem); 
-            console.log('resultBoxesWithItem :', resultBoxesWithItem) 
-            
-            return res.send(resultBoxesWithItem); 
+            const boxes = await Box.search(searchedItem); 
+            return res.send(boxes); 
                         
         } catch (error) {
             console.trace(error);
