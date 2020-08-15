@@ -125,7 +125,7 @@ function CreateBox(props) {
     e.preventDefault(); // stops default reloading behaviour
 
     axios
-      .post(`http://localhost:5050/box`, { label, destination_room, fragile, heavy, floor, move_id})
+      .post(`http://localhost:5050/api/move/:moveID/box`, { label, destination_room, fragile, heavy, floor, move_id})
       .then((res => {
         console.log(res);
         console.log(res.data);

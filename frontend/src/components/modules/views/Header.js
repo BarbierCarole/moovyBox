@@ -81,23 +81,23 @@ const Header = () => {
           <div className={classes.right}>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} color="inherit"><AccountCircleIcon style={{ fontSize: 40 }} /></Button>
             <Menu
-        id="simple-menu"
-        className = "menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <Link to="/profile">
-          <MenuItem onClick={handleClose}>Profil</MenuItem>
-        </Link>
-        <Link to="/move">
-          <MenuItem onClick={handleClose}>Mes déménagements</MenuItem>
-        </Link>
-        <Link to="/signin">
-        <MenuItem className={classes.linkText} onClick={handleClose}>Déconnexion</MenuItem>
-        </Link>
-      </Menu>
+              id="simple-menu"
+              className = "menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <Link to="/profile">
+                <MenuItem onClick={handleClose}>Profil</MenuItem>
+              </Link>
+              <Link to="/move">
+                <MenuItem onClick={handleClose}>Mes déménagements</MenuItem>
+              </Link>
+              <Link to="/signin">
+              <MenuItem className={classes.linkText} onClick={handleClose}>Déconnexion</MenuItem>
+              </Link>
+            </Menu>
           </div>
         </Toolbar>
       </AppBar>

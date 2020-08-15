@@ -9,7 +9,7 @@ import { Route, Redirect, Switch } from 'react-router';
 import './styles.css';
 import SignIn from 'src/components/SignIn';
 import Move from 'src/components/Move';
-import FormMove from 'src/components/FormMove';
+import CreateMove from 'src/components/CreateMove';
 import SignUp from 'src/components/SignUp';
 import ResetPassword from 'src/components/ResetPassword';
 import Profile from 'src/components/Profile';
@@ -87,7 +87,7 @@ const App = () => {
 
             }
             //console.log('email,password,',email,password);
-            return  <FormMove />;
+            return  <CreateMove />;
           }}
         />
         <Route exact path="/contact">

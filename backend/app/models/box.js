@@ -60,6 +60,29 @@ class Box {
         return instances; 
     }
 
+    static async search(searchedItem) {
+        //* Research function
+        try {
+            // console.log("CB : item :", searchedItem);
+            
+            const query = `SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE '%'||$1||'%');`; 
+            const values = [searchedItem.toLowerCase()];
+            console.log("CB item : values : ",values);
+            const results = await client.query(query, values);
+            console.log("CB : item results : ", results);
+            const instances = []; 
+            for(const row of results.rows) {
+                instances.push(new this(row)); 
+            }
+            console.log("CB intances", instances) 
+            // return results;
+            return instances; 
+             
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     static async boxLabelExists (form) {
         //* Check the existence of the entred box in the DB
         try {

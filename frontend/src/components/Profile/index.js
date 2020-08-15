@@ -62,7 +62,7 @@ const Profile = () => {
     e.preventDefault(); // stops default reloading behaviour
     console.log('input on onSubmit', email, password, pseudo);
     axios
-      .put(`http://localhost:5050/profile`, { email, password, pseudo })
+      .put(`http://localhost:5050/api/profile`, { email, password, pseudo })
       .then(res => {
         if (res.status === 201) {
           dispatch(login(history));

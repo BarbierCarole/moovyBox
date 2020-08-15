@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  //* the next code is for to see the password
+  //* the rest of the code is to see the password
   withoutLabel: {
     marginTop: theme.spacing(3),
   },

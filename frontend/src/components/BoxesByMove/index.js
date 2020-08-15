@@ -9,19 +9,16 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
-import moment from 'moment';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 import axios from 'axios';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 // for the icon fontasome
 import { loadCSS } from 'fg-loadcss'; // for th icons
 import Icon from '@material-ui/core/Icon';
-import CssBaseline from '@material-ui/core/Icon';
 // to confirm
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -38,6 +35,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { fade} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -151,12 +149,14 @@ toast.configure();
 const BoxesByMove = (props) => {
   const classes = useStyles();
   const [boxes, setBoxes] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filteredItems, setFilteredItems] = useState([]);
-  // to confirm
+  // const [search, setSearch] = useState(""); --------------------> to delete if function well without
+  // const [filteredItems, setFilteredItems] = useState([]);-------> to delete if function well without
+  // To confirm
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
-  
+  // for the research
+  const [searchedItem, setSearchedItem] = useState("");
+
 
   const isLogged = useSelector((state) => state.isLogged);
 
@@ -192,7 +192,7 @@ const BoxesByMove = (props) => {
 
 // requeste to display all the boxes of 1 move selected
 useEffect(() => {
-  axios.get(`http://localhost:5050/move/${props.location.state.id}`)
+  axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes`)
   .then(res => {
     setBoxes(res.data);
   })
@@ -201,32 +201,44 @@ useEffect(() => {
   })
 }, []);
 
+//! -------------------------- search ---------------------------------------- !
+// to see 
+const handleSearchedItemChange = (e) => {
+  setSearchedItem(e.target.value);  
+}
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  
+  const data = {searchedItem};
+
+  console.log("CB data.searchedItem", data.searchedItem);
+
+  axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
+        .then(res => {
+          setBoxes(res.data);
+          console.log("CB res :",res);
+        }).catch(err => {
+          console.log(err);
+        });
+};
+//! -------------------------------------------------------------------------- !
 //search function
-useEffect(() => {
-  setFilteredItems(
-    boxes.filter(box =>
-      box.label.toLowerCase().includes(search.toLowerCase()))
-  );
-}, [search, boxes]); 
+// useEffect(() => {
+//   setFilteredItems(
+//     boxes.filter(box =>
+//       box.label.toLowerCase().includes(search.toLowerCase())) // => includes : method determines whether an array includes a certain value among its entries, returning true or false as appropriate
+      
+//   );
+// }, [search, boxes]);
 
-// delete a box selected
-// const handleBoxDelete = (id) => {
-
-//   axios.delete(`http://localhost:5050/box/${id}`)
-//        .then(res => {
-//         setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
-//        }).catch(err => {
-//         console.log(err);
-//       })
-// };
 const handleDelete = (props) => {
-
   console.log('cliqué, props', props);
   const id = props.selectedId;
   console.log('id : ', id);
   
 
-  axios.delete(`http://localhost:5050/box/${id}`)
+  axios.delete(`http://localhost:5050/api/box/${id}`)
        .then(res => {
         setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
         setOpen(false);
@@ -251,16 +263,16 @@ const handleClose = () => {
 const deleteZero = (str) => {
   const reg=/(^|[^\d.])0+(?!\.)/g;
   return str= str.replace(reg,'');
-}
-
-  return (
-    <div className={classes.root}>
+};
+return (
+  <div className={classes.root}>
       <Header />
       {/* test */}
       {/* research */}
       
         <AppBar position="static">
           <Toolbar>
+            {/*  moteur de recherche de Cécile
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -272,9 +284,25 @@ const deleteZero = (str) => {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'Recherche' }}
-                onChange={e => setSearch(e.target.value)}
+                onChange={ (e) => {
+                  setSearchedItem(e.target.value); 
+                  console.log("CB e.target.value : ",e.target.value);
+                }} 
               />
-            </div>
+            </div> */}
+            <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
+              <TextField id="outlined-basic" label="Objet recherché" variant="outlined" value={searchedItem}  onChange={handleSearchedItemChange}/>
+              <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  className={classes.submit}
+                >
+                  Va chercher, Booxy !
+                </Button>
+              </form>
+            
           </Toolbar>
         </AppBar>
      
@@ -308,7 +336,7 @@ const deleteZero = (str) => {
             Cliquer sur les cartons pour consulter ou ajouter du contenu.
           </Typography>
           <ul className={classes.liste}>
-          {filteredItems.map(boxe =>
+          {boxes.map(boxe => // Cecile avait mis filteredItems pour la recherche par entete de carton
             <li key={boxe.id}>
               <Link to={{
                 pathname:"/box/"+boxe.id,
@@ -421,7 +449,7 @@ const deleteZero = (str) => {
       </Container>
       <Footer />
     </div>
-  );
+);
 };
 
 export default withRoot(BoxesByMove);
