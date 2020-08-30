@@ -149,11 +149,14 @@ toast.configure();
 const BoxesByMove = (props) => {
   const classes = useStyles();
   const [boxes, setBoxes] = useState([]);
+  // const [search, setSearch] = useState(""); --------------------> to delete if function well without
+  // const [filteredItems, setFilteredItems] = useState([]);-------> to delete if function well without
   // To confirm
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
   // for the research
-  const [searchedItem, setSearchedItem] = useState(""); 
+  const [searchedItem, setSearchedItem] = useState("");
+
 
   const isLogged = useSelector((state) => state.isLogged);
 
@@ -198,68 +201,53 @@ useEffect(() => {
   })
 }, []);
 
-// -------- search function --------
+//! -------------------------- search ---------------------------------------- !
+// to see 
 const handleSearchedItemChange = (e) => {
   setSearchedItem(e.target.value);  
 }
+
 const handleSubmit = (e) => {
   e.preventDefault();
   
   const data = {searchedItem};
+
   console.log("CB data.searchedItem", data.searchedItem);
+
   axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
-    .then(res => {
-      setBoxes(res.data);
-      console.log("CB res :",res);
-    }).catch(err => {
-      console.log(err);
-    });
+        .then(res => {
+          setBoxes(res.data);
+          console.log("CB res :",res);
+        }).catch(err => {
+          console.log(err);
+        });
 };
-// -------- end search --------
-
-// -------- sort by function CB /!\ WIP-------
+//! -------------------------------------------------------------------------- !
+//search function
 // useEffect(() => {
-//   setOption(
+//   setFilteredItems(
 //     boxes.filter(box =>
-//       box.destination_room.sort()) // => includes : method determines whether an array includes a certain value among its entries, returning true or false as appropriate
-//  );
-// }, [boxes]);
-console.log("CB : props",props);
-const dataArr = boxes;
-console.log("CB : dataArr :",dataArr);
-// const sortArray = dataArr['boxes'];
-
-// console.log("CB : sortArray.sort : ",sortArray.sort((a, b) => {
-//   if (a.region < b.region)
-//     return -1;
-//   if (a.region > b.region)
-//     return 1;
-//   return 0;
-// }));
-
-
-// end sort by
-
-// -------- to see all the items function CB /!\ WIP-------
-
-// end to see all the items
+//       box.label.toLowerCase().includes(search.toLowerCase())) // => includes : method determines whether an array includes a certain value among its entries, returning true or false as appropriate
+      
+//   );
+// }, [search, boxes]);
 
 const handleDelete = (props) => {
   console.log('cliqué, props', props);
   const id = props.selectedId;
   console.log('id : ', id);
+  
+
   axios.delete(`http://localhost:5050/api/box/${id}`)
-    .then(res => {
-    setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
-    setOpen(false);
-    successDelete();
-    }).catch(err => {
-    console.log(err);
-    errorDelete();
-  })
+       .then(res => {
+        setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
+        setOpen(false);
+        successDelete();
+       }).catch(err => {
+        console.log(err);
+        errorDelete();
+      })
 };
-
-
 
 // to confirm
 const handleClickOpen = (value) => {
@@ -280,27 +268,51 @@ return (
   <div className={classes.root}>
       <Header />
       {/* test */}
-      {/* research */}      
-      <AppBar position="static">
-        <Toolbar>
-          <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
-            <TextField id="outlined-basic" label="Objet recherché" variant="outlined" value={searchedItem}  onChange={handleSearchedItemChange}/>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="secondary"
-              className={classes.submit}
-            >
-              Va chercher, Booxy !
-            </Button>
-          </form>
-        </Toolbar>
-      </AppBar>     
+      {/* research */}
+      
+        <AppBar position="static">
+          <Toolbar>
+            {/*  moteur de recherche de Cécile
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Recherche…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'Recherche' }}
+                onChange={ (e) => {
+                  setSearchedItem(e.target.value); 
+                  console.log("CB e.target.value : ",e.target.value);
+                }} 
+              />
+            </div> */}
+            <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
+              <TextField id="outlined-basic" label="Objet recherché" variant="outlined" value={searchedItem}  onChange={handleSearchedItemChange}/>
+              <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  className={classes.submit}
+                >
+                  Va chercher, Booxy !
+                </Button>
+              </form>
+            
+          </Toolbar>
+        </AppBar>
+     
       {/* end research */}
       <Container component="main" maxWidth="xs">
         {/* <CssBaseline /> */}
         <div className={classes.paper}>
+          
+          <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
+          
           <Typography component="h1" variant="h4"  className={classes.title}>
             Listes des cartons de mon déménagement
           </Typography>

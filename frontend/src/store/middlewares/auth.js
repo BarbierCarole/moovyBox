@@ -10,6 +10,7 @@ toast.configure();
 
 export default (store) => (next) => (action) => {
 
+  // Affiche une boite verte avec message :
   const successAuth = () => {
     toast.success('Authentification réussi !', {
       position: toast.POSITION.TOP_CENTER,
