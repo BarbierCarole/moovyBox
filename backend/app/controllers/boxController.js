@@ -84,13 +84,23 @@ const boxController = {
             const searchedItem = await normalize(req.params.searchedItem); 
             console.log("CB : in controller : searchedItem : ",searchedItem);
             
-            const boxes = await Box.search(searchedItem); 
-            return res.send(boxes); 
+            const allItems = await Box.displayAllItems(); 
+            return res.send(allItems); 
                         
         } catch (error) {
             console.trace(error);
         }
     },
+
+    //* display all items of all boxes
+    getDisplayAllItems: async(req,res) => {
+        //* display all items of all the boxes of an move
+        try {
+            const allItems = await Box.
+        } catch (error) {
+            console.trace(error);
+        }
+    }
     
     createBox: async (req, res) => {
         //* Create a new box in DB

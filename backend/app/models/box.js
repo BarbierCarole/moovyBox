@@ -82,6 +82,26 @@ class Box {
             console.log(error);
         }
     }
+    // CB : select all items of all boxes /!\ WIP
+    static async displayAllItems() {
+        //* Research function
+        try {
+                
+            const query = `SELECT * FROM item;`; 
+            const results = await client.query(query);
+            console.log("CB : all item results : ", results);
+            const instances = []; 
+            for(const row of results.rows) {
+                instances.push(new this(row)); 
+            }
+            console.log("CB intances : ", instances) 
+            // return results;
+            return instances; 
+             
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     static async boxLabelExists (form) {
         //* Check the existence of the entred box in the DB

@@ -91,7 +91,7 @@ class Item {
     }
 
     async update() {
-        // Insert an item in DB 
+        // update an item in DB 
         try {
             
             const query = `UPDATE "item" SET ("name", "box_id") = ($1, $2) WHERE "id" = $3 RETURNING *;`; 
