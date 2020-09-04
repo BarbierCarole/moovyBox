@@ -183,273 +183,277 @@ const BoxesByMove = (props) => {
   };
 
  // for the font awesome heavy
- useEffect(() => {
-  loadCSS(
-    'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
-    document.querySelector('#font-awesome-css'),
-  );
-}, []);
+  useEffect(() => {
+    loadCSS(
+      'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
+      document.querySelector('#font-awesome-css'),
+    );
+  }, []);
 
-// requeste to display all the boxes of 1 move selected
-useEffect(() => {
-  axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes`)
-  .then(res => {
-    setBoxes(res.data);
-  })
-  .catch(err => {
-    console.log(err);
-  })
-}, []);
+  // requeste to display all the boxes of 1 move selected
+  useEffect(() => {
+    axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes`)
+    .then(res => {
+      setBoxes(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }, []);
 
-//! -------------------------- search ---------------------------------------- !
-// to see 
-const handleSearchedItemChange = (e) => {
-  setSearchedItem(e.target.value);  
-}
+  //! -------------------------- search ---------------------------------------- !
+  // to see 
+  const handleSearchedItemChange = (e) => {
+    setSearchedItem(e.target.value);  
+  }
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  
-  const data = {searchedItem};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const data = {searchedItem};
 
-  console.log("CB data.searchedItem", data.searchedItem);
+    console.log("CB data.searchedItem", data.searchedItem);
 
-  axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
+    axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
+          .then(res => {
+            setBoxes(res.data);
+            console.log("CB res :",res);
+          }).catch(err => {
+            console.log(err);
+          });
+  };
+  //! -------------------------------------------------------------------------- !
+  //search function
+  // useEffect(() => {
+  //   setFilteredItems(
+  //     boxes.filter(box =>
+  //       box.label.toLowerCase().includes(search.toLowerCase())) // => includes : method determines whether an array includes a certain value among its entries, returning true or false as appropriate
+        
+  //   );
+  // }, [search, boxes]);
+
+  // --------- CB : to display all the boxes ----------
+
+  // --------- end display all the boxes --------------
+
+  const handleDelete = (props) => {
+    console.log('cliqué, props', props);
+    const id = props.selectedId;
+    console.log('id : ', id);
+    
+
+    axios.delete(`http://localhost:5050/api/box/${id}`)
         .then(res => {
-          setBoxes(res.data);
-          console.log("CB res :",res);
+          setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
+          setOpen(false);
+          successDelete();
         }).catch(err => {
           console.log(err);
-        });
-};
-//! -------------------------------------------------------------------------- !
-//search function
-// useEffect(() => {
-//   setFilteredItems(
-//     boxes.filter(box =>
-//       box.label.toLowerCase().includes(search.toLowerCase())) // => includes : method determines whether an array includes a certain value among its entries, returning true or false as appropriate
+          errorDelete();
+        })
+  };
+
+  // to confirm
+  const handleClickOpen = (value) => {
+    setOpen(true);
+    setSelectedId(value)
+    
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const deleteZero = (str) => {
+    const reg=/(^|[^\d.])0+(?!\.)/g;
+    return str= str.replace(reg,'');
+  };
+  return (
+    <div className={classes.root}>
+        <Header />
+        {/* test */}
+        {/* research */}
+        
+          <AppBar position="static">
+            <Toolbar>
+              {/*  moteur de recherche de Cécile
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Recherche…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'Recherche' }}
+                  onChange={ (e) => {
+                    setSearchedItem(e.target.value); 
+                    console.log("CB e.target.value : ",e.target.value);
+                  }} 
+                />
+              </div> */}
+              <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
+                <TextField id="outlined-basic" label="Objet recherché" variant="outlined" value={searchedItem}  onChange={handleSearchedItemChange}/>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="secondary"
+                    className={classes.submit}
+                  >
+                    Va chercher, Booxy !
+                  </Button>
+                </form>
+              
+            </Toolbar>
+          </AppBar>
       
-//   );
-// }, [search, boxes]);
-
-const handleDelete = (props) => {
-  console.log('cliqué, props', props);
-  const id = props.selectedId;
-  console.log('id : ', id);
-  
-
-  axios.delete(`http://localhost:5050/api/box/${id}`)
-       .then(res => {
-        setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
-        setOpen(false);
-        successDelete();
-       }).catch(err => {
-        console.log(err);
-        errorDelete();
-      })
-};
-
-// to confirm
-const handleClickOpen = (value) => {
-  setOpen(true);
-  setSelectedId(value)
-  
-};
-
-const handleClose = () => {
-  setOpen(false);
-};
-
-const deleteZero = (str) => {
-  const reg=/(^|[^\d.])0+(?!\.)/g;
-  return str= str.replace(reg,'');
-};
-return (
-  <div className={classes.root}>
-      <Header />
-      {/* test */}
-      {/* research */}
-      
-        <AppBar position="static">
-          <Toolbar>
-            {/*  moteur de recherche de Cécile
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Recherche…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'Recherche' }}
-                onChange={ (e) => {
-                  setSearchedItem(e.target.value); 
-                  console.log("CB e.target.value : ",e.target.value);
-                }} 
-              />
-            </div> */}
-            <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
-              <TextField id="outlined-basic" label="Objet recherché" variant="outlined" value={searchedItem}  onChange={handleSearchedItemChange}/>
-              <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="secondary"
-                  className={classes.submit}
-                >
-                  Va chercher, Booxy !
-                </Button>
-              </form>
+        {/* end research */}
+        <Container component="main" maxWidth="xs">
+          {/* <CssBaseline /> */}
+          <div className={classes.paper}>
             
-          </Toolbar>
-        </AppBar>
-     
-      {/* end research */}
-      <Container component="main" maxWidth="xs">
-        {/* <CssBaseline /> */}
-        <div className={classes.paper}>
-          
-          <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
-          
-          <Typography component="h1" variant="h4"  className={classes.title}>
-            Listes des cartons de mon déménagement
-          </Typography>
-          
-          <Link to ={{
-              pathname:"/create-box",
-              state: {
-                id: props.location.state.id,
-              }
-          }}>
-          <Typography component="h1" variant="h5" className={classes.title}>
-            <Tooltip title="Ajouter" aria-label="Add">
-              <Fab color="secondary" className={classes.fab}>
-                <AddIcon />
-              </Fab>
-            </Tooltip>
-            <Button size="medium" variant="outlined" color="primary" >Créer un nouveau carton</Button>
-          </Typography>
-          </Link>
-          <Typography variant="h5"  className={classes.title}>
-            Cliquer sur les cartons pour consulter ou ajouter du contenu.
-          </Typography>
-          <ul className={classes.liste}>
-          {boxes.map(boxe => // Cecile avait mis filteredItems pour la recherche par entete de carton
-            <li key={boxe.id}>
-              <Link to={{
-                pathname:"/box/"+boxe.id,
-                 state: {
-                   id: boxe.id
-                  }
-                }}>
+            <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
+            
+            <Typography component="h1" variant="h4"  className={classes.title}>
+              Listes des cartons de mon déménagement
+            </Typography>
+            
+            <Link to ={{
+                pathname:"/create-box",
+                state: {
+                  id: props.location.state.id,
+                }
+            }}>
+            <Typography component="h1" variant="h5" className={classes.title}>
+              <Tooltip title="Ajouter" aria-label="Add">
+                <Fab color="secondary" className={classes.fab}>
+                  <AddIcon />
+                </Fab>
+              </Tooltip>
+              <Button size="medium" variant="outlined" color="primary" >Créer un nouveau carton</Button>
+            </Typography>
+            </Link>
+            <Typography variant="h5"  className={classes.title}>
+              Cliquer sur les cartons pour consulter ou ajouter du contenu.
+            </Typography>
+            <ul className={classes.liste}>
+            {boxes.map(boxe => // Cecile avait mis filteredItems pour la recherche par entete de carton
+              <li key={boxe.id}>
+                <Link to={{
+                  pathname:"/box/"+boxe.id,
+                  state: {
+                    id: boxe.id
+                    }
+                  }}>
 
-                <Button 
-                variant="outlined" 
-                color="primary" 
-                className={classes.btn} 
-                >
-                <Grid container
-                container
-                direction="row"
-                justify="center"
-                alignItems="center"
-                >
-                  
-                  <Grid item xs={12}>
-                   <Typography>
-                      {boxe.label} 
-                      <ArrowRightAltIcon color="secondary" className={classes.arrow}/> {boxe.destination_room}
-                   </Typography> 
-                  </Grid>
-                  <Grid item xs={12}
+                  <Button 
+                  variant="outlined" 
+                  color="primary" 
+                  className={classes.btn} 
+                  >
+                  <Grid container
                   container
                   direction="row"
                   justify="center"
                   alignItems="center"
                   >
-                  {(() => {
-                    if (boxe.heavy===true) {
-                      return (
-                        <Typography>
-                          <Icon className="fas fa-weight-hanging" color="secondary" style={{ marginRight: 10 }} 
-                        />
-                          Lourd 
-                        </Typography>
-                      )
-                    }
-                  })()} 
-                  {(() => {
-                    if (boxe.floor===true) {
-                      return (
-                        <Typography>
-                          <Icon className="fas fa-level-up-alt" color="secondary" style={{  marginRight: 10 }} />
-                          Etage
-                        </Typography>
-                        
-                      )
-                    }
-                  })()}
-                  {(() => {
-                    if (boxe.fragile===true) {
-                      return (
-                        <Typography>
-                          <Icon className="fas fa-wine-glass" color="secondary" style={{  marginRight: 10 }} />
-                          Fragile
-                        </Typography>
-                      )
-                    }
-                  })()}
-                  </Grid>
-                  <Grid >
-                  <Typography className={classes.arround}> {deleteZero(boxe.code) } 
-                  </Typography>
-                  
-                  </Grid>
-                </Grid>
-                </Button>
-                </Link>
-                
-                <DeleteIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(boxe.id)}}/>
-                <Dialog
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title" className={classes.dialogTitle} color="secondary">{"Confirmation de suppression"}</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      Etes-vous sûr de vouloir supprimer ce carton et tout son contenu définitivement ?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose} variant="outlined" color="primary" >
-                      Annuler
-                    </Button>
-                    <ButtonCustom
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      onClick={() => {handleDelete({selectedId})} }
-                      color="secondary"
-                      // className={classes.submit}
+                    
+                    <Grid item xs={12}>
+                    <Typography>
+                        {boxe.label} 
+                        <ArrowRightAltIcon color="secondary" className={classes.arrow}/> {boxe.destination_room}
+                    </Typography> 
+                    </Grid>
+                    <Grid item xs={12}
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
                     >
-                      Confirmation de suppression
-                    </ButtonCustom>
-                    {/* <Button onClick={() => {handleDelete({selectedId})} }color="secondary" autoFocus>
-                      Confirmation de suppression
-                    </Button> */}
-                  </DialogActions>
-                </Dialog>
-                </li>)}
-            </ul>
-          </div>
-      </Container>
-      <Footer />
-    </div>
-);
+                    {(() => {
+                      if (boxe.heavy===true) {
+                        return (
+                          <Typography>
+                            <Icon className="fas fa-weight-hanging" color="secondary" style={{ marginRight: 10 }} 
+                          />
+                            Lourd 
+                          </Typography>
+                        )
+                      }
+                    })()} 
+                    {(() => {
+                      if (boxe.floor===true) {
+                        return (
+                          <Typography>
+                            <Icon className="fas fa-level-up-alt" color="secondary" style={{  marginRight: 10 }} />
+                            Etage
+                          </Typography>
+                          
+                        )
+                      }
+                    })()}
+                    {(() => {
+                      if (boxe.fragile===true) {
+                        return (
+                          <Typography>
+                            <Icon className="fas fa-wine-glass" color="secondary" style={{  marginRight: 10 }} />
+                            Fragile
+                          </Typography>
+                        )
+                      }
+                    })()}
+                    </Grid>
+                    <Grid >
+                    <Typography className={classes.arround}> {deleteZero(boxe.code) } 
+                    </Typography>
+                    
+                    </Grid>
+                  </Grid>
+                  </Button>
+                  </Link>
+                  
+                  <DeleteIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(boxe.id)}}/>
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title" className={classes.dialogTitle} color="secondary">{"Confirmation de suppression"}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        Etes-vous sûr de vouloir supprimer ce carton et tout son contenu définitivement ?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} variant="outlined" color="primary" >
+                        Annuler
+                      </Button>
+                      <ButtonCustom
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        onClick={() => {handleDelete({selectedId})} }
+                        color="secondary"
+                        // className={classes.submit}
+                      >
+                        Confirmation de suppression
+                      </ButtonCustom>
+                      {/* <Button onClick={() => {handleDelete({selectedId})} }color="secondary" autoFocus>
+                        Confirmation de suppression
+                      </Button> */}
+                    </DialogActions>
+                  </Dialog>
+                  </li>)}
+              </ul>
+            </div>
+        </Container>
+        <Footer />
+      </div>
+  );
 };
 
 export default withRoot(BoxesByMove);
