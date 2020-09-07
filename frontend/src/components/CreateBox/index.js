@@ -125,7 +125,7 @@ function CreateBox(props) {
     e.preventDefault(); // stops default reloading behaviour
 
     axios
-      .post(`http://localhost:5050/api/move/:moveID/box`, { label, destination_room, fragile, heavy, floor, move_id})
+      .post(`http://localhost:5050/api/move/:moveID/boxes`, { label, destination_room, fragile, heavy, floor, move_id})
       .then((res => {
         console.log(res);
         console.log(res.data);
@@ -169,40 +169,41 @@ function CreateBox(props) {
           >
           <Grid container spacing={2}>
             <Grid item xs={12}>
-            <TextField
-                  autoComplete="label"
-                  name="label"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="label"
-                  label="Nom du carton"
-                  autoFocus
-                  helperText="Un nom est requis"
-                  value={label}
-                  onChange={handleLabelChange}
-                />{' '}
-
+              <TextField
+                autoComplete="label"
+                name="label"
+                variant="outlined"
+                required
+                fullWidth
+                id="label"
+                label="Nom du carton"
+                autoFocus
+                helperText="Un nom est requis"
+                value={label}
+                onChange={handleLabelChange}
+                
+              />{' '}
+              
             </Grid>
             <Grid item xs={12}>
-            <TextField
-                  autoComplete="Pièce de destination"
-                  name="destinationRoom"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="destinationRoom"
-                  label="Pièce de destination"
-                  autoFocus
-                  helperText="Un nom est requis"
-                  value={destination_room}
-                  onChange={handleDestinationRoomChange}
-                />{' '}
-              </Grid>
+              <TextField
+                autoComplete="Pièce de destination"
+                name="destinationRoom"
+                variant="outlined"
+                required
+                fullWidth
+                id="destinationRoom"
+                label="Pièce de destination"
+                // autoFocus
+                helperText="Un nom est requis"
+                value={destination_room}
+                onChange={handleDestinationRoomChange}
+              />{' '}
+            </Grid>
             <Grid item xs={12} className={classes.margin} container
               direction="row"
               justify="center"
-              >
+            >
               <Typography component="h1" variant="h5" className={classes.margin}>
                 Mon carton est :
               </Typography>

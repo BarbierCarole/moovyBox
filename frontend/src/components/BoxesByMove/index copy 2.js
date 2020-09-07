@@ -40,7 +40,6 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 //
 import Paper from '@material-ui/core/Paper';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,38 +78,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  bgSecondary: {
-    backgroundColor: fade(theme.palette.secondary.main, 0.15),
-  },
-  bgPrimary: {
-    backgroundColor: fade(theme.palette.primary.main, 0.25),
-  },
-  
   fab: {
     marginRight: theme.spacing(3),
-  },
-  nbrBox: {
-    color: '#fff',
-    marginTop: '-33px',
-    fontWeight: 'bold',
-  },
-  justifyContentSpaceBetween: {
-    justifyContent: 'space-between',
-    // backgroundColor: fade(theme.palette.primary.main, 0.25),
-  },
-  titleBox: { 
-    mi: '300',
-    height: 30,
-    display: 'flex',
-    overflow: 'hidden',
-    alignItems: 'center',
-    padding: theme.spacing(1,3),   
-    lineHight: 1,
-    userSelect: 'none',
-    justifyContent: 'center', 
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-
   },
   arround: { 
     width: 40,
@@ -178,9 +147,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  textLeft: {
-    textAlign: 'left',
-  },
+  
 }));
 
 toast.configure();
@@ -346,7 +313,116 @@ const BoxesByMove = (props) => {
               </Fab>
             </Tooltip>
             </Link>
-            
+            <ul className={classes.liste}>
+            {boxes.map(boxe => // Cecile avait mis filteredItems pour la recherche par entete de carton
+              <li key={boxe.id}>
+                <Link to={{
+                  pathname:"/box/"+boxe.id,
+                  state: {
+                    id: boxe.id
+                    }
+                  }}>
+
+                  <Button 
+                  variant="outlined" 
+                  color="primary" 
+                  className={classes.btn} 
+                  >
+                  <Grid container
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  >
+                    
+                  <Grid item xs={12}>
+                  <Typography>
+                      {boxe.label} 
+                      <ArrowRightAltIcon color="secondary" className={classes.arrow}/> {boxe.destination_room}
+                  </Typography> 
+                  </Grid>
+                  <Grid item xs={12}
+                  container
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  >
+                  {(() => {
+                    if (boxe.heavy===true) {
+                      return (
+                        <Typography>
+                          <Icon className="fas fa-weight-hanging" color="secondary" style={{ marginRight: 10 }} 
+                        />
+                          Lourd 
+                        </Typography>
+                      )
+                    }
+                    })()} 
+                    {(() => {
+                      if (boxe.floor===true) {
+                        return (
+                          <Typography>
+                            <Icon className="fas fa-level-up-alt" color="secondary" style={{  marginRight: 10 }} />
+                            Etage
+                          </Typography>
+                          
+                        )
+                      }
+                    })()}
+                    {(() => {
+                      if (boxe.fragile===true) {
+                        return (
+                          <Typography>
+                            <Icon className="fas fa-wine-glass" color="secondary" style={{  marginRight: 10 }} />
+                            Fragile
+                          </Typography>
+                        )
+                      }
+                    })()}
+                    </Grid>
+                    <Grid >
+                    <Typography className={classes.arround}> {deleteZero(boxe.code) } 
+                    </Typography>
+                    
+                    </Grid>
+                  </Grid>
+                  </Button>
+                  </Link>
+                  
+                  <DeleteIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(boxe.id)}}/>
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title" className={classes.dialogTitle} color="secondary">{"Confirmation de suppression"}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        Etes-vous sûr de vouloir supprimer ce carton et tout son contenu définitivement ?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose} variant="outlined" color="primary" >
+                        Annuler
+                      </Button>
+                      <ButtonCustom
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        onClick={() => {handleDelete({selectedId})} }
+                        color="secondary"
+                        // className={classes.submit}
+                      >
+                        Confirmation de suppression
+                      </ButtonCustom>
+                      {/* <Button onClick={() => {handleDelete({selectedId})} }color="secondary" autoFocus>
+                        Confirmation de suppression
+                      </Button> */}
+                    </DialogActions>
+                  </Dialog>
+                  </li>)}
+              </ul>
               {/* ------------- CB new interface of box ---------------- */}
               <ul className={classes.liste}>
               {boxes.map(boxe => // Cecile avait mis filteredItems pour la recherche par entete de carton
@@ -363,140 +439,94 @@ const BoxesByMove = (props) => {
                     color="primary" 
                     className={classes.btn} 
                     >
-                    <Grid item xs={12}
-                      container
-                      direction="column"
-                      justify="space-between"
-                      alignItems="center"
-                    >
-                      <Grid item xs={12} sm={12}>
-                        <Paper className={classes.titleBox}>
-                          <Typography>
-                            {boxe.label} 
-                          </Typography>
-                        </Paper>
-                      </Grid>
-                        
-                      <Grid item xs={12}
+                      <Grid 
+                        container
+                        direction="column"
+                        justify="center"
+                        alignItems="center"
+                      >
+                        <Grid item xs={12}>
+                        <Paper className={classes.paper}>xs</Paper>
+                        </Grid>
+                        <Grid item xs={12}
                           container
                           direction="row"
-                          justify="space-between"
+                          justify="center"
                           alignItems="center"
                         >
-                          
-                          <Grid item xs={4} sm={3}
+                          <Grid item xs={3}
                             container
                             direction="column"
                             justify="center"
-                            alignItems="center"                            
+                            alignItems="center"
                           >
-                            <div>  
-                              <Grid item xs={12}>
-                              <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 50, width: 70 }}/>
-                              </Grid>
-                              
-                              <Grid item xs={12}>
-                                <Typography className={classes.nbrBox}> {deleteZero(boxe.code) } 
-                                </Typography>
-                              </Grid>                            
-                            </div>
-                          </Grid>                 
-                          <Grid item xs={8} sm={9}
+                            <Paper className={classes.paper}>xs</Paper>
+                          </Grid>
+                          <Grid item xs={9}
                             container
-                            direction="row"
+                            direction="column"
                             justify="center"
                             alignItems="center"
-                            className={classes.justifyContentSpaceBetween}                            
                           >
-                            <Grid item xs={12}
-                              container
-                              direction="row"
-                              className={classes.bgSecondary}
-                              alignItems="center"                            
-                            >
-                              <Grid item xs={2}>
-                                <LocationOnIcon color="secondary" fontSize="large" />
-                              </Grid>
-                              <Grid item xs={9}>
-                                <Typography className={classes.textLeft}> {boxe.destination_room}</Typography>
-                              </Grid>
-                            </Grid>
-                            <Grid item xs={10}
-                              container
-                              direction="row"                              
-                              alignItems="center"
-                              className={classes.justifyContentSpaceBetween} 
-                                                         
-                            >
-                           
-                              {(() => {
-                              if (boxe.heavy===true) {
-                                return (
-                                  <Grid item xs={3}                                
-                                  container
-                                  direction="column"
-                                  justify="center"
-                                  alignItems="center"
-                                  >
-                                    <Grid item xs={10}>
-                                      <Icon className="fas fa-weight-hanging" color="secondary" />
-                                    </Grid>
-                                    <Grid item xs={10}>
-                                      <Typography>
-                                        Lourd 
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                                )
-                              }
-                              })()} 
-                              {(() => {
-                                if (boxe.floor===true) {
-                                  return (
-                                    <Grid item xs={3}                                
-                                    container
-                                    direction="column"
-                                    justify="center"
-                                    alignItems="center"
-                                    >
-                                        <Grid item xs={10}>
-                                        <Icon className="fas fa-level-up-alt" color="secondary" />
-                                        </Grid>
-                                        <Grid item xs={10}>
-                                          <Typography>
-                                            Etage 
-                                          </Typography>
-                                        </Grid>
-                                    </Grid>
-                                  )
-                                }
-                              })()}
-                              {(() => {
-                                if (boxe.fragile===true) {
-                                  return (
-                                    <Grid item xs={3}                                
-                                    container
-                                    direction="column"
-                                    justify="center"
-                                    alignItems="center"
-                                    >
-                                        <Grid item xs={10}>
-                                        <Icon className="fas fa-wine-glass" color="secondary" />
-                                        </Grid>
-                                        <Grid item xs={10}>
-                                          <Typography>
-                                          Fragile 
-                                          </Typography>
-                                        </Grid>
-                                    </Grid>
-                                  )
-                                }
-                              })()} 
-                            </Grid>
-                                 
+                            <Paper className={classes.paper}>xs</Paper>     
                           </Grid>
                         </Grid>
-                    </Grid>  
+                      </Grid>
+
+                      {/* --------------------------------- */}
+                        <Grid item xs={12}>
+                      <Typography>
+                          {boxe.label} 
+                          <ArrowRightAltIcon color="secondary" className={classes.arrow}/> {boxe.destination_room}
+                      </Typography> 
+                      </Grid>
+                        <Grid item xs={12}
+                      container
+                      direction="row"
+                      justify="center"
+                      alignItems="center"
+                      >
+                      {(() => {
+                        if (boxe.heavy===true) {
+                          return (
+                            <Typography>
+                              <Icon className="fas fa-weight-hanging" color="secondary" style={{ marginRight: 10 }} 
+                            />
+                              Lourd 
+                            </Typography>
+                          )
+                        }
+                        })()} 
+                        {(() => {
+                          if (boxe.floor===true) {
+                            return (
+                              <Typography>
+                                <Icon className="fas fa-level-up-alt" color="secondary" style={{  marginRight: 10 }} />
+                                Etage
+                              </Typography>
+                              
+                            )
+                          }
+                        })()}
+                        {(() => {
+                          if (boxe.fragile===true) {
+                            return (
+                              <Typography>
+                                <Icon className="fas fa-wine-glass" color="secondary" style={{  marginRight: 10 }} />
+                                Fragile
+                              </Typography>
+                            )
+                          }
+                        })()}
+                        </Grid>
+                        <Grid >
+                          <Typography className={classes.arround}> {deleteZero(boxe.code) } 
+                          </Typography>
+                        </Grid>
+                      {/* ----------------------------------- */}
+                      
+                      
+                      
                       
                     </Button>
                   </Link>

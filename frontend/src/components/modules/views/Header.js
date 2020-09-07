@@ -65,7 +65,7 @@ const Header = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" style={{background:'radial-gradient( circle 872px at 3.4% -23.5%,  rgba(42,250,223,1) 0%, rgba(37,88,210,1) 44.5%, rgba(29,58,126,1) 97.8% )'}} >
         <Toolbar className={classes.toolbar}>
           <div className={classes.left}>
             <GoBack />
