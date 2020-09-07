@@ -177,6 +177,7 @@ const useStyles = makeStyles((theme) => ({
         width: '20ch',
       },
     },
+    
   },
   textLeft: {
     textAlign: 'left',
@@ -319,10 +320,10 @@ const BoxesByMove = (props) => {
             <Typography component="h1" variant="h4"  className={classes.title}>
               Listes des cartons de mon déménagement
             </Typography>
-            <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
+            <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit} >
               <Typography component="h1" variant="h5" className={classes.title}>
-                <TextField id="outlined-basic" label="Objet à rechercher" variant="outlined" value={searchedItem}  onChange={handleSearchedItemChange}/>
-                <Tooltip title="Ajouter un carton" aria-label="Search">
+                <TextField id="outlined-basic" label="Objet à rechercher" variant="outlined" value={searchedItem}  onChange={handleSearchedItemChange} style={{borderRadius: '11px', background: '#ffffff', boxShadow:  '4px 4px 7px #d9d9d9, -4px -4px 7px #ffffff'}}/>
+                <Tooltip title="Lancer la recherche" aria-label="Search" style={{marginLeft:'-25px',}}>
                   <Fab type="submit" color="secondary" className={classes.submit}>
                     <SearchIcon />
                   </Fab>
@@ -412,7 +413,8 @@ const BoxesByMove = (props) => {
                               container
                               direction="row"
                               className={classes.bgSecondary}
-                              alignItems="center"                            
+                              alignItems="center" 
+                              style={{margin: '10px 0 10px 0'}}                           
                             >
                               <Grid item xs={2}>
                                 <LocationOnIcon color="secondary" fontSize="large" />
