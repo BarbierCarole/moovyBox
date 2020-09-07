@@ -73,7 +73,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   fab: {
-    marginRight: theme.spacing(3),
+    marginRight: theme.spacing(-3),
+    zIndex:'1000',
   }
 
 }));
@@ -170,7 +171,7 @@ const Move = () => {
                   <AddIcon />
                 </Fab>
               </Tooltip>
-              <Button size="medium" variant="outlined" color="primary" >Ajouter un déménagement</Button>
+              <Button size="medium" variant="outlined" color="primary" style={{marginLeft: '15px'}}>Ajouter un déménagement</Button>
             </Typography>
 
           </Link>
