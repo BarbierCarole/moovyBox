@@ -35,7 +35,11 @@ export default function HeaderHome() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{background:'radial-gradient( circle 872px at 3.4% -23.5%,  rgba(42,250,223,1) 0%, rgba(37,88,210,1) 44.5%, rgba(29,58,126,1) 97.8% )'}} >
+      <AppBar position="static" 
+      // style={{background:'radial-gradient( circle 872px at 3.4% -23.5%,  rgba(42,250,223,1) 0%, rgba(37,88,210,1) 44.5%, rgba(29,58,126,1) 97.8% )'}}  --> cyan - blue
+      // style={{background:'radial-gradient( circle farthest-corner at 10% 20%,  rgba(255,37,174,1) 0%, rgba(241,147,55,1) 53.4%, rgba(250,237,56,1) 99.5% )'}} pink and yellow not beautifull
+      style={{background:'radial-gradient( circle 759px at 18.3% -23.5%,  rgba(255,98,191,1) 0%, rgba(40,88,210,1) 69.1% )'}}
+      >
         <Toolbar className={classes.toolbar}>
         <Link to="/move">
           <div className={classes.center}>

@@ -4,13 +4,16 @@ import { green, grey, red } from '@material-ui/core/colors';
 const rawTheme = createMuiTheme({
   palette: {
     primary: {
-      light: '#69696a',
-      main: '#04309e', //dark blue
-      dark: '#1e1e1f',
+      //light: '#69696a',
+      light: '#eb61c1',
+      // main: '#04309e', //dark blue
+      main: '#ea2aad', // pink
+      dark: '#8c0087',
     },
     secondary: {
       light: '#fff5f8',
-      main: '#2858d2', // light blue
+      //main: '#2858d2', // light blue
+      main: '#2858d2', // blue
       dark: '#04309e',
     },
     warning: {
@@ -39,12 +42,12 @@ const rawTheme = createMuiTheme({
   text: {
     primary: {
       light: '#fff5f8',
-      main: '#04309e', // dark blue
-      dark: '#2858d2', // lighter
+      main: '#2858d2', // dark blue
+      dark: '#04309e', 
     },
     secondary: {
       light: '#fff5f8',
-      main: '#fff', // lighter blue
+      main: '#fff', 
       dark: '#f0f',
     },
   },
@@ -74,52 +77,59 @@ const theme = {
       ...rawTheme.typography.h1,
       ...fontHeader,
       letterSpacing: 0,
-      fontSize: 42,
+      fontSize: 42,  
+      color: rawTheme.text.primary.main,     
     },
     h2: {
       ...rawTheme.typography.h2,
       ...fontHeader,
       fontSize: 36,
+      color: rawTheme.text.primary.main,       
     },
     h3: {
       ...rawTheme.typography.h3,
       ...fontHeader,
-      fontSize: 24,
+      fontSize: 24,  
+      color: rawTheme.text.primary.main,     
     },
     h4: {
       ...rawTheme.typography.h4,
       ...fontHeader,
       fontSize: 18,
+      color: rawTheme.text.primary.main, 
     },
     h5: {
       ...rawTheme.typography.h5,
       fontSize: 18,
       fontWeight: rawTheme.typography.fontWeightLight,
       fontFamily: rawTheme.typography.fontFamily,
-      color: rawTheme.palette.primary.main,
+      color: rawTheme.text.primary.main, 
     },
     h6: {
       ...rawTheme.typography.h6,
       ...fontHeader,
       fontSize: 20,
-      color: rawTheme.text.secondary.main, // #fff
+      color: rawTheme.text.secondary.main,
     },
     subtitle1: {
       ...rawTheme.typography.subtitle1,
-      color: rawTheme.text.primary.main,
       fontSize: 30,
+      color: rawTheme.text.primary.main, 
 
     },
     body1: {
       ...rawTheme.typography.body2,
       fontWeight: rawTheme.typography.fontWeightRegular,
       fontSize: 16,
+      
     },
     body2: {
       ...rawTheme.typography.body1,
       fontSize: 14,
+      color: rawTheme.text.primary.main, 
     },
   },
+  
 };
 
 export default theme;

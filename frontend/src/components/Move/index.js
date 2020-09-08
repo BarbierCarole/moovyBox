@@ -167,11 +167,11 @@ const Move = () => {
           <Link to="/create-move">
             <Typography component="h1" variant="h5" className={classes.title}>
               <Tooltip title="Ajouter" aria-label="Add">
-                <Fab color="secondary" className={classes.fab}>
+                <Fab color="primary" className={classes.fab}>
                   <AddIcon />
                 </Fab>
               </Tooltip>
-              <Button size="medium" variant="outlined" color="primary" style={{marginLeft: '15px'}}>Ajouter un déménagement</Button>
+              <Button size="medium" variant="outlined" color="secondary" style={{marginLeft: '15px'}}>Ajouter un déménagement</Button>
             </Typography>
 
           </Link>
@@ -185,7 +185,7 @@ const Move = () => {
                   }}>
                 <Button
                 variant="outlined"
-                color="primary"
+                color="secondary"
                 //href={"/move/"+move.id} mettre LINK
                 // href={"/create-box"}
                 className={classes.btn}

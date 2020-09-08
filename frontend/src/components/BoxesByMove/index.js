@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     // flexGrow: 1,
-    flexWrap: 'wrap',
+    // flexWrap: 'wrap',
     alignContent: 'center',
     flexDirection: 'column',
     minHeight: '100vh',
@@ -342,7 +342,7 @@ const BoxesByMove = (props) => {
                 }
             }}>
             <Tooltip title="Ajouter" aria-label="Add">
-              <Fab color="secondary" className={classes.fab}>
+              <Fab color="primary" className={classes.fab}>
                 <AddIcon />
               </Fab>
             </Tooltip>
