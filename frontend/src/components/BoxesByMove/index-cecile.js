@@ -39,10 +39,6 @@ import { fade} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 
-import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -160,94 +156,9 @@ const BoxesByMove = (props) => {
   // to confirm
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
+  
 
   const isLogged = useSelector((state) => state.isLogged);
-
-
-
-  // --------- CB : to display all the boxes ----------
-  const displayAllBoxes = () => {
-    axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes`)
-    .then(res => {
-      setBoxes(res.data);
-      console.log("CB res display all boxes:",res);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  };
-  
-  const [stateOptionChecked, setStateOptionChecked] = useState({
-    fragile: true,
-    heavy: true,
-    floor: true,
-  });
-
-    //search function
-useEffect(() => {
-  setFilteredItems(
-    boxes.filter(box =>
-      box.fragile===true)
-  );
-}, [stateOptionChecked, boxes]); 
-
-
- 
-  console.log("stateOptionChecked",stateOptionChecked);
-  const handleChange = (event) => {
-    setStateOptionChecked({ ...stateOptionChecked, [event.target.name]: event.target.checked });
-    console.log("CB ******** stateOptionChecked",stateOptionChecked);
-  };  
-  
-  const arrayStateOptionChecked = Object.keys(stateOptionChecked).map(function(cle) {
-    return [cle,stateOptionChecked[cle]];
-  });
-  
-  const arrayOptionOk = [];
-  const optionChecked = () => {
-    for(let i=0; i<arrayStateOptionChecked.length; i++ ) {
-      if(arrayStateOptionChecked[i][1]) {
-        arrayOptionOk.push("box."+arrayStateOptionChecked[i][0]+"===true") ;
-      }
-    } 
-   
-  };
-  optionChecked();
-  const myFilter = () => {    
-    console.log("CB arrayOptionOk: ",arrayOptionOk); // ------------------------ affichage n°2 et 5 => affiche le bon checked
-    let mySelection="";
-    if (arrayOptionOk.length ==3) {
-      console.log("3 options",arrayOptionOk[0]+" && "+arrayOptionOk[1]+" && "+arrayOptionOk[2]);
-      return mySelection = arrayOptionOk[0]+" && "+arrayOptionOk[1]+" && "+arrayOptionOk[2];
-    } else if (arrayOptionOk.length ==2) {
-      console.log("2 options",arrayOptionOk[0]+" && "+arrayOptionOk[1]);
-      return mySelection = arrayOptionOk[0]+" && "+arrayOptionOk[1];
-    } else if (arrayOptionOk.length ==1) {
-      console.log("1 option",arrayOptionOk[0]); // ------------------------------ affichage n° 3 et 6 => affiche le bon checked
-      return mySelection = arrayOptionOk[0];
-    }
-  };
- 
-  //"box."+arrayStateOptionChecked[0][0]+"===true";
-        
-  //console.log("Cb optionTrue : ",optionTrue());
-  console.log("CB : myFilter :",myFilter()); // ------------------------------- affichage n°4
- 
-  // console.log("CB arrayStateOptionChecked : ",arrayStateOptionChecked);
-  const handleFiltered = () => {
-    console.log("myFilter dans handelfiltered",myFilter());
-      setFilteredItems(
-      boxes.filter(box =>
-        myFilter() )
-    );
-    console.log("******* CB myFilter() dans fonction handleFiltered",myFilter()); // ------------- affichage n°1 => undefined
-  };
-
-  const handleListOptionSelected = (event) => {
-    handleChange(event);
-    handleFiltered();
-    // optionChecked();
-  }  
 
   const successDelete = () => {
     toast.success('Votre carton a bien été supprimé !', {
@@ -255,7 +166,7 @@ useEffect(() => {
       autoClose: 5000,
       closeOnClick: true
     })
-  };
+  }
 
   const errorDelete = () => {
     toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
@@ -263,7 +174,7 @@ useEffect(() => {
       autoClose: 5000,
       closeOnClick: true
     })
-  };
+  }
 
   if (!isLogged) {
     console.log('isLogged',isLogged);
@@ -272,7 +183,7 @@ useEffect(() => {
   };
 
  // for the font awesome heavy
-  useEffect(() => {
+ useEffect(() => {
   loadCSS(
     'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
     document.querySelector('#font-awesome-css'),
@@ -290,6 +201,24 @@ useEffect(() => {
   })
 }, []);
 
+//search function
+useEffect(() => {
+  setFilteredItems(
+    boxes.filter(box =>
+      box.label.toLowerCase().includes(search.toLowerCase()))
+  );
+}, [search, boxes]); 
+
+// delete a box selected
+// const handleBoxDelete = (id) => {
+
+//   axios.delete(`http://localhost:5050/box/${id}`)
+//        .then(res => {
+//         setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
+//        }).catch(err => {
+//         console.log(err);
+//       })
+// };
 const handleDelete = (props) => {
 
   console.log('cliqué, props', props);
@@ -312,6 +241,7 @@ const handleDelete = (props) => {
 const handleClickOpen = (value) => {
   setOpen(true);
   setSelectedId(value)
+  
 };
 
 const handleClose = () => {
@@ -321,8 +251,7 @@ const handleClose = () => {
 const deleteZero = (str) => {
   const reg=/(^|[^\d.])0+(?!\.)/g;
   return str= str.replace(reg,'');
-};
-
+}
 
   return (
     <div className={classes.root}>
@@ -345,28 +274,6 @@ const deleteZero = (str) => {
                 inputProps={{ 'aria-label': 'Recherche' }}
                 onChange={e => setSearch(e.target.value)}
               />
-            </div>
-            <div>
-            <FormGroup row>
-              <FormControlLabel
-                control={
-                <Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} //onChange={handleChange
-                label="Fragile"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={stateOptionChecked.heavy} onChange={handleChange} name="heavy" />}
-                label="Heavy"
-              />
-              
-              <FormControlLabel
-                control={<Checkbox checked={stateOptionChecked.floor} onChange={handleChange} name="floor" />}
-                label="Floor"
-              />
-            
-            </FormGroup>
-              
             </div>
           </Toolbar>
         </AppBar>
@@ -517,4 +424,4 @@ const deleteZero = (str) => {
   );
 };
 
-export default withRoot(BoxesByMove);******25*
+export default withRoot(BoxesByMove);

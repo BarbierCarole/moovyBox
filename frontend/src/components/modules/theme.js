@@ -13,7 +13,7 @@ const rawTheme = createMuiTheme({
     secondary: {
       light: '#fff5f8',
       //main: '#2858d2', // light blue
-      main: '#2858d2', // blue
+      main: '#2858d2', //
       dark: '#04309e',
     },
     warning: {
@@ -35,7 +35,7 @@ const rawTheme = createMuiTheme({
     fontFamily: "'Spartan', sans-serif",
     fontSize: 14,
     fontWeightLight: 300, // Work Sans
-    fontWeightRegular: 400, // Work Sans
+    fontWeightRegular: 500, // Work Sans
     fontWeightMedium: 700, // Roboto Condensed
     fontFamilySecondary: "'Josefin Sans', sans-serif",
   },

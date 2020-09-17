@@ -102,14 +102,17 @@ function CreateBox(props) {
     setDestinationRoom(e.target.value);
   }
   function handleFragileChange(e) {
+    e.preventDefault();
     console.log('input au onChange', e.target.checked);
     setFragile(e.target.checked);
   }
   function handleFloorChange(e) {
+    e.preventDefault();
     console.log('input au onChange', e.target.checked);
     setFloor(e.target.checked);
   }
   function handleHeavyChange(e) {
+    e.preventDefault();
     console.log('input au onChange', e.target.checked);
     setHeavy(e.target.checked);
   }
@@ -207,9 +210,10 @@ function CreateBox(props) {
               <Typography component="h1" variant="h5" className={classes.margin}>
                 Mon carton est :
               </Typography>
-              <Grid xs={2}></Grid>
+              <Grid item xs={2}></Grid>
               <Grid 
                 container
+                item
                 xs={8}
                 direction="row"
                 justify="space-evenly"
@@ -229,11 +233,12 @@ function CreateBox(props) {
                     <Icon className="fas fa-wine-glass" color="secondary" />
                 </Grid>
               </Grid> 
-              <Grid xs={2}></Grid> 
-              <Grid xs={2}></Grid>
+              <Grid item xs={2}></Grid> 
+              <Grid item xs={2}></Grid>
               <Grid 
                 container
                 xs={8}
+                item
                 direction="row"
                 justify="space-evenly"
                 alignItems="center"
@@ -252,10 +257,11 @@ function CreateBox(props) {
                   <Icon className="fas fa-weight-hanging" color="secondary" />
                 </Grid>
               </Grid> 
-              <Grid xs={2}></Grid>
-              <Grid xs={2}></Grid>
+              <Grid item xs={2}></Grid>
+              <Grid  itemxs={2}></Grid>
               <Grid 
                 container
+                item
                 xs={8}
                 direction="row"
                 justify="space-evenly"
@@ -276,7 +282,7 @@ function CreateBox(props) {
                   <Icon className="fas fa-level-up-alt" color="secondary" />
                 </Grid>
               </Grid> 
-              <Grid xs={2}></Grid>
+              <Grid item xs={2}></Grid>
               
             <Grid item xs={12}>
                 <Button

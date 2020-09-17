@@ -171,7 +171,7 @@ const Item = (props) => {
                 Ajouter un objet au carton
             </Typography>
             <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
-            <TextField id="outlined-basic" label="Item" variant="outlined" value={item.name}  onChange={handleItemChange}/>
+            <TextField id="outlined-basic" label="Nom de l'objet" variant="outlined" value={item.name}  onChange={handleItemChange}/>
             </form>
             <ul>
                 {item.map(elt =>
