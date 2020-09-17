@@ -270,7 +270,12 @@ const BoxesByMove = (props) => {
   //! -------------------------- search ---------------------------------------- !
   // to see 
   const handleSearchedItemChange = (e) => {
-    setSearchedItem(e.target.value);  
+    setSearchedItem(e.target.value);
+    setStateOptionChecked({
+      fragile: false,
+      heavy: false,
+      floor: false,
+    });  
   }
 
   const handleSubmit = (e) => {
@@ -293,6 +298,7 @@ const BoxesByMove = (props) => {
     axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes`)
     .then(res => {
       setBoxes(res.data);
+      setSearchedItem("");
       console.log("CB res display all boxes:",res);
     })
     .catch(err => {
@@ -353,7 +359,16 @@ const BoxesByMove = (props) => {
                 </Tooltip>
               </Typography>
             </form>
-            
+            {/* CB : dysplay all the boxes */}
+            <ButtonCustom
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={() => {displayAllBoxes()} }
+              color="secondary"
+            >
+              Annuler la recherche
+            </ButtonCustom>
             
             <Typography variant="h5"  className={classes.title}>
               Cliquer sur les boîtes ci-dessous représentant un carton pour consulter ou ajouter du contenu.
@@ -370,17 +385,11 @@ const BoxesByMove = (props) => {
               </Fab>
             </Tooltip>
             </Link>
-            {/* CB : dysplay all the boxes */}
-            <ButtonCustom
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={() => {displayAllBoxes()} }
-              color="secondary"
-            >
-              Afficher toutes les boites
-            </ButtonCustom>
+            
             <div>
+              <div>
+                Je ne veux séléctionner que les cartons :
+              </div>
               <FormGroup row>
                 <FormControlLabel
                   control={
@@ -391,11 +400,11 @@ const BoxesByMove = (props) => {
                   control={
                     <Checkbox
                       checked={stateOptionChecked.heavy} onChange={handleChange} name="heavy" />}
-                  label="Heavy"
+                  label="Lourd"
                 />
                 <FormControlLabel
                   control={<Checkbox checked={stateOptionChecked.floor} onChange={handleChange} name="floor" />}
-                  label="Floor"
+                  label="A l'étage"
                 />
               </FormGroup>
             </div>
