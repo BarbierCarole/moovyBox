@@ -11,11 +11,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 import axios from 'axios';
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import InputBase from '@material-ui/core/InputBase';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 // for the icon fontasome
 import { loadCSS } from 'fg-loadcss'; // for th icons
 import Icon from '@material-ui/core/Icon';
@@ -32,11 +29,8 @@ import { Redirect} from 'react-router';
 import { toast } from 'react-toastify';
 // search
 import { fade} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 // search
-
 import SearchIcon from '@material-ui/icons/Search';
 //
 import Paper from '@material-ui/core/Paper';
@@ -45,6 +39,9 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+//to display in a card
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
     // for the font awesome
     '& > .fas': {
-      margin: theme.spacing(2),
-     
+      margin: theme.spacing(2),     
     },
+    backgroundColor:'#eeeeee',
   },
 
   liste: {
@@ -103,7 +100,6 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor: fade(theme.palette.primary.main, 0.25),
   },
   titleBox: { 
-    mi: '300',
     height: 30,
     display: 'flex',
     overflow: 'hidden',
@@ -185,6 +181,14 @@ const useStyles = makeStyles((theme) => ({
   },
   textLeft: {
     textAlign: 'left',
+  },
+  card: {
+    width: '100%',
+    margin: '10px'
+  },
+  boxLi: {
+    width: '100%',
+    backgroundColor: '#ffffff',
   },
 }));
 
@@ -349,69 +353,80 @@ const BoxesByMove = (props) => {
             <Typography component="h1" variant="h4"  className={classes.title}>
               Listes des cartons de mon déménagement
             </Typography>
-            <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit} >
-              <Typography component="h1" variant="h5" className={classes.title}>
-                <TextField id="outlined-basic" label="Objet à rechercher" variant="outlined" value={searchedItem}  onClick={() => setSearchedItem('')} onChange={handleSearchedItemChange} style={{borderRadius: '11px', background: '#ffffff', boxShadow:  '4px 4px 7px #d9d9d9, -4px -4px 7px #ffffff'}}/>
-                <Tooltip title="Lancer la recherche" aria-label="Search" style={{marginLeft:'-25px',}}>
-                  <Fab type="submit" color="secondary" className={classes.submit}>
-                    <SearchIcon />
+            <Card className={classes.card}>
+              <CardContent>
+                <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit} >
+                  <Typography component="h1" variant="h5" className={classes.title}>
+                    <TextField id="outlined-basic" label="Objet à rechercher" variant="outlined" value={searchedItem}  onClick={() => setSearchedItem('')} onChange={handleSearchedItemChange} style={{borderRadius: '11px', background: '#ffffff', boxShadow:  '4px 4px 7px #d9d9d9, -4px -4px 7px #ffffff'}}/>
+                    <Tooltip title="Lancer la recherche" aria-label="Search" style={{marginLeft:'-25px',}}>
+                      <Fab type="submit" color="secondary" className={classes.submit}>
+                        <SearchIcon />
+                      </Fab>
+                    </Tooltip>
+                  </Typography>
+                </form>
+                {/* CB : dysplay all the boxes */}
+                <ButtonCustom
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  onClick={() => {displayAllBoxes()} }
+                  color="secondary"
+                >
+                  Annuler la recherche
+                </ButtonCustom>
+              </CardContent>
+            </Card>
+            <Card className={classes.card}>
+              <CardContent>
+                <div>
+                  <div>
+                    Je ne veux séléctionner que les cartons :
+                  </div>
+                  <FormGroup row>
+                    <FormControlLabel
+                      control={
+                      <Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} //onChange={handleChange
+                      label="Fragile"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={stateOptionChecked.heavy} onChange={handleChange} name="heavy" />}
+                      label="Lourd"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox checked={stateOptionChecked.floor} onChange={handleChange} name="floor" />}
+                      label="A l'étage"
+                    />
+                  </FormGroup>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className={classes.card}>
+              <CardContent>
+                <Typography variant="h5"  className={classes.title}>
+                  Cliquer sur les boîtes ci-dessous représentant un carton pour consulter ou ajouter du contenu.
+                </Typography>
+                <Link to ={{
+                    pathname:"/create-box",
+                    state: {
+                      id: props.location.state.id,
+                    }
+                }}>
+                <Tooltip title="Ajouter un carton" aria-label="Add">
+                  <Fab color="primary" className={classes.fab}>
+                    <AddIcon />
                   </Fab>
                 </Tooltip>
-              </Typography>
-            </form>
-            {/* CB : dysplay all the boxes */}
-            <ButtonCustom
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={() => {displayAllBoxes()} }
-              color="secondary"
-            >
-              Annuler la recherche
-            </ButtonCustom>
+                </Link>
+              </CardContent>
+            </Card>
             
-            <Typography variant="h5"  className={classes.title}>
-              Cliquer sur les boîtes ci-dessous représentant un carton pour consulter ou ajouter du contenu.
-            </Typography>
-            <Link to ={{
-                pathname:"/create-box",
-                state: {
-                  id: props.location.state.id,
-                }
-            }}>
-            <Tooltip title="Ajouter un carton" aria-label="Add">
-              <Fab color="primary" className={classes.fab}>
-                <AddIcon />
-              </Fab>
-            </Tooltip>
-            </Link>
-            
-            <div>
-              <div>
-                Je ne veux séléctionner que les cartons :
-              </div>
-              <FormGroup row>
-                <FormControlLabel
-                  control={
-                  <Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} //onChange={handleChange
-                  label="Fragile"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={stateOptionChecked.heavy} onChange={handleChange} name="heavy" />}
-                  label="Lourd"
-                />
-                <FormControlLabel
-                  control={<Checkbox checked={stateOptionChecked.floor} onChange={handleChange} name="floor" />}
-                  label="A l'étage"
-                />
-              </FormGroup>
-            </div>
             {/* ------------- CB new interface of box ---------------- */}
             <ul className={classes.liste}>
-            {filteredItems.map(boxe => // Cecile avait mis filteredItems pour la recherche par entete de carton
-              <li key={boxe.id}>
+            {filteredItems.map(boxe => 
+              <li  key={boxe.id}>
                 <Link to={{
                   pathname:"/box/"+boxe.id,
                   state: {
@@ -429,6 +444,7 @@ const BoxesByMove = (props) => {
                     direction="column"
                     justify="space-between"
                     alignItems="center"
+                    className={classes.boxLi}
                   >
                     <Grid item xs={12} sm={12}>
                       <Paper className={classes.titleBox}>

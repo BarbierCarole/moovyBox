@@ -94,17 +94,17 @@ const Item = (props) => {
       })
     }
 
-    // to see all the items of a box selected
-    useEffect(() => {
-      axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
-           .then(res => {
-             console.log(res.data);
-             setItem(res.data);
-           })
-           .catch(err => {
-             console.log(err);
-           })
-    }, []);
+    // // to see all the items of a box selected
+    // useEffect(() => {
+    //   axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
+    //        .then(res => {
+    //          console.log(res.data);
+    //          setItem(res.data);
+    //        })
+    //        .catch(err => {
+    //          console.log(err);
+    //        })
+    // }, []);
 
     useEffect(() => {
       axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
@@ -174,7 +174,7 @@ const Item = (props) => {
                 Ajouter un objet au carton
             </Typography>
             <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
-            <TextField id="outlined-basic" label="Item" variant="outlined" value={name} onChange={handleItemChange}/>
+            <TextField id="outlined-basic" label="Mon objet" variant="outlined" value={name} onChange={handleItemChange}/>
             </form>
             <ul>
                 {item.map(elt =>
