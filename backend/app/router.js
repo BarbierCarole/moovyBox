@@ -49,7 +49,7 @@ router.get('/api/profile/confirm-email-update/:token',  profileController.confir
 router.get('/api/profile/confirm-new-email-update/:token',  profileController.updateEmail); 
 
 // Modify user password
-router.post('/api/profile/password', authCheckerMW, profileController.updatePassword);
+router.put('/api/profile/password', authCheckerMW, profileController.updatePassword);
 
 // delete user account
 router.delete('/api/profile', authCheckerMW, profileController.deleteAccount); 

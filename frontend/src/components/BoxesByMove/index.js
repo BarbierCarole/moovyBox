@@ -83,7 +83,8 @@ const useStyles = makeStyles((theme) => ({
   },
   
   fab: {
-    marginRight: theme.spacing(3),
+    marginRight: theme.spacing(-3),
+    zIndex:'1000',
   },
   nbrBox: {
     color: '#fff',
@@ -416,12 +417,14 @@ const BoxesByMove = (props) => {
                     id: props.location.state.id,
                   }
               }} style={{ display: "flex", justifyContent: "center" }}>
-                <Tooltip title="Ajouter un carton" aria-label="Add">
-                  <Fab color="primary" className={classes.fab}>
-                    <AddIcon />
-                  </Fab>
-                </Tooltip>
-                <Typography variant="h5"  className={classes.title}>Ajouter un carton</Typography>
+                <Typography component="h1" variant="h5" className={classes.title}>
+                  <Tooltip title="Ajouter un carton" aria-label="Add">
+                    <Fab color="primary" className={classes.fab}>
+                      <AddIcon />
+                    </Fab>
+                  </Tooltip>
+                  <Button size="medium" variant="outlined" color="secondary" style={{marginLeft: '15px'}}>Ajouter un carton</Button>
+                </Typography>
               </Link>
             </CardContent>
           </Card>

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { login, SYNC_EMAIL, SYNC_PASSWORD, SYNC_PSEUDO, SYNC_PASSWORDVAL } from 'src/store/actions';
+import { login, SYNC_EMAIL, SYNC_NEWPASSWORD, SYNC_PSEUDO, SYNC_PASSWORDVAL,SYNC_OLDPASSWORD } from 'src/store/actions';
 
 import Avatar from '@material-ui/core/Avatar';
 
@@ -21,7 +21,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import withRoot from '../modules/withRoot';
 import Button from '../modules/components/Button';
 import Footer from '../modules/views/Footer';
-import HeaderHome from '../modules/views/HeaderHome';
+import Header from '../modules/views/Header';
 // 1 - l'api YUP utilise ces objets pour la validation des données
 
 const useStyles = makeStyles((theme) => ({
@@ -53,16 +53,17 @@ const Profile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const email = useSelector((state) => state.email);
-  const password = useSelector((state) => state.password);
+  const newPassword = useSelector((state) => state.newPassword);
   const pseudo = useSelector((state) => state.pseudo);
   const passwordVal = useSelector((state) => state.passwordVal);
+  const oldPassword = useSelector((state) => state.oldPassword);
   const classes = useStyles();
 
   function handleSubmit(e) {
     e.preventDefault(); // stops default reloading behaviour
-    console.log('input on onSubmit', email, password, pseudo);
+    console.log('input on onSubmit', oldPassword, newPassword, passwordVal);
     axios
-      .put(`http://localhost:5050/api/profile`, { email, password, pseudo })
+      .put(`http://localhost:5050/api/profile/password`, { oldPassword, newPassword, passwordVal })
       .then(res => {
         if (res.status === 201) {
           dispatch(login(history));
@@ -142,16 +143,16 @@ const Profile = () => {
                   variant="outlined"
                   required
                   fullWidth
-                  name="password"
-                  label="Mot de passe"
-                  type="password"
-                  id="password"
+                  name="oldPassword"
                   autoComplete="current-password"
+                  label="Ancien mot de passe"
+                  //type="password"
+                  id="oldPassword"
                   helperText="Requis - Minimum 1 minuscule, 1 majuscule, 1 chiffre, un des caractères #?!@$%^&*-"
-                  value={password}
+                  value={oldPassword}
                   onChange={(evt) => {
-                    const newPassword = evt.target.value;
-                    dispatch({ type: SYNC_PASSWORD, password: newPassword });
+                    const newOldPassword = evt.target.value;
+                    dispatch({ type: SYNC_OLDPASSWORD, oldPassword: newOldPassword });
                   }}
                 />
               </Grid>
@@ -160,11 +161,28 @@ const Profile = () => {
                   variant="outlined"
                   required
                   fullWidth
+                  name="newPassword"
+                  label="Mot de passe"
+                  //type="password"
+                  id="newPassword"
+                  helperText="Requis - Minimum 1 minuscule, 1 majuscule, 1 chiffre, un des caractères #?!@$%^&*-"
+                  value={newPassword}
+                  onChange={(evt) => {
+                    const newNewPassword = evt.target.value;
+                    dispatch({ type: SYNC_NEWPASSWORD, newPassword: newNewPassword });
+                  }}
+                />
+              </Grid>
+              
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
                   name="passwordVal"
                   label="Mot de passe de validation"
-                  type="password"
+                  //type="password"
                   id="passwordVal"
-                  autoComplete="current-password"
                   helperText="Requis - Minimum 1 minuscule, 1 majuscule, 1 chiffre, un des caractères #?!@$%^&*-"
                   value={passwordVal}
                   onChange={(evt) => {

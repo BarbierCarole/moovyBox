@@ -29,13 +29,13 @@ const updateEmailSchema = Joi.object({
 }); 
 
 const passwordChangeSchema = Joi.object({
-    old_password: Joi.string()
+    oldPassword: Joi.string()
         .pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'))
         .required(),
-    new_password: Joi.string()
+    newPassword: Joi.string()
         .pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'))
         .required(),
-    password_repeat: Joi.any().valid(Joi.ref('new_password')).required()
+    passwordVal: Joi.any().valid(Joi.ref('newPassword')).required()
         
 })
 
@@ -228,7 +228,7 @@ const profileController = {
             </head>
             <body>
                 <script>
-                    alert("On t'envois un mail à la nouvelle adresse ;)"); 
+                    alert("On t'envoie un mail à la nouvelle adresse ;)"); 
                     window.close(); 
                 </script>
             </body>
@@ -303,7 +303,7 @@ const profileController = {
 
     updatePassword : async (req, res) => {
         //* Updating Password under user request 
-        //? Payload : {old_password, new_password, password_repeat}
+        //? Payload : {oldPassword, newPassword, passwordVal}
         try {
             
             // validate payload data
@@ -322,11 +322,11 @@ const profileController = {
             // get current user
             const storedUser = await User.findByPk(userID); 
 
-            console.log("req.body.old_password", req.body.old_password); 
+            console.log("req.body.oldPassword", req.body.oldPassword); 
             console.log("storedUser.password", storedUser.password); 
     
-            // match old_password with saved password in DB
-            const passwordMatch = await bcrypt.compare(req.body.old_password, storedUser.password); 
+            // match oldPassword with saved password in DB
+            const passwordMatch = await bcrypt.compare(req.body.oldPassword, storedUser.password); 
             console.log("passwordMatch",passwordMatch); 
             // if no match 
             if (!passwordMatch) {
@@ -343,7 +343,7 @@ const profileController = {
             }
             // If match 
             // change password in storedUser and update
-            storedUser.password = await bcrypt.hash(req.body.new_password, salt); 
+            storedUser.password = await bcrypt.hash(req.body.newPassword, salt); 
 
             // proceed to change 
             const result = await storedUser.save();
