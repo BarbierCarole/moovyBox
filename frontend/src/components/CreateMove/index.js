@@ -113,7 +113,7 @@ const CreateMove = () => {
 
       console.log(data)
 
-      axios.post('http://localhost:5050/api/move', data)
+      axios.post('http://15.236.92.176:5050/api/move', data)
             .then(res => {
               console.log(res);
               history.push({

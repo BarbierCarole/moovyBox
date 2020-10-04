@@ -1,7 +1,7 @@
 
 const appConfig = {
-    domain: 'http://localhost:5050', 
-    frontAppDomain : 'http://localhost:8080'
+    domain: 'http://15.236.92.176:5050', 
+    frontAppDomain : 'http://15.236.92.176:8080'
 }
 
 module.exports = appConfig ;

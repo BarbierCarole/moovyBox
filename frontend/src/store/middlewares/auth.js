@@ -46,7 +46,7 @@ export default (store) => (next) => (action) => {
   switch (action.type) {
     case LOGIN: {
       axios
-        .post('http://localhost:5050/api/signin', {
+        .post('http://15.236.92.176:5050/api/signin', {
           email: store.getState().email,
           password: store.getState().password,
         })
@@ -79,7 +79,7 @@ export default (store) => (next) => (action) => {
     };
     case SIGNUP: {
       axios
-        .post(`http://localhost:5050/api/signup`, {
+        .post(`http://15.236.92.176:5050/api/signup`, {
           email: store.getState().email,
           password: store.getState().password,
           pseudo: store.getState().pseudo
