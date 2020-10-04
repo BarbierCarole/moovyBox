@@ -51,11 +51,11 @@ const Home = () => {
                         Pour mieux gérer vos déménagements
                     </Typography>
                     <Typography variant="body2" component="p">
-                        Sint sit ea occaecat culpa est in consequat magna et duis dolor tempor tempor. Officia velit labore adipisicing officia non eu enim quis adipisicing labore. Eu labore ipsum sit laboris magna est commodo nostrud consectetur aliqua elit. Esse irure nostrud cupidatat fugiat enim pariatur.
+                        Sint sit ea occaecat culpa est.
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button className={classes.button} size="small" variant="contained" color="primary" href="/signIn">Je suis déjà inscrit-e, je me connecte</Button>
+                    <Button className={classes.button} size="small" variant="contained" color="primary" href="/signIn">Je suis déjà inscrit·e, je me connecte</Button>
                 </CardActions>
                 <CardActions>
                     <Button className={classes.button2} size="small" variant="contained" color="primary" href="/signUp">Je m'inscris</Button>

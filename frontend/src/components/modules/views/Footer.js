@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   footer: {
     padding: theme.spacing(3, 2),
     marginTop: 'auto',
-    background: theme.palette.secondary.main,
+    backgroundImage: "radial-gradient( circle farthest-corner at 20.8% 13%,  rgba(40,88,210,1) 0%, rgba(2,29,98,1) 90% )",
     color: theme.text.secondary.main,
     alignItems: 'center',
   },

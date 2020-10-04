@@ -102,14 +102,17 @@ function CreateBox(props) {
     setDestinationRoom(e.target.value);
   }
   function handleFragileChange(e) {
+    e.preventDefault();
     console.log('input au onChange', e.target.checked);
     setFragile(e.target.checked);
   }
   function handleFloorChange(e) {
+    e.preventDefault();
     console.log('input au onChange', e.target.checked);
     setFloor(e.target.checked);
   }
   function handleHeavyChange(e) {
+    e.preventDefault();
     console.log('input au onChange', e.target.checked);
     setHeavy(e.target.checked);
   }
@@ -125,7 +128,7 @@ function CreateBox(props) {
     e.preventDefault(); // stops default reloading behaviour
 
     axios
-      .post(`http://localhost:5050/api/move/:moveID/box`, { label, destination_room, fragile, heavy, floor, move_id})
+      .post(`http://localhost:5050/api/move/:moveID/boxes`, { label, destination_room, fragile, heavy, floor, move_id})
       .then((res => {
         console.log(res);
         console.log(res.data);
@@ -169,69 +172,118 @@ function CreateBox(props) {
           >
           <Grid container spacing={2}>
             <Grid item xs={12}>
-            <TextField
-                  autoComplete="label"
-                  name="label"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="label"
-                  label="Nom du carton"
-                  autoFocus
-                  helperText="Un nom est requis"
-                  value={label}
-                  onChange={handleLabelChange}
-                />{' '}
-
+              <TextField
+                    autoComplete="label"
+                    name="label"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="label"
+                    label="Nom du carton"
+                    autoFocus
+                    helperText="Un nom est requis"
+                    value={label}
+                    onChange={handleLabelChange}
+                  />{' '}
             </Grid>
             <Grid item xs={12}>
-            <TextField
-                  autoComplete="Pièce de destination"
-                  name="destinationRoom"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="destinationRoom"
-                  label="Pièce de destination"
-                  autoFocus
-                  helperText="Un nom est requis"
-                  value={destination_room}
-                  onChange={handleDestinationRoomChange}
-                />{' '}
-              </Grid>
-            <Grid item xs={12} className={classes.margin} container
-              direction="row"
-              justify="center"
-              >
+              <TextField
+                autoComplete="Pièce de destination"
+                name="destinationRoom"
+                variant="outlined"
+                required
+                fullWidth
+                id="destinationRoom"
+                label="Pièce de destination"
+                autoFocus
+                helperText="Un nom est requis"
+                value={destination_room}
+                onChange={handleDestinationRoomChange}
+              />{' '}
+            </Grid>
+            <Grid
+              container
+              direction="column"
+              justify="space-between"
+              alignItems="center"
+            >
               <Typography component="h1" variant="h5" className={classes.margin}>
                 Mon carton est :
               </Typography>
-              <Grid item xs={12}>
+              <Grid item xs={2}></Grid>
+              <Grid 
+                container
+                item
+                xs={8}
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Grid item xs={1}>
+                  <Checkbox
+                    checked={fragile}
+                    onChange={handleFragileChange}
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                </Grid> 
+                <Grid item xs={5}>
+                <Typography component="p" variant="h5">Fragile </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                    <Icon className="fas fa-wine-glass" color="secondary" />
+                </Grid>
+              </Grid> 
+              <Grid item xs={2}></Grid> 
+              <Grid item xs={2}></Grid>
+              <Grid 
+                container
+                xs={8}
+                item
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Grid item xs={1}>
                 <Checkbox
-                  checked={fragile}
-                  onChange={handleFragileChange}
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
-
-                /> Fragile <Icon className="fas fa-wine-glass" color="secondary" />
-              </Grid>
-              <Grid item xs={12}>
+                    checked={heavy}
+                    onChange={handleHeavyChange}
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                />
+                </Grid> 
+                <Grid item xs={5}>
+                <Typography component="p" variant="h5">Lourd </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Icon className="fas fa-weight-hanging" color="secondary" />
+                </Grid>
+              </Grid> 
+              <Grid item xs={2}></Grid>
+              <Grid  itemxs={2}></Grid>
+              <Grid 
+                container
+                item
+                xs={8}
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Grid item xs={1}>
                 <Checkbox
-                  checked={heavy}
-                  onChange={handleHeavyChange}
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                    checked={floor}
+                    onChange={handleFloorChange}
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
 
-                />  Lourd <Icon className="fas fa-weight-hanging" color="secondary" />
-              </Grid>
-              <Grid item xs={12}>
-                <Checkbox
-                  checked={floor}
-                  onChange={handleFloorChange}
-                  inputProps={{ 'aria-label': 'primary checkbox' }}
-
-                /> A l'étage <Icon className="fas fa-level-up-alt" color="secondary" />
-              </Grid>
-
-            </Grid>
+                />
+                </Grid> 
+                <Grid item xs={5}>
+                <Typography component="p" variant="h5">A l'étage </Typography> 
+                </Grid>
+                <Grid item xs={2}>
+                  <Icon className="fas fa-level-up-alt" color="secondary" />
+                </Grid>
+              </Grid> 
+              <Grid item xs={2}></Grid>
+              
             <Grid item xs={12}>
                 <Button
                   type="submit"
@@ -244,6 +296,7 @@ function CreateBox(props) {
                 </Button>
 
             </Grid>
+          </Grid>
           </Grid>
         </form>
       </div>

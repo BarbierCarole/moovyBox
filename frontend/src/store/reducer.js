@@ -1,6 +1,8 @@
 import {
   SYNC_PSEUDO,
   SYNC_EMAIL,
+  SYNC_OLDPASSWORD,
+  SYNC_NEWPASSWORD,
   SYNC_PASSWORD,
   SYNC_PASSWORDVAL,
   SYNC_LABEL_BOX, 
@@ -18,12 +20,15 @@ import {
   SYNC_ISLOGGED,
   SYNC_MOVES,
   SYNC_MOVE_ID_SELECTED,
+  
 } from './actions';
 
 const initialState = {
   counter: 0,
   pseudo: '',
   email: '',
+  oldPassword: '',
+  newPassword: '',
   password: '',
   passwordVal: '',
   labelBox: '',
@@ -57,6 +62,12 @@ export default (state = initialState, action = {}) => {
     }
     case SYNC_EMAIL: {
       return { ...state, email: action.email };
+    }
+    case SYNC_NEWPASSWORD: {
+      return { ...state, newPassword: action.newPassword };
+    }
+    case SYNC_OLDPASSWORD: {
+      return { ...state, oldPassword: action.oldPassword };
     }
     case SYNC_PASSWORD: {
       return { ...state, password: action.password };

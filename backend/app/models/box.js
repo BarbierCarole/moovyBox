@@ -64,15 +64,12 @@ class Box {
         //* Research function
         try {
             // console.log("CB : item :", searchedItem);
-            const query = `SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE $1);`; // cb lower('%$1%'))
             
-            // const values = [data.user_id, data.move_id]; 
-            const values = [searchedItem];
+            const query = `SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE '%'||$1||'%');`; 
+            const values = [searchedItem.toLowerCase()];
             console.log("CB item : values : ",values);
-            // const answerFromDB = await client.query(query, values); 
             const results = await client.query(query, values);
             console.log("CB : item results : ", results);
-            // const results = answerFromDB.rows.map(entry => entry.row_to_json); 
             const instances = []; 
             for(const row of results.rows) {
                 instances.push(new this(row)); 

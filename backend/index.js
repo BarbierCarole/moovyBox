@@ -8,7 +8,7 @@ const multer = require('multer');
 
 const corsOpts = {
 
-  origin: ['http://localhost:8080', 'http://localhost:5050','http://18.206.96.118'],
+  origin: ['http://localhost:8080', 'http://localhost:5050','http://15.236.92.176'],
   prefligthContinue: false,
   credentials: true, 
   optionsSuccessStatus: 204,

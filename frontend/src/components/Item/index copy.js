@@ -89,33 +89,32 @@ const Item = (props) => {
     const errorDelete = () => {
       toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
         position: toast.POSITION.TOP_CENTER,
-        autoClose: 2000,
+        autoClose: 5000,
         closeOnClick: true
       })
     }
-
-    // // to see all the items of a box selected
-    // useEffect(() => {
-    //   axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
-    //        .then(res => {
-    //          console.log(res.data);
-    //          setItem(res.data);
-    //        })
-    //        .catch(err => {
-    //          console.log(err);
-    //        })
-    // }, []);
+    // to see all the items of a box selected
+    useEffect(() => {
+      axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
+           .then(res => {
+             console.log(res.data);
+             setItem(res.data);
+           })
+           .catch(err => {
+             console.log(err);
+           })
+    }, []);
 
     useEffect(() => {
       axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
-        .then(res => {
-        console.log(res.data);
-        setItem(res.data);
-        setGetItem(false)
-        })
-        .catch(err => {
-          console.log(err);
-        })
+           .then(res => {
+             console.log(res.data);
+             setItem(res.data);
+             setGetItem(false)
+           })
+           .catch(err => {
+             console.log(err);
+           })
     }, [getItem]);
 
 
@@ -130,21 +129,19 @@ const Item = (props) => {
     }
 
     const handleSubmit = (e) => {
-      // addItem(name);
-      e.preventDefault();
-      const data = {name, box_id};
-      console.log('data :', data);
-      axios.post('http://localhost:5050/api/box/${props.location.state.id}/items', data)
-        .then(res => {
-          console.log('ici les items', res.data);
-          setGetItem(true)
-          addItem(name);
-          successAdd();
-          setName(''); // to empty the field
-        }).catch(err => {
-          console.log(err);
-          errorDelete();
-        });
+        addItem(name);
+        e.preventDefault();
+        const data = {name, box_id};
+        console.log('data :', data);
+        axios.post('http://localhost:5050/api/box/${props.location.state.id}/items', data)
+             .then(res => {
+                 console.log('ici les items', res.data);
+                 setGetItem(true)
+                 successAdd();
+             }).catch(err => {
+                console.log(err);
+                errorDelete();
+              });
     }
 
     const handleDelete = (id) => {
@@ -174,7 +171,7 @@ const Item = (props) => {
                 Ajouter un objet au carton
             </Typography>
             <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
-            <TextField id="outlined-basic" label="Mon objet" variant="outlined" value={name} onChange={handleItemChange}/>
+            <TextField id="outlined-basic" label="Item" variant="outlined" value={item.name}  onChange={handleItemChange}/>
             </form>
             <ul>
                 {item.map(elt =>
