@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { SYNC_PSEUDO, SYNC_USER_ID, SYNC_MOVES, SYNC_MOVE_ID_SELECTED } from 'src/store/actions';
 
-const prodURL = 'http://18.206.96.118';
+const prodURL = 'http://localhost';
 
 axios.defaults.withCredentials = true; 
 
