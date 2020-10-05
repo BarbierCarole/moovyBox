@@ -107,7 +107,7 @@ const Item = (props) => {
     // }, []);
 
     useEffect(() => {
-      axios.get(`http://15.236.92.176:5050/api/box/${props.location.state.id}/items`)
+      axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
         .then(res => {
         console.log(res.data);
         setItem(res.data);
@@ -134,7 +134,7 @@ const Item = (props) => {
       e.preventDefault();
       const data = {name, box_id};
       console.log('data :', data);
-      axios.post('http://15.236.92.176:5050/api/box/${props.location.state.id}/items', data)
+      axios.post('http://localhost:5050/api/box/${props.location.state.id}/items', data)
         .then(res => {
           console.log('ici les items', res.data);
           setGetItem(true)
@@ -151,7 +151,7 @@ const Item = (props) => {
 
         console.log('cliqué');
 
-        axios.delete(`http://15.236.92.176:5050/api/box/${props.location.state.id}/item/${id}`)
+        axios.delete(`http://localhost:5050/api/box/${props.location.state.id}/item/${id}`)
              .then(res => {
               setItem(item.filter((ite)=>(ite.id !== id)));
               successDelete();
