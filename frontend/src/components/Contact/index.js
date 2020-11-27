@@ -5,14 +5,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
-import './styles.css';
+import './style/styles.css';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import Icon from '@material-ui/core/Icon';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
-import imgCecile from './cecile.png';
-import imgNico from './nico.jpg';
+import imgCecile from './img/cecile.png';
+import imgNico from './img/nico.jpg';
+import imgCarole from './img/carole.jpg';
+import imgSeb from './img/seb.jpg';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -91,7 +93,7 @@ const Contact = () => {
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <Grid>
-                                <Avatar src="/broken-image.jpg" className={classes.large} />
+                                <Avatar src={imgCarole} className={classes.large} />
                                 <Typography className={classes.name}>Carole Barbier</Typography>
                                 <Typography className={classes.describe} variant='body2'>Lead front</Typography>
                                 <Link href="https://github.com/BarbierCarole" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
@@ -102,7 +104,7 @@ const Contact = () => {
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <Grid>
-                                <Avatar src="/broken-image.jpg" className={classes.large} />
+                                <Avatar src={imgSeb} className={classes.large} />
                                 <Typography className={classes.name}>Sebastien Gardes</Typography>
                                 <Typography className={classes.describe} variant='body2'>Lead back</Typography>
                                 <Link href="https://github.com/Sebastien-Gardes" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
