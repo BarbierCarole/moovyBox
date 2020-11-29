@@ -25,9 +25,9 @@ class Box {
     }
 
     static async getAllByUserId(userId) {
-        // Method to retrieve all user box and send them to client
+        // Method to retrieve all user's box and send them to client
 
-        const query = `SELECT * FROM "box" WHERE user_id = $1;`; 
+        const query = `SELECT * FROM "box" WHERE user_id = $1 ORDER BY "id" DESC;`; 
 
         const values = [userId]; 
 
@@ -45,7 +45,7 @@ class Box {
     static async getAllFromMove(moveId) {
         // Method to retrieve all user boxes from one specific move and send them to client
 
-        const query = `SELECT * FROM "box" WHERE move_id = $1;`; 
+        const query = `SELECT * FROM "box" WHERE move_id = $1 ORDER BY "id" DESC;`; 
 
         const values = [moveId]; 
 
@@ -65,7 +65,7 @@ class Box {
         try {
             // console.log("CB : item :", searchedItem);
             
-            const query = `SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE '%'||$1||'%');`; 
+            const query = `SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE '%'||$1||'%') ORDER BY "id" DESC;`; 
             const values = [searchedItem.toLowerCase()];
             console.log("CB item : values : ",values);
             const results = await client.query(query, values);

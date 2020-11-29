@@ -34,18 +34,16 @@ const App = () => {
         </Route>
 
         <Route
-
           exact
           path="/move"
           render={() => {
             //if ((email === '') || (password === '')) {
             if (!isLogged) {
-              console.log('isLogged',isLogged);
+              console.log('state of isLogged',isLogged);
               //console.log('email,password page App/index',email,password);
               return <Redirect to="/signin" />;
-
             }
-            //console.log('email,password,',email,password);
+            console.log('email,password,',email,password);
             return <Move />;
           }}
         />

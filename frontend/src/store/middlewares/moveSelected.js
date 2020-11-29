@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { SYNC_PSEUDO, SYNC_USER_ID, SYNC_MOVES, SYNC_MOVE_ID_SELECTED } from 'src/store/actions';
 
-const prodURL = 'http://localhost';
+const prodURL = 'http://localhost:5050/api';
 
 axios.defaults.withCredentials = true; 
 
@@ -12,7 +12,7 @@ export default (store) => (next) => (action) => {
   switch (action.type) {
     case MOVESLECTED: {
       axios
-        .get('http://localhost:5050/api/move/', )
+        .get(prodURL+'/move/', )
         .then((res) => {
           console.log("res.data",res.data)
           const { pseudo, id, moves} = res.data;
