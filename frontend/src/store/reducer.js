@@ -53,11 +53,11 @@ const initialState = {
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case SYNC_PSEUDO: {
-      console.log('from signin', action)
+      console.log('from signin', action);
       return { ...state, pseudo: action.pseudo }; // ...state, pseudo: action.history.pseudo
     }
     case SYNC_MOVES: {
-      console.log('from signin moves', action)
+      console.log('from signin moves', action);
       return { ...state, moves: action.moves };
     }
     case SYNC_EMAIL: {

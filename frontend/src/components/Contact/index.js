@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
-import './style/styles.css';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import Icon from '@material-ui/core/Icon';

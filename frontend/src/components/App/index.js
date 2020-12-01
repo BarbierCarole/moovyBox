@@ -1,12 +1,9 @@
 // == Import npm
 import React from 'react';
-import Home from '../Home';
-
 import { useSelector } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router';
 
 // == Import
-import './styles.css';
 import SignIn from 'src/components/SignIn';
 import Move from 'src/components/Move';
 import CreateMove from 'src/components/CreateMove';
@@ -18,12 +15,9 @@ import CreateBox from 'src/components/CreateBox';
 import BoxesByMove from 'src/components/BoxesByMove';
 import Item from 'src/components/Item';
 import NotFound from 'src/components/Notfound';
-
+import Home from 'src/components/Home';
 // == Composant
 const App = () => {
-
-  //const email = useSelector((state) => state.email);
-  //const password = useSelector((state) => state.password);
   const isLogged = useSelector((state) => state.isLogged);
 
   return (
@@ -32,7 +26,6 @@ const App = () => {
         <Route exact path="/">
           <Home />
         </Route>
-
         <Route
           exact
           path="/move"
@@ -43,11 +36,10 @@ const App = () => {
               //console.log('email,password page App/index',email,password);
               return <Redirect to="/signin" />;
             }
-            console.log('email,password,',email,password);
+            //console.log('email,password,',email,password);
             return <Move />;
           }}
         />
-
         <Route exact path="/signin">
           <SignIn />
         </Route>
@@ -63,13 +55,11 @@ const App = () => {
               console.log('isLogged',isLogged);
               //console.log('email,password page App/index',email,password);
               return <Redirect to="/signin" />;
-
             }
             //console.log('email,password,',email,password);
             return  <Profile />;
           }}
         />
-
         <Route exact path="/ResetPassword">
           <ResetPassword />
         </Route>

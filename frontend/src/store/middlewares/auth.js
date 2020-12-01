@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { LOGIN, toSignin, SIGNUP, TO_SIGNIN, SYNC_PSEUDO, SYNC_PASSWORD, SYNC_ISLOGGED, SYNC_USER_ID, enterMove,SYNC_MOVES } from 'src/store/actions';
 
 // const prodURL = 'http://18.206.96.118';
-const prodURL = 'http://localhost:5050/api';
+const baseURL = 'http://localhost:5050/api';
 
 axios.defaults.withCredentials = true;
 
@@ -12,7 +12,8 @@ toast.configure();
 export default (store) => (next) => (action) => {
 
   const successAuth = () => {
-    toast.success('Authentification réussi !', {
+    // toast is an alert in the dom
+    toast.success('Authentification réussie !', {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 5000,
       closeOnClick: true
@@ -27,32 +28,15 @@ export default (store) => (next) => (action) => {
     })
   }
 
-  // const successSignup = () => {
-  //   toast.success('Votre compte a été créé avec succès !', {
-  //     position: toast.POSITION.TOP_CENTER,
-  //     autoClose: 5000,
-  //     closeOnClick: true
-  //   })
-  // }
-
-  // const errorSignup = () => {
-  //   toast.error('Une erreur est survenue. Veuillez réessayer !', {
-  //     position: toast.POSITION.TOP_CENTER,
-  //     autoClose: 5000,
-  //     closeOnClick: true
-  //   })
-  // }
-  //console.log('MW Auth');
-
   switch (action.type) {
     case LOGIN: {
       axios
-        .post(prodURL+'/signin', {
+        .post(baseURL+'/signin', {
           email: store.getState().email,
           password: store.getState().password,
         })
         .then((res) => {
-          console.log("res.data",res.data)
+          // console.log("res.data",res.data)
           const { pseudo, id, moves} = res.data;
           //console.log('pseudo', pseudo);
           //console.log('action history', action);
@@ -63,14 +47,13 @@ export default (store) => (next) => (action) => {
             store.dispatch({ type: SYNC_USER_ID, user_id: id});
             store.dispatch({ type: SYNC_MOVES, moves});
             store.dispatch(enterMove(action.history));
-            //console.log('Authenticated');
+            console.log('auth.js-LOGIN : Authenticated !');
             successAuth();
           }
           if(res.status == 400) {
             store.dispatch(errorAuth());
             console.error('impossible de se connecter', res);
           }
-
         }).catch((error) => {
           console.log('Error on Authentication', error);
           // store.dispatch(errorAuth());
@@ -80,10 +63,11 @@ export default (store) => (next) => (action) => {
     };
     case SIGNUP: {
       axios
-        .post(prodURL+`/signup`, {
+        .post(baseURL+`/signup`, {
           email: store.getState().email,
           password: store.getState().password,
-          pseudo: store.getState().pseudo
+          pseudo: store.getState().pseudo,
+          
         })
         .then(res => {
           const { pseudo, id, moves} = res.data;

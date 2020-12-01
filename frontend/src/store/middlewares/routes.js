@@ -5,13 +5,13 @@ export default (store) => (next) => (action) => {
   switch (action.type) {
     case ENTER_MOVE: {
       action.history.push('/move'); // sert à traiter les liens
-      // console.log('routes.js -> ok');
+      console.log('ENTER_MOVE : routes.js -> ok');
       break;
     }
     
     case TO_SIGNIN: {
       action.history.push('/signin'); // sert à traiter les liens
-      // console.log('routes.js -> ok');
+      console.log('TO_SIGNIN : routes.js -> ok');
       break;
     }
     // case BOXES_BY_MOVE: {

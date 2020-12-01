@@ -51,7 +51,7 @@ const Home = () => {
                         Pour mieux gérer vos déménagements
                     </Typography>
                     <Typography variant="body2" component="p">
-                        Sint sit ea occaecat culpa est.
+                        Et rechercher facilement vos objets dans vos cartons.
                     </Typography>
                 </CardContent>
                 <CardActions>

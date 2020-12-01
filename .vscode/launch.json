@@ -1,6 +1,35 @@
 {
     "configurations": [
-        
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "moovyBox:src/components/modules/withRoot.withRoot (nodejs12.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "frontend",
+                "lambdaHandler": "src/components/modules/withRoot.withRoot"
+            },
+            "lambda": {
+                "runtime": "nodejs12.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "moovyBox:src/store/actions.syncBoxesByMove (nodejs12.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "frontend",
+                "lambdaHandler": "src/store/actions.syncBoxesByMove"
+            },
+            "lambda": {
+                "runtime": "nodejs12.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
         {
             "type": "aws-sam",
             "request": "direct-invoke",
