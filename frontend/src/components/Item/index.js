@@ -5,7 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Button from '@material-ui/core/Button';
 import QueueIcon from '@material-ui/icons/Queue';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './styles/styles';
 import Container from '@material-ui/core/Container';
 import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
@@ -16,40 +16,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
 import { toast } from 'react-toastify';
-
-axios.defaults.withCredentials = true;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  item: {
-    marginTop: "10px",
-
-  },
-  form: {
-    padding: "20px"
-  }
-}));
+import GoBack from '../modules/components/GoBack'; 
 
 axios.defaults.withCredentials = true;
 
@@ -93,18 +60,6 @@ const Item = (props) => {
         closeOnClick: true
       })
     }
-
-    // // to see all the items of a box selected
-    // useEffect(() => {
-    //   axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
-    //        .then(res => {
-    //          console.log(res.data);
-    //          setItem(res.data);
-    //        })
-    //        .catch(err => {
-    //          console.log(err);
-    //        })
-    // }, []);
 
     useEffect(() => {
       axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
@@ -165,7 +120,10 @@ const Item = (props) => {
         <div className={classes.root}>
             <Header />
             <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <Typography component="p" variant="h5">
+                <GoBack /> Retour à la liste des cartons
+            </Typography>
+          
             <div className={classes.paper}>
             <Avatar className={classes.avatar}>
                 <QueueIcon />
@@ -173,14 +131,17 @@ const Item = (props) => {
             <Typography component="h1" variant="h4">
                 Ajouter un objet au carton
             </Typography>
+           
             <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
             <TextField id="outlined-basic" label="Mon objet" variant="outlined" value={name} onChange={handleItemChange}/>
             </form>
             <ul>
                 {item.map(elt =>
                 <li key={elt.id}> 
-                  {elt.name}
-                  <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
+                  <Typography component="p" variant="h5">
+                    {elt.name}                                   
+                    <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
+                  </Typography> 
                 </li>)
                 }
             </ul>

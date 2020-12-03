@@ -5,19 +5,11 @@ import React from 'react'; // couche 1
 import { render } from 'react-dom'; // couche 2
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import axios from 'axios';
 
 // == Import : local
 // Composants
 import App from 'src/components/App';
 import store from 'src/store';
-
-// axios
-//   .get('http://', {
-//     withCredentials: true,
-//   })
-//   .then((response) => console.log('reponse axios', response));
-
 
 // == Render
 // 1. Élément React racine (celui qui contient l'ensemble de l'app)

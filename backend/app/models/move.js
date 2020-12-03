@@ -13,7 +13,7 @@ class Move {
     static async getAllFromUserId(userId) {
         try {
                 
-            const query = `SELECT * FROM "move" WHERE user_id = $1;`; 
+            const query = `SELECT * FROM "move" WHERE user_id = $1 ORDER BY "id" DESC;`; 
 
             const values = [userId]; 
 
@@ -36,7 +36,7 @@ class Move {
     static async getByPk(moveId) {
         try {
             
-        const query = `SELECT * FROM "move" WHERE "id" = $1;`; 
+        const query = `SELECT * FROM "move" WHERE "id" = $1 ORDER BY "id" DESC;`; 
 
         const values = [moveId]; 
 
@@ -52,7 +52,7 @@ class Move {
         //* Check the existence of the entred email in the DB
         try {
             // request to find an associated user
-            const query = `SELECT * FROM "move" WHERE "label" = $1 AND user_id = $2`; 
+            const query = `SELECT * FROM "move" WHERE "label" = $1 AND user_id = $2 `; 
             const results = await client.query(query, [obj.moveLabel, obj.userId]); 
             
             // Returns a boolean 

@@ -12,30 +12,8 @@ import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
 import './styles.css';
 import HeaderHome from '../modules/views/HeaderHome';
-import {BrowserRouter as Router, Link} from "react-router-dom";
-
-const useStyles = makeStyles( {
-    card: {
-        width: "70%",
-        margin: "auto",
-        marginBottom: 20,
-        marginTop: 20
-    },
-    root: {
-      minWidth: 275,
-    },
-    title: {
-      fontSize: 25,
-    },
-    button: {
-        width: "90%",
-        margin: "auto"
-    },
-    button2: {
-        width: "50%",
-        margin: "auto",
-    },
-  });
+// to the style !
+import useStyles from './styles/styles';
 
 const Home = () => {
     const classes = useStyles();
@@ -51,7 +29,7 @@ const Home = () => {
                         Pour mieux gérer vos déménagements
                     </Typography>
                     <Typography variant="body2" component="p">
-                        Sint sit ea occaecat culpa est.
+                        Et rechercher facilement vos objets dans vos cartons.
                     </Typography>
                 </CardContent>
                 <CardActions>
