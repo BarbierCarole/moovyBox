@@ -206,6 +206,7 @@ const BoxesByMove = (props) => {
 
 
   const isLogged = useSelector((state) => state.isLogged);
+  console.log("State of isLogged : ",isLogged);
 
   const [filteredItems, setFilteredItems] = useState([]);
   const [stateOptionChecked, setStateOptionChecked] = useState({

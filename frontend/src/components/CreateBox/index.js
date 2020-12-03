@@ -1,7 +1,6 @@
-// index-Chris.js sur modèle Chris
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {BrowserRouter as Router, Link, Redirect} from "react-router-dom";
+import { Redirect} from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import QueueIcon from '@material-ui/icons/Queue';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Checkbox from '@material-ui/core/Checkbox';
 import withRoot from '../modules/withRoot';
@@ -22,38 +20,10 @@ import Icon from '@material-ui/core/Icon';
 // to redirection signin
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+// to the style !
+import useStyles from './styles/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    '& > .fa': {
-      margin: theme.spacing(2),
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  margin: {
-    margin: theme.spacing(1, 0, 2),
-  },
-}));
-
+// to save the token in cookies https://flaviocopes.com/axios-credentials/
 axios.defaults.withCredentials = true;
 
 toast.configure();

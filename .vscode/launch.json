@@ -3,6 +3,36 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
+            "name": "moovyBox:src/components/modules/views/HeaderHome.HeaderHome (nodejs12.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "frontend",
+                "lambdaHandler": "src/components/modules/views/HeaderHome.HeaderHome"
+            },
+            "lambda": {
+                "runtime": "nodejs12.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "moovyBox:src/components/modules/views/Footer.Footer (nodejs12.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "frontend",
+                "lambdaHandler": "src/components/modules/views/Footer.Footer"
+            },
+            "lambda": {
+                "runtime": "nodejs12.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
             "name": "moovyBox:src/components/modules/withRoot.withRoot (nodejs12.x)",
             "invokeTarget": {
                 "target": "code",

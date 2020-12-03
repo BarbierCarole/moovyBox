@@ -1,7 +1,6 @@
 import React from 'react';
 import withRoot from '../modules/withRoot';
 import { loadCSS } from 'fg-loadcss';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,45 +9,11 @@ import Link from '@material-ui/core/Link';
 import Icon from '@material-ui/core/Icon';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
+import useStyles from './styles/styles';
 import imgCecile from './img/cecile.png';
 import imgNico from './img/nico.jpg';
 import imgCarole from './img/carole.jpg';
 import imgSeb from './img/seb.jpg';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-      },
-      paper: {
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-        marginBottom: 10,
-      },
-      large: {
-        width: theme.spacing(18),
-        height: theme.spacing(18),
-        margin: "auto",
-        marginBottom: 10
-      },
-      title: {
-          fontSize: 30,
-          padding: 25,
-          textAlign: 'center',
-          marginBottom: 20,
-          marginTop: 20
-      },
-      name: {
-          padding: 10,
-          fontSize: 20,
-      },
-      container: {
-          marginBottom: 5
-      },
-      describe: {
-          padding: 15
-      }
-  }));
 
 const Contact = () => {
     const classes = useStyles();
