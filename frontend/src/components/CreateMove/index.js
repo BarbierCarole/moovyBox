@@ -34,13 +34,6 @@ const CreateMove = () => {
   const [address, setAddress] = useState('');
   const [date, setDate] = useState(new Date());
 
-
-  // const [reminder, setReminder] = useState({checked: true});
-
-  // const handleReminderChange = (e) => {
-  //     setReminder({ ...reminder, [event.target.name]: event.target.checked});
-  // }
-
   const successMove = () => {
     toast.success('Votre déménagement a bien été créé !', {
       position: toast.POSITION.TOP_CENTER,

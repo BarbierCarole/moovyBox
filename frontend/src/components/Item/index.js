@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Button from '@material-ui/core/Button';
-import QueueIcon from '@material-ui/icons/Queue';
+// import Avatar from '@material-ui/core/Avatar';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import Button from '@material-ui/core/Button';
+// import QueueIcon from '@material-ui/icons/Queue';
+// // for the icon fontasome
+// import { loadCSS } from 'fg-loadcss'; // for th icons
+import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './styles/styles';
 import Container from '@material-ui/core/Container';
@@ -18,7 +21,7 @@ import { Redirect} from 'react-router';
 import { toast } from 'react-toastify';
 import GoBack from '../modules/components/GoBack'; 
 
-axios.defaults.withCredentials = true;
+ axios.defaults.withCredentials = true;
 
 toast.configure();
 
@@ -116,32 +119,39 @@ const Item = (props) => {
             })
       };
 
+    const deleteZero = (str) => {
+      const reg=/(^|[^\d.])0+(?!\.)/g;
+      return str= str.replace(reg,'');
+    };
+
     return (
         <div className={classes.root}>
             <Header />
             <Container component="main" maxWidth="xs">
             <Typography component="p" variant="h5">
-                <GoBack /> Retour à la liste des cartons
+                <GoBack /> Retour à la page précédente 
             </Typography>
           
             <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
+            {/* <Avatar className={classes.avatar}>
                 <QueueIcon />
-            </Avatar>
+            </Avatar> */}
+            <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
             <Typography component="h1" variant="h4">
-                Ajouter un objet au carton
+                Ajouter un objet au carton n° {deleteZero(props.location.state.code) }
             </Typography>
-           
+            <Typography component="h1" variant="h3">
+                {props.location.state.label}
+            </Typography>
             <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
             <TextField id="outlined-basic" label="Mon objet" variant="outlined" value={name} onChange={handleItemChange}/>
             </form>
             <ul>
                 {item.map(elt =>
                 <li key={elt.id}> 
-                  <Typography component="p" variant="h5">
-                    {elt.name}                                   
-                    <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
-                  </Typography> 
+                <Typography component="p" variant="h5"></Typography>
+                  {elt.name}
+                  <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
                 </li>)
                 }
             </ul>

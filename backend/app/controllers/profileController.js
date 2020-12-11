@@ -50,8 +50,8 @@ const profileController = {
 
             // At this stage a user login state is tested
             const pseudoValidation = await pseudoSchema.validate(req.body);
-            console.log('req.body', req.body);
-            console.log('pseudoValidation', pseudoValidation);
+            // console.log('req.body', req.body);
+            // console.log('pseudoValidation', pseudoValidation);
 
             // If payload is not proper send error; 
             if (!!pseudoValidation.error) {
@@ -96,7 +96,7 @@ const profileController = {
         try {
             // At this stage a user login state is tested
             const updateEmailValidation = await updateEmailSchema.validate(req.body);
-            console.log('req.body', req.body);
+            // console.log('req.body', req.body);
             console.log('updateEmailValidation', updateEmailValidation);
 
             // If payload is not proper send error; 
@@ -197,7 +197,7 @@ const profileController = {
             // verifiy token 
             const jwtPayload = jwt.verify(req.params.token, process.env.TOKENKEY); 
 
-            console.log('jwtPayload', jwtPayload); 
+            // console.log('jwtPayload', jwtPayload); 
 
             
             const storedUser = await User.findByEmail(jwtPayload.old_email);
@@ -245,7 +245,7 @@ const profileController = {
             // verifiy token 
             const jwtPayload = jwt.verify(req.params.token, process.env.TOKENKEY); 
 
-            console.log('jwtPayload', jwtPayload); 
+            // console.log('jwtPayload', jwtPayload); 
 
             // find current user by email 
             const storedUser = await User.findByEmail(jwtPayload.old_email); 
@@ -322,12 +322,9 @@ const profileController = {
             // get current user
             const storedUser = await User.findByPk(userID); 
 
-            console.log("req.body.oldPassword", req.body.oldPassword); 
-            console.log("storedUser.password", storedUser.password); 
-    
+               
             // match oldPassword with saved password in DB
             const passwordMatch = await bcrypt.compare(req.body.oldPassword, storedUser.password); 
-            console.log("passwordMatch",passwordMatch); 
             // if no match 
             if (!passwordMatch) {
                 // abort and send error 
@@ -348,7 +345,7 @@ const profileController = {
             // proceed to change 
             const result = await storedUser.save();
 
-            console.log("updatePassword result :>", result); 
+            // console.log("updatePassword result :>", result); 
             
             //
             if (!result){

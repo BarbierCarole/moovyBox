@@ -63,8 +63,7 @@ class Box {
     static async search(searchedItem) {
         //* Research function
         try {
-            // console.log("CB : item :", searchedItem);
-            
+                        
             const query = `SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE '%'||$1||'%') ORDER BY "id" DESC;`; 
             const values = [searchedItem.toLowerCase()];
             console.log("CB item : values : ",values);

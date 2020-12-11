@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
@@ -28,7 +27,7 @@ import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
 import { toast } from 'react-toastify';
 // search
-import { fade} from '@material-ui/core/styles';
+
 import TextField from '@material-ui/core/TextField';
 // search
 import SearchIcon from '@material-ui/icons/Search';
@@ -42,180 +41,30 @@ import Checkbox from '@material-ui/core/Checkbox';
 //to display in a card
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexGrow: 1,
-    flexWrap: 'wrap',
-    alignContent: 'center',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    // for the font awesome
-    '& > .fas': {
-      margin: theme.spacing(2),     
-    },
-    backgroundColor:'#eeeeee',
-  },
-
-  // btn for the button of moves and boxes
- 
-  title: {
-    textAlign: 'center',
-    paddingTop: theme.spacing(1),
-    margin: theme.spacing(1),
-  },
-  dialogTitle: {
-    backgroundColor: theme.palette.secondary.main,
-  },
-  
-  paper: {
-    marginTop: theme.spacing(1),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  bgSecondary: {
-    backgroundColor: fade(theme.palette.secondary.main, 0.15),
-  },
-  bgPrimary: {
-    backgroundColor: fade(theme.palette.primary.main, 0.25),
-  },
-  
-  fab: {
-    marginRight: theme.spacing(-3),
-    zIndex:'1000',
-  },
-  nbrBox: {
-    color: '#fff',
-    marginTop: '-33px',
-    fontWeight: 'bold',
-  },
-  justifyContentSpaceBetween: {
-    justifyContent: 'space-between',
-    // backgroundColor: fade(theme.palette.primary.main, 0.25),
-  },
-  titleBox: { 
-    // height: 30,
-    display: 'flex',
-    overflow: 'hidden',
-    alignItems: 'center',
-    padding: theme.spacing(1,3),   
-    lineHight: 1,
-    userSelect: 'none',
-    justifyContent: 'center', 
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-
-  },
-  arround: { 
-    width: 40,
-    height: 40,
-    display: 'flex',
-    overflow: 'hidden',
-    alignItems: 'center',
-    flexShrink: 0,
-    lineHight: 1,
-    userSelect: 'none',
-    borderRadius: 20,
-    justifyContent: 'center', 
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-
-  },
-  btn: {
-    width: '90%',
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    textTransform: "none",
-    fontWeight: 500,
-  },
-  arrow: { 
-    margin: theme.spacing(0,1, 0,1 ),
-   
-  },
-  // research
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-    
-  },
-  textLeft: {
-    textAlign: 'left',
-  },
-  card: {
-    width: '90%',
-    margin: theme.spacing(1),
-    display: "flex", 
-    justifyContent: "center" 
-  },
-  
-  boxLi: {
-    width: '100%',
-    backgroundColor: '#ffffff',    
-  }  
-  
-}));
+import useStyles from './styles/styles';
 
 toast.configure();
 
 const BoxesByMove = (props) => {
+  const isLogged = useSelector((state) => state.isLogged);
+  console.log("State of isLogged : ",isLogged);
   const classes = useStyles();
-  const [boxes, setBoxes] = useState([]);
   
-  // To confirm
+  const [boxes, setBoxes] = useState([]);
+    // To confirm
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
   // for the research
   const [searchedItem, setSearchedItem] = useState("");
-
-
-  const isLogged = useSelector((state) => state.isLogged);
-  console.log("State of isLogged : ",isLogged);
-
+  // -- filter fragile, heavy or floor
   const [filteredItems, setFilteredItems] = useState([]);
+  
   const [stateOptionChecked, setStateOptionChecked] = useState({
     fragile: false,
     heavy: false,
     floor: false,
   });
-
-    // to display the boxes with checkbox checked
+  // to display the boxes with checkbox checked or not
   useEffect(() => {
     setFilteredItems(
       boxes.filter(box =>
@@ -228,7 +77,7 @@ const BoxesByMove = (props) => {
 
   const handleChange = (event) => {
     setStateOptionChecked({ ...stateOptionChecked, [event.target.name]: event.target.checked });
-    console.log("CB stateOptionChecked",stateOptionChecked);
+    console.log("CB event et stateOptionChecked ",event, stateOptionChecked);
   };  
 
   const successDelete = () => {
@@ -269,11 +118,11 @@ const BoxesByMove = (props) => {
     })
     .catch(err => {
       console.log(err);
-    })
+    });
+    console.log("/${CB : props.location.state.label}",props.location.state.label)
   }, []);
 
   //! -------------------------- search ---------------------------------------- !
-  // to see 
   const handleSearchedItemChange = (e) => {
     setSearchedItem(e.target.value);
     setStateOptionChecked({
@@ -350,8 +199,30 @@ const BoxesByMove = (props) => {
         <div className={classes.paper}>
           <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
           <Typography component="h1" variant="h4"  className={classes.title}>
-            Listes des cartons de mon déménagement
+            Listes des cartons de "{props.location.state.label}"
           </Typography>
+          {/* ↓ add a box ↓ */}
+          <Card className={classes.card}>
+            <CardContent>
+            <Link to ={{
+                  pathname:"/create-box",
+                  state: {
+                    id: props.location.state.id,
+                    label: props.location.state.label,
+                  }
+              }} style={{ display: "flex", justifyContent: "center" }}>
+                <Typography component="h1" variant="h5" className={classes.title}>
+                  <Tooltip title="Ajouter un carton" aria-label="Add">
+                    <Fab color="primary" className={classes.fab}>
+                      <AddIcon />
+                    </Fab>
+                  </Tooltip>
+                  <Button size="medium" variant="outlined" color="secondary" style={{marginLeft: '15px'}}>Ajouter un carton</Button>
+                </Typography>
+              </Link>
+            </CardContent>
+          </Card>
+          {/* ↓ research ↓ */}
           <Card className={classes.card}>
             <CardContent>
               <form noValidate autoComplete="on" onSubmit={handleSubmit} >
@@ -364,7 +235,7 @@ const BoxesByMove = (props) => {
                   </Tooltip>
                 </Typography>
               </form>
-              {/* CB : dysplay all the boxes */}
+              {/* CB : display all the boxes */}
               <ButtonCustom
                 type="submit"
                 fullWidth
@@ -372,7 +243,7 @@ const BoxesByMove = (props) => {
                 onClick={() => {displayAllBoxes()} }
                 color="secondary"
               >
-                Annuler la recherche
+                Annuler la recherche<br/>et tout afficher
               </ButtonCustom>
             </CardContent>
           </Card>
@@ -385,7 +256,7 @@ const BoxesByMove = (props) => {
                 <FormGroup row style={{ display: "flex", justifyContent: "center" }}>
                   <FormControlLabel
                     control={
-                    <Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} //onChange={handleChange
+                    <Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} 
                     label="Fragile"
                   />
                   <FormControlLabel
@@ -410,25 +281,7 @@ const BoxesByMove = (props) => {
               
             </CardContent>
           </Card>
-          <Card className={classes.card}>
-            <CardContent>
-            <Link to ={{
-                  pathname:"/create-box",
-                  state: {
-                    id: props.location.state.id,
-                  }
-              }} style={{ display: "flex", justifyContent: "center" }}>
-                <Typography component="h1" variant="h5" className={classes.title}>
-                  <Tooltip title="Ajouter un carton" aria-label="Add">
-                    <Fab color="primary" className={classes.fab}>
-                      <AddIcon />
-                    </Fab>
-                  </Tooltip>
-                  <Button size="medium" variant="outlined" color="secondary" style={{marginLeft: '15px'}}>Ajouter un carton</Button>
-                </Typography>
-              </Link>
-            </CardContent>
-          </Card>
+          
           
           {/* ------------- CB new interface of box ---------------- */}
           <Grid container justify="space-around">
@@ -449,7 +302,9 @@ const BoxesByMove = (props) => {
                     <Link to={{
                       pathname:"/box/"+boxe.id,
                       state: {
-                        id: boxe.id
+                        id: boxe.id,
+                        label: boxe.label,
+                        code:boxe.code
                         }
                       }}>
 

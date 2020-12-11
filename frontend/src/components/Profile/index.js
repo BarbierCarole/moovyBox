@@ -37,7 +37,6 @@ const Profile = () => {
 
   function handleSubmit(e) {
     e.preventDefault(); // stops default reloading behaviour
-    console.log('input on onSubmit', oldPassword, newPassword, passwordVal);
     axios
       .put(`http://localhost:5050/api/profile/password`, { oldPassword, newPassword, passwordVal })
       .then(res => {

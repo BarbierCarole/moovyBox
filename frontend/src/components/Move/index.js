@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
@@ -134,8 +133,9 @@ const Move = () => {
                   pathname:"/move/"+move.id,
                   state: {
                     id: move.id,
+                    label: move.label,
                   }
-                  }}>
+                }}>
                 <Button
                 variant="outlined"
                 color="secondary"
