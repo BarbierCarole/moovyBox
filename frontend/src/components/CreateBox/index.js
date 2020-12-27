@@ -31,6 +31,7 @@ import GoBack from '../modules/components/GoBack';
 toast.configure();
 
 function CreateBox(props) {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   let history = useHistory(); // to return on move/:id
 
   const classes = useStyles();
@@ -100,7 +101,7 @@ function CreateBox(props) {
     e.preventDefault(); // stops default reloading behaviour
 
     axios
-      .post(`http://localhost:5050/api/move/:moveId/boxes`, { label, destination_room, fragile, heavy, floor, move_id})
+      .post(BASE_URL+`/api/move/:moveId/boxes`, { label, destination_room, fragile, heavy, floor, move_id})
       .then((res => {
         console.log(res);
         console.log("res.data",res.data);

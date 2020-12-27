@@ -46,6 +46,7 @@ import useStyles from './styles/styles';
 toast.configure();
 
 const BoxesByMove = (props) => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const isLogged = useSelector((state) => state.isLogged);
   console.log("State of isLogged : ",isLogged);
   const classes = useStyles();
@@ -112,7 +113,7 @@ const BoxesByMove = (props) => {
 
   // requeste to display all the boxes of 1 move selected
   useEffect(() => {
-    axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes`)
+    axios.get(BASE_URL+`/api/move/${props.location.state.id}/boxes`)
     .then(res => {
       setBoxes(res.data);
     })
@@ -136,10 +137,11 @@ const BoxesByMove = (props) => {
     e.preventDefault();
     const data = {searchedItem};
     console.log("CB data.searchedItem", data.searchedItem);
-    axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
+    axios.get(BASE_URL+`/api/move/${props.location.state.id}/boxes/searchedItem/${data.searchedItem}`)
           .then(res => {
             setBoxes(res.data);
-            console.log("CB res :",res);
+            console.log("CB  response of server : ",res);
+            console.log("the URL of research in backend is :",BASE_URL+"/api/move/"+props.location.state.id+"/boxes/searchedItem/"+data.searchedItem);
           }).catch(err => {
             console.log(err);
           });
@@ -149,7 +151,7 @@ const BoxesByMove = (props) => {
 
   // --------- CB : to display all the boxes ----------
   const displayAllBoxes = () => {
-    axios.get(`http://localhost:5050/api/move/${props.location.state.id}/boxes`)
+    axios.get(BASE_URL+`/api/move/${props.location.state.id}/boxes`)
     .then(res => {
       setBoxes(res.data);
       setSearchedItem("");
@@ -165,7 +167,7 @@ const BoxesByMove = (props) => {
     console.log('cliqué, props', props);
     const id = props.selectedId;
     console.log('id : ', id);
-    axios.delete(`http://localhost:5050/api/box/${id}`)
+    axios.delete(BASE_URL+`/api/box/${id}`)
         .then(res => {
           setBoxes(boxes.filter((boxe)=>(boxe.id !== id)));
           setOpen(false);

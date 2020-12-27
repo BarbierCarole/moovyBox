@@ -23,6 +23,7 @@
     "cross-env": "*",
     "css-loader": "*",
     "cssnano": "*",
+    "dotenv-webpack": "^6.0.0",
     "eslint": "*",
     "eslint-config-airbnb": "*",
     "eslint-import-resolver-alias": "*",

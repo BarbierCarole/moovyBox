@@ -12,7 +12,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -26,6 +26,7 @@ import useStyles from './styles/styles';
 // 1 - l'api YUP utilise ces objets pour la validation des données
 
 const Profile = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
   const history = useHistory();
   const email = useSelector((state) => state.email);
@@ -38,7 +39,7 @@ const Profile = () => {
   function handleSubmit(e) {
     e.preventDefault(); // stops default reloading behaviour
     axios
-      .put(`http://localhost:5050/api/profile/password`, { oldPassword, newPassword, passwordVal })
+      .put(BASE_URL+`/api/profile/password`, { oldPassword, newPassword, passwordVal })
       .then(res => {
         if (res.status === 201) {
           dispatch(login(history));

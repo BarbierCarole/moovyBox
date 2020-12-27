@@ -65,6 +65,7 @@ class Box {
         try {
                         
             const query = `SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE '%'||$1||'%') ORDER BY "id" DESC;`; 
+            // CB : pb with yhis, to see why - > SELECT * FROM box WHERE id IN( SELECT box_id FROM item WHERE lower(name) LIKE '%'||'piscine'||'%') AND move_id = 19 ORDER BY "id" DESC;
             const values = [searchedItem.toLowerCase()];
             console.log("CB item : values : ",values);
             const results = await client.query(query, values);

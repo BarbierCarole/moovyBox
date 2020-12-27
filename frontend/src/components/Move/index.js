@@ -11,10 +11,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 import axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 // for the icon fontasome
 import { loadCSS } from 'fg-loadcss'; // for th icons
 import Icon from '@material-ui/core/Icon';
@@ -34,6 +32,7 @@ import useStyles from './styles/styles';
 toast.configure();
 
 const Move = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const classes = useStyles();
   const [moves, setMoves] = useState([]);
   // to confirm
@@ -57,7 +56,7 @@ const Move = () => {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:5050/api/move')
+    axios.get(BASE_URL+'/api/move')
          .then(res => {
            console.log(res.data);
            setMoves(res.data);
@@ -75,7 +74,7 @@ const Move = () => {
     console.log('id : ', id);
 
   
-    axios.delete(`http://localhost:5050/api/move/${id}`)
+    axios.delete(BASE_URL+`/api/move/${id}`)
          .then(res => {
           setMoves(moves.filter((move)=>(move.id !== id)));
           setOpen(false);

@@ -28,6 +28,7 @@ axios.defaults.withCredentials = true;
 toast.configure();
 
 const CreateMove = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const classes = useStyles();
   let history = useHistory();
   const [label, setLabel] = useState('');
@@ -55,23 +56,18 @@ const CreateMove = () => {
   };
 
   const handleLabelChange = (e) => {
-
       setLabel(e.target.value);
   };
 
   const handleAddressChange = (e) => {
-
       setAddress(e.target.value);
   };
 
   const handleSubmit = (e) => {
       e.preventDefault();
-
       const data = {label, address, date};
-
-      console.log(data)
-
-      axios.post('http://localhost:5050/api/move', data)
+      console.log(data);
+      axios.post( BASE_URL+'/api/move', data)
             .then(res => {
               console.log(res);
               history.push({
