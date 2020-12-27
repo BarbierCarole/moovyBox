@@ -17,7 +17,7 @@ let infoServerMail = {
   }, 
   // tls: 443
 };
-console.log (infoServerMail);
+// console.log (infoServerMail);
 
 let transportGmail  = nodemailer.createTransport(infoServerMail);
 

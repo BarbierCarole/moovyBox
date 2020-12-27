@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Button from '@material-ui/core/Button';
-import QueueIcon from '@material-ui/icons/Queue';
+// import Avatar from '@material-ui/core/Avatar';
+// import CssBaseline from '@material-ui/core/CssBaseline';
+// import Button from '@material-ui/core/Button';
+// import QueueIcon from '@material-ui/icons/Queue';
+// // for the icon fontasome
+// import { loadCSS } from 'fg-loadcss'; // for th icons
+import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './styles/styles';
 import Container from '@material-ui/core/Container';
 import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
@@ -16,42 +19,9 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
 import { toast } from 'react-toastify';
+import GoBack from '../modules/components/GoBack'; 
 
-axios.defaults.withCredentials = true;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  item: {
-    marginTop: "10px",
-
-  },
-  form: {
-    padding: "20px"
-  }
-}));
-
-axios.defaults.withCredentials = true;
+ axios.defaults.withCredentials = true;
 
 toast.configure();
 
@@ -89,32 +59,21 @@ const Item = (props) => {
     const errorDelete = () => {
       toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
         position: toast.POSITION.TOP_CENTER,
-        autoClose: 5000,
+        autoClose: 2000,
         closeOnClick: true
       })
     }
-    // to see all the items of a box selected
-    useEffect(() => {
-      axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
-           .then(res => {
-             console.log(res.data);
-             setItem(res.data);
-           })
-           .catch(err => {
-             console.log(err);
-           })
-    }, []);
 
     useEffect(() => {
       axios.get(`http://localhost:5050/api/box/${props.location.state.id}/items`)
-           .then(res => {
-             console.log(res.data);
-             setItem(res.data);
-             setGetItem(false)
-           })
-           .catch(err => {
-             console.log(err);
-           })
+        .then(res => {
+        console.log(res.data);
+        setItem(res.data);
+        setGetItem(false)
+        })
+        .catch(err => {
+          console.log(err);
+        })
     }, [getItem]);
 
 
@@ -129,19 +88,21 @@ const Item = (props) => {
     }
 
     const handleSubmit = (e) => {
-        addItem(name);
-        e.preventDefault();
-        const data = {name, box_id};
-        console.log('data :', data);
-        axios.post('http://localhost:5050/api/box/${props.location.state.id}/items', data)
-             .then(res => {
-                 console.log('ici les items', res.data);
-                 setGetItem(true)
-                 successAdd();
-             }).catch(err => {
-                console.log(err);
-                errorDelete();
-              });
+      // addItem(name);
+      e.preventDefault();
+      const data = {name, box_id};
+      console.log('data :', data);
+      axios.post('http://localhost:5050/api/box/${props.location.state.id}/items', data)
+        .then(res => {
+          console.log('ici les items', res.data);
+          setGetItem(true)
+          addItem(name);
+          successAdd();
+          setName(''); // to empty the field
+        }).catch(err => {
+          console.log(err);
+          errorDelete();
+        });
     }
 
     const handleDelete = (id) => {
@@ -158,24 +119,37 @@ const Item = (props) => {
             })
       };
 
+    const deleteZero = (str) => {
+      const reg=/(^|[^\d.])0+(?!\.)/g;
+      return str= str.replace(reg,'');
+    };
+
     return (
         <div className={classes.root}>
             <Header />
             <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <Typography component="p" variant="h5">
+                <GoBack /> Retour à la page précédente 
+            </Typography>
+          
             <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
+            {/* <Avatar className={classes.avatar}>
                 <QueueIcon />
-            </Avatar>
+            </Avatar> */}
+            <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
             <Typography component="h1" variant="h4">
-                Ajouter un objet au carton
+                Ajouter un objet au carton n° {deleteZero(props.location.state.code) }
+            </Typography>
+            <Typography component="h1" variant="h3">
+                {props.location.state.label}
             </Typography>
             <form noValidate autoComplete="on" className={classes.form} onSubmit={handleSubmit}>
-            <TextField id="outlined-basic" label="Item" variant="outlined" value={item.name}  onChange={handleItemChange}/>
+            <TextField id="outlined-basic" label="Mon objet" variant="outlined" value={name} onChange={handleItemChange}/>
             </form>
             <ul>
                 {item.map(elt =>
                 <li key={elt.id}> 
+                <Typography component="p" variant="h5"></Typography>
                   {elt.name}
                   <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
                 </li>)

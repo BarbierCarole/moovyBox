@@ -3,6 +3,21 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
+            "name": "moovyBox:src/store/actions-with-other-datas.login (nodejs12.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "\\apotheose\\moovyBox\\frontend",
+                "lambdaHandler": "src/store/actions-with-other-datas.login"
+            },
+            "lambda": {
+                "runtime": "nodejs12.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
             "name": "moovyBox:src/components/modules/views/HeaderHome.HeaderHome (nodejs12.x)",
             "invokeTarget": {
                 "target": "code",

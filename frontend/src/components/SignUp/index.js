@@ -52,20 +52,28 @@ const Schema = Yup.object().shape({
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const email = useSelector((state) => state.email);
-  const password = useSelector((state) => state.password);
-  const pseudo = useSelector((state) => state.pseudo);
-  const passwordVal = useSelector((state) => state.passwordVal);
+  const history = useHistory()
+  // to initialise the initialValues
+  // const email = useSelector((state) => state.email);
+  // const password = useSelector((state) => state.password);
+  // const pseudo = useSelector((state) => state.pseudo);
+  // const passwordVal = useSelector((state) => state.passwordVal);
   const classes = useStyles();
+  // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   return (
     <Formik
+      // initialValues={{
+      //   pseudo: pseudo,
+      //   email: email,
+      //   password: password,
+      //   passwordVal: passwordVal,
+      // }}
       initialValues={{
-        pseudo: pseudo,
-        email: email,
-        password: password,
-        passwordVal: passwordVal,
+        pseudo: '',
+        email: '',
+        password: '',
+        passwordVal: '',
       }}
       validationSchema={Schema}
       

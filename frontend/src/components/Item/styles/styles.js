@@ -18,18 +18,32 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
       width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
+      margin: theme.spacing(3, 0),
     },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-    item: {
-      marginTop: "10px",
+    // submit: {
+    //   marginLeft: theme.spacing(-2),
+    // },
+    // item: {
+    //   marginTop: "10px",
   
+    // },
+    // form: {
+    //   padding: "20px"
+    // },
+    fab: {
+      marginLeft: theme.spacing(-2),
+      zIndex:'1000',
     },
-    form: {
-      padding: "20px"
+    addIcon: {
+      padding: theme.spacing(0, 2),
+      height: '100%',
+      position: 'absolute',
+      pointerEvents: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     }
-  }));
+    
+}));
 
 export default useStyles;

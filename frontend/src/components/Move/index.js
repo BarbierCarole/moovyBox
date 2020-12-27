@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
@@ -12,10 +11,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 import axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 // for the icon fontasome
 import { loadCSS } from 'fg-loadcss'; // for th icons
 import Icon from '@material-ui/core/Icon';
@@ -35,6 +32,7 @@ import useStyles from './styles/styles';
 toast.configure();
 
 const Move = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   const classes = useStyles();
   const [moves, setMoves] = useState([]);
   // to confirm
@@ -58,7 +56,7 @@ const Move = () => {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:5050/api/move')
+    axios.get(BASE_URL+'/api/move')
          .then(res => {
            console.log(res.data);
            setMoves(res.data);
@@ -76,7 +74,7 @@ const Move = () => {
     console.log('id : ', id);
 
   
-    axios.delete(`http://localhost:5050/api/move/${id}`)
+    axios.delete(BASE_URL+`/api/move/${id}`)
          .then(res => {
           setMoves(moves.filter((move)=>(move.id !== id)));
           setOpen(false);
@@ -134,8 +132,9 @@ const Move = () => {
                   pathname:"/move/"+move.id,
                   state: {
                     id: move.id,
+                    label: move.label,
                   }
-                  }}>
+                }}>
                 <Button
                 variant="outlined"
                 color="secondary"

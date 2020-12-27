@@ -10,6 +10,7 @@ import QueueIcon from '@material-ui/icons/Queue';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Checkbox from '@material-ui/core/Checkbox';
+// pour ajouter le theme
 import withRoot from '../modules/withRoot';
 // import Button from '../modules/components/Button';
 import Footer from '../modules/views/Footer';
@@ -17,18 +18,20 @@ import Header from '../modules/views/Header';
 import TextField from '@material-ui/core/TextField';
 import { loadCSS } from 'fg-loadcss'; // for th icons
 import Icon from '@material-ui/core/Icon';
-// to redirection signin
+// to the redirection of signin
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 // to the style !
 import useStyles from './styles/styles';
+import GoBack from '../modules/components/GoBack'; 
 
 // to save the token in cookies https://flaviocopes.com/axios-credentials/
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 toast.configure();
 
 function CreateBox(props) {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
   let history = useHistory(); // to return on move/:id
 
   const classes = useStyles();
@@ -98,17 +101,28 @@ function CreateBox(props) {
     e.preventDefault(); // stops default reloading behaviour
 
     axios
-      .post(`http://localhost:5050/api/move/:moveId/boxes`, { label, destination_room, fragile, heavy, floor, move_id})
+      .post(BASE_URL+`/api/move/:moveId/boxes`, { label, destination_room, fragile, heavy, floor, move_id})
       .then((res => {
         console.log(res);
-        console.log(res.data);
+        console.log("res.data",res.data);
         console.log("move_id", move_id);
+        console.log("cb res.data.id", res.data.id);
+        // history.push({
+        //   pathname:"/move/"+move_id,
+        //   state: {
+        //     id: move_id,
+        //     label:props.location.state.label,
+        //   }
+        // });
         history.push({
-          pathname:"/move/"+move_id,
-          state: {
-            id: move_id,
-          }
-        });
+            pathname:"/box/"+res.data.id,
+            state: {
+              id: res.data.id,
+              label: res.data.label,
+              code:res.data.code,              
+              move_id: move_id,
+            }
+          });
         successBox();
         // () => (() => history.push('/move/'+move_id));
         // () => history.goBack();
@@ -127,13 +141,16 @@ function CreateBox(props) {
       <CssBaseline />
       <Header />
       <Container component="main" maxWidth="xs">
+        <Typography component="p" variant="h5">
+            <GoBack /> Retour à la liste des cartons 
+        </Typography>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
            <QueueIcon />
           </Avatar>
           <Typography component="h1" variant="h3">
-            J'ajoute un carton
+            J'ajoute un carton dans "{props.location.state.label}"
           </Typography>
           <form
             className={classes.form}
