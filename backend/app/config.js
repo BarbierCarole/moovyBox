@@ -1,6 +1,6 @@
 
 const appConfig = {
-    domain: 'http://localhost:5050', 
+    domain: 'http://15.236.209.155', 
     frontAppDomain : 'http://15.236.209.155'
 }
 
