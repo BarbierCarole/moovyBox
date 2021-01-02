@@ -9,7 +9,11 @@
 
 /backend/node_modules
 /backend/.env
+/backend/env_copy.txt
+/backend/.env_dev
 /backend/revise
 #/backend/brouillon.js
 /backend/modelTest.js
 
+moovy_carole.pem
+moovybox.pem

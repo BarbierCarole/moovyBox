@@ -2,9 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LOGIN, toSignin, SIGNUP, SYNC_PSEUDO, SYNC_ISLOGGED, SYNC_USER_ID, enterMove,SYNC_MOVES } from 'src/store/actions';
 
-// const prodURL = 'http://18.206.96.118';
-const baseURL = 'http://localhost:5050/api';
-
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 axios.defaults.withCredentials = true;
 
 toast.configure();
@@ -32,7 +30,7 @@ export default (store) => (next) => (action) => {
   switch (action.type) {
     case LOGIN: {
       axios
-        .post(baseURL+'/signin', {
+        .post(BASE_URL+'/api/signin', {
           email: store.getState().email,
           password: store.getState().password,
         })
@@ -66,7 +64,7 @@ export default (store) => (next) => (action) => {
     };
     case SIGNUP: {
       axios
-        .post(baseURL+`/signup`, {
+        .post(BASE_URL+`/api/signup`, {
           email: store.getState().email,
           password: store.getState().password,
           pseudo: store.getState().pseudo,
