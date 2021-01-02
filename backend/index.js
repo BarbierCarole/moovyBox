@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session'); 
 require('dotenv').config(); 
 const PORT = process.env.PORT || 5050; 
+const IP_ADDRESS = process.env.IP_ADDRESS;
 const app = express(); 
 const cors = require('cors');
 const multer = require('multer');
@@ -47,4 +48,4 @@ app.use(session({
 
 app.use(require('./app/router')); 
 
-app.listen(PORT, _ => console.log("Server running on ", PORT)); 
+app.listen(PORT, IP_ADDRESS, _ => console.log("Server running on ", PORT)); 
