@@ -16,6 +16,11 @@ import BoxesByMove from 'src/components/BoxesByMove';
 import Item from 'src/components/Item';
 import NotFound from 'src/components/Notfound';
 import Home from 'src/components/Home';
+import HomeMoveSelected from 'src/components/HomeMoveSelected';
+import Research from 'src/components/Research';
+import UpdateMove from 'src/components/UpdateMove';
+import Task from 'src/components/Task';
+
 // == Composant
 const App = () => {
   const isLogged = useSelector((state) => state.isLogged);
@@ -67,23 +72,39 @@ const App = () => {
         exact
         path="/create-move"
         render={() => {
-            //if ((email === '') || (password === '')) {
             if (!isLogged) {
               console.log('isLogged',isLogged);
               //console.log('email,password page App/index',email,password);
               return <Redirect to="/signin" />;
-
             }
             //console.log('email,password,',email,password);
             return  <CreateMove />;
+          }}
+        />
+        {/* CB : new page of home to add 3 buttons with research and my checklist */}
+        <Route
+        exact
+        path="/move/:id/homeMoveSelected"
+        render={() => {
+            if (!isLogged) {
+              console.log('isLogged',isLogged);
+              //console.log('email,password page App/index',email,password);
+              return <Redirect to="/signin" />;
+            }
+            //console.log('email,password,',email,password);
+            return  <HomeMoveSelected />;
           }}
         />
         <Route exact path="/contact">
           <Contact />
         </Route>
         <Route exact path="/move/:id" component={BoxesByMove} />
+        <Route exact path="/move/:id/modify" component={UpdateMove} />
         <Route exact path="/create-box" component={CreateBox} />
         <Route exact path="/box/:id" component={Item} />
+        <Route exact path="/move/:id/research" component={Research} />
+        <Route exact path="/move/:id/task" component={Task} />
+
         <Route exact path="*"><NotFound /></Route>
       </Switch>
     </div>
