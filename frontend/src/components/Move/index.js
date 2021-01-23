@@ -129,7 +129,8 @@ const Move = () => {
             <ul className={classes.liste}>
               {moves.map(move => <li key={move.id}>
                 <Link to ={{
-                  pathname:"/move/"+move.id,
+                  // pathname:"/move/"+move.id,
+                  pathname:`/move/${move.id}/homeMoveSelected`,
                   state: {
                     id: move.id,
                     label: move.label,
@@ -155,6 +156,18 @@ const Move = () => {
 
                 </Grid>
                 </Button>
+                </Link>
+                <Link to ={{
+                  // pathname:"/move/"+move.id,
+                  pathname:`/move/${move.id}/modify`,
+                  state: {
+                    id: move.id,
+                    label: move.label,
+                    address: move.address,
+                    date: move.date
+                  }
+                }}>
+                <Typography> Modifier</Typography>
                 </Link>
                 <DeleteIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(move.id)}}/>
                 <Dialog
