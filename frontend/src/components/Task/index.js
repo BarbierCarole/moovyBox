@@ -1,3 +1,4 @@
+// To view all the task by selected move
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import Avatar from '@material-ui/core/Avatar';
@@ -17,25 +18,32 @@ import TextField from '@material-ui/core/TextField';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
-import CssBaseline from '@material-ui/core/Icon';
 // to redirection signin
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
 import { toast } from 'react-toastify';
 import GoBack from '../modules/components/GoBack'; 
+// for the checkbox
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
- axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
-toast.configure();
+// toast.configure();
 
-const Item = (props) => {
+const Task = (props) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+ 
   const classes = useStyles();
-  const [item, setItem] = useState([]);
-  const [name, setName] = useState('');
-  const [box_id, setBoxeId] = useState(props.location.state.id);
-  const [getItem, setGetItem] = useState(false);
-  const [key, setKey] = useState('');
+  
+  const [task, setTask] = useState([]);
+  const [checked, setChecked] = useState(true);
+  const [label, setLabel] = useState('');
+  const [date, setDate] = useState('');
+  const [note, setNote] = useState('');
+  const [contact, setContact] = useState('');
+  const [move_id, setMoveId] = useState(props.location.state.id);
+  const [getTask, setGetTask] = useState(false);
 
   const isLogged = useSelector((state) => state.isLogged);
 
@@ -44,91 +52,22 @@ const Item = (props) => {
     //console.log('email,password page App/index',email,password);
     return <Redirect to="/signin" />;
   };
-
-  const successAdd = () => {
-    toast.success('Votre objet a bien été ajouté au carton !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
-      closeOnClick: true
-    })
-  }
-
-  const successDelete = () => {
-    toast.success('Votre objet a bien été supprimé du carton !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
-      closeOnClick: true
-    })
-  }
-
-  const errorDelete = () => {
-    toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 2000,
-      closeOnClick: true
-    })
-  }
+  
+  const checkChanged = (state) => {
+    setChecked(!checked);
+  };
 
   useEffect(() => {
-    axios.get(BASE_URL+`/api/box/${props.location.state.id}/items`)
+    axios.get(BASE_URL+`/api/move/${props.location.state.id}/tasks`)
       .then(res => {
-      console.log(res.data);
-      setItem(res.data);
-      setGetItem(false);
-      console.log("cb: res.data",res.data);
+        setTask(res.data);
+        console.log(">> res.data :",res.data);
       })
       .catch(err => {
         console.log(err);
       })
-  }, [getItem]);
+  }, [getTask]);
 
-
-  const addItem = name => {
-    const newItems = [...item, {name}];
-    setItem(newItems);
-  }
-
-  const handleItemChange = (e) => {
-      console.log("CB contenu  : ",e.target.value);
-      setName(e.target.value);
-  }
-
-  const handleSubmit = (e) => {
-    // addItem(name);
-    e.preventDefault();
-    const data = {name, box_id};
-    console.log('data :', data);
-    axios.post(BASE_URL+'/api/box/${props.location.state.id}/items', data)
-      .then(res => {
-        console.log('ici les items', res.data);
-        setGetItem(true)
-        addItem(name);
-        successAdd();
-        setName(''); // to empty the field
-      }).catch(err => {
-        console.log(err);
-        errorDelete();
-      });
-  }
-
-  const handleDelete = (id) => {
-
-      console.log('cliqué');
-
-      axios.delete(BASE_URL+`/api/box/${props.location.state.id}/item/${id}`)
-            .then(res => {
-            setItem(item.filter((ite)=>(ite.id !== id)));
-            successDelete();
-            }).catch(err => {
-            console.log(err);
-            errorDelete();
-          })
-    };
-
-  const deleteZero = (str) => {
-    const reg=/(^|[^\d.])0+(?!\.)/g;
-    return str= str.replace(reg,'');
-  };
 
   return (
       <div className={classes.root}>
@@ -139,38 +78,26 @@ const Item = (props) => {
           </Typography>
         
           <div className={classes.paper}>
-          {/* <Avatar className={classes.avatar}>
-              <QueueIcon />
-          </Avatar> */}
-          <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
+          
           <Typography component="h1" variant="h4">
-              Ajouter un objet au carton n° {deleteZero(props.location.state.code) }
+              Checklist du déménagement
           </Typography>
-
           <Typography component="h1" variant="h3">
               {props.location.state.label}
           </Typography>
-          {/* new button */}
-          
-          <form noValidate autoComplete="on" onSubmit={handleSubmit} className={classes.form}>
-            <Typography component="h1" variant="h5" className={classes.title}>
-              <TextField id="outlined-basic" label="Objet à ajouter" variant="outlined" value={name}  onChange={handleItemChange} style={{borderRadius: '11px', background: '#ffffff', boxShadow:  '4px 4px 7px #d9d9d9, -4px -4px 7px #ffffff'}}/>
-              
-              <Fab type="submit" color="secondary" className={classes.fab}>
-                <AddIcon />
-              </Fab>                   
-            </Typography>
-          </form>                
-            
+          {/* new button */}   
           <ul>
-              {item.map(elt =>
-              <li key={elt.id}>
-              {console.log("key et name", elt.id, elt.name) }
-              <Typography component="p" variant="h5">
-                {elt.name}
-                <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
-              </Typography>
-              </li>)
+              { task.map(task =>
+              
+                <li key={task.id}>
+                  <Checkbox checked={checked} onChange={checkChanged} />                  
+                  
+                  <Typography component="p" variant="h5">
+                  
+                     - {task.date}
+                    {/* <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(task.id)}}/> */}
+                  </Typography>
+                </li>)
               }
           </ul>
           </div>
@@ -180,4 +107,4 @@ const Item = (props) => {
   )
 }
 
-export default withRoot(Item);
+export default withRoot(Task);

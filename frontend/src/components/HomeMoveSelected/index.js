@@ -98,7 +98,7 @@ const HomeMoveSelected = () => {
                         <Grid item xs={12} md={4}>
                             <Link to={{
                                 // pathname:"/move/"+move.id,
-                                pathname:`/move/${location.state.id}`,
+                                pathname:`/move/${location.state.id}/task`,
                                 state: {
                                 id: location.state.id,
                                 label: location.state.label,

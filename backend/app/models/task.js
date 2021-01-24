@@ -4,6 +4,7 @@ class Task {
 
     constructor(obj) {
         this.id = obj.id;
+        this.checked = obj.checked;
         this.label = obj.label;
         this.date = obj.date;
         this.note = obj.note;
@@ -62,14 +63,13 @@ class Task {
     async insert() {
 
         try {
-            const query = `INSERT INTO "task" (label, date, note, contact, user_id, move_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+            const query = `INSERT INTO "task" (checked, label, date, note, contact, user_id, move_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
            
-            const values = [ this.label, this.date, this.note, this.contact, this.user_id, this.move_id ];
+            const values = [ this.checked, this.label, this.date, this.note, this.contact, this.user_id, this.move_id ];
             
             const results = await client.query(query, values);
-            console.log(">>> results.rows : ", results.rows[0]);
-
-            return new Task(results.row[0]);
+            
+            return new Task(results.rows[0]);
 
        } catch (error) {
            console.trace(error)

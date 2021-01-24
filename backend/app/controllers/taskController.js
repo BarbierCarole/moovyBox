@@ -3,6 +3,10 @@ const Task = require('../models/task');
 
 
 const taskSchema = Joi.object({
+    checked: Joi.boolean()
+    .truthy('true')
+    .falsy('false')
+    .required(), 
     label: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
     .max(250)
@@ -123,7 +127,7 @@ const taskController = {
             req.session.user.contentUpdated = true; 
             
             // Send the newly added task entry to client
-            console.log(">> res :", res);
+            
             return res.send(storedTask);        
             
         } catch (error) {

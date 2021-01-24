@@ -11,6 +11,7 @@ const profileController = require('./controllers/profileController');
 const moveController = require('./controllers/moveController');
 const boxController = require('./controllers/boxController'); 
 const itemController = require('./controllers/itemController'); 
+const taskController = require('./controllers/taskController');
 
 
 /* ACCES RELATED ROUTES */
@@ -82,19 +83,14 @@ router.route('/api/box/:boxId')
     // Delete the pointed box
     .delete(authCheckerMW, boxController.deleteBox);
 
-// router.route('/api/box/item/:search')
-//     // get boxes which content item
-//     .get(authCheckerMW,boxController.getSearchMoveBoxes);
-
 /* SEARCH */
-// CB : /api/box/${props.location.state.id}/search/${item}
 router.route('/api/move/:moveId/boxes/searchedItem/:searchedItem')
 .get(authCheckerMW, boxController.getSearchItemInBoxes);
 
 /* ITEM RELATED ROUTES  */
 
-router.route('/api/box/:boxId/items') // CB : before modif : "/item"
-    // get all item of a pointed box
+router.route('/api/box/:boxId/items') 
+    // get all items of a pointed box
     .get(authCheckerMW, itemController.getItems)
     // Create a new item in a box
     .post(authCheckerMW, itemController.createItem);
@@ -105,6 +101,18 @@ router.route('/api/box/:boxId/item/:itemId')
     // Delete the pointed item   
     .delete(authCheckerMW, itemController.deleteItem);
 
+
+/* TASK ROUTES */
+// list of the tasks
+router.route('/api/move/:moveId/tasks')
+    // get all tasks of a selected move
+    .get(authCheckerMW, taskController.getTasks)
+    // Create a new task
+    .post(authCheckerMW, taskController.createTask);
+
+
+
+//! A FINIR AVEC GET POST PUT DELETE...
 
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});
