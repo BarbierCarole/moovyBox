@@ -38,10 +38,7 @@ const Task = (props) => {
   
   const [task, setTask] = useState([]);
   const [checked, setChecked] = useState(true);
-  const [label, setLabel] = useState('');
-  const [date, setDate] = useState('');
-  const [note, setNote] = useState('');
-  const [contact, setContact] = useState('');
+  
   const [move_id, setMoveId] = useState(props.location.state.id);
   const [getTask, setGetTask] = useState(false);
 
@@ -53,10 +50,6 @@ const Task = (props) => {
     return <Redirect to="/signin" />;
   };
   
-  const checkChanged = (state) => {
-    setChecked(!checked);
-  };
-
   useEffect(() => {
     axios.get(BASE_URL+`/api/move/${props.location.state.id}/tasks`)
       .then(res => {
@@ -86,8 +79,8 @@ const Task = (props) => {
               {props.location.state.label}
           </Typography>
           {/* new button */}   
-          <ul>
-              { task.map(task =>
+          
+              {/* { task.map(task =>
               
                 <li key={task.id}>
                   <Checkbox checked={checked} onChange={checkChanged} />                  
@@ -95,11 +88,58 @@ const Task = (props) => {
                   <Typography component="p" variant="h5">
                   
                      - {task.date}
-                    {/* <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(task.id)}}/> */}
+                    
                   </Typography>
                 </li>)
-              }
-          </ul>
+              } */}
+              
+
+
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <input
+                        type="checkbox"
+                        onChange={e => {
+                          let checked = e.target.checked;
+                          setTask(
+                            task.map(d => {
+                              d.checked = checked;
+                              return d;
+                            })
+                          );
+                        }}
+                      ></input>
+                    </th>
+                    <th scope="col">Taches</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {task.map((d, i) => (
+                    <tr key={d.id}>
+                      <th scope="row">
+                        <input
+                          onChange={event => {
+                            let checked = event.target.checked;
+                            setTask(
+                              task.map(data => {
+                                if (d.id === data.id) {
+                                  data.checked = checked;
+                                }
+                                return data;
+                              })
+                            );
+                          }}
+                          type="checkbox"
+                          checked={d.checked}
+                        ></input>
+                      </th>
+                      <td>{d.label}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
           </div>
           </Container>
           <Footer />
