@@ -38,7 +38,7 @@ const UpdateMove = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const classes = useStyles();
   let history = useHistory();
-  const [moveId, setMoveId] = useState(location.state.id);
+  // const [moveId, setMoveId] = useState(location.state.id);
   const [label, setLabel] = useState(location.state.label);
   const [address, setAddress] = useState(location.state.address);
   const [date, setDate] = useState(location.state.date);
@@ -77,15 +77,15 @@ const UpdateMove = () => {
       const data = {label, address, date};
       console.log(">> data :",data);
       axios.put( BASE_URL+`/api/move/${location.state.id}`, data)
-            .then(res => {
-              console.log(res);
-              history.push({
-                pathname:"/move/"})
-              successMove();
-            }).catch(err => {
-              console.log(err);
-              errorMove();
-            });
+        .then(res => {
+          console.log(res);
+          history.push({
+            pathname:"/move/"})
+          successMove();
+        }).catch(err => {
+          console.log(err);
+          errorMove();
+        });
   };
   
 

@@ -11,7 +11,7 @@ const profileController = require('./controllers/profileController');
 const moveController = require('./controllers/moveController');
 const boxController = require('./controllers/boxController'); 
 const itemController = require('./controllers/itemController'); 
-const taskController = require('./controllers/taskController');
+const tasksListController = require('./controllers/tasksListController');
 
 
 /* ACCES RELATED ROUTES */
@@ -104,15 +104,17 @@ router.route('/api/box/:boxId/item/:itemId')
 
 /* TASK ROUTES */
 // list of the tasks
-router.route('/api/move/:moveId/tasks')
+router.route('/api/move/:moveId/tasksList')
     // get all tasks of a selected move
-    .get(authCheckerMW, taskController.getTasks)
-    // Create a new task
-    .post(authCheckerMW, taskController.createTask);
+    .get(authCheckerMW, tasksListController.getTasksList)
+    // To create a new task
+    // .post(authCheckerMW, tasksListController.createTaskList);
 
+//! A DECOMMENTER QUAND LES TASKS DANS LES CONTROLLERS AURONT ETE MODIFIES ...
+router.route('/api/move/:moveId/tasksList/:taskId')
+//     //to modify the selected task
+//     .put(authCheckerMW, taskController.updateCheckedTask);
 
-
-//! A FINIR AVEC GET POST PUT DELETE...
 
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});

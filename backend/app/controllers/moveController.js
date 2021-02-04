@@ -228,7 +228,7 @@ const moveController = {
             // get the move object index from session.moves array
             const moveIndexToDelete = req.session.user.moves.indexOf(sessionMove[0])
 
-            // If an idex was found 
+            // If an index has been found 
             if (moveIndexToDelete >= 0) {
                 // Delete the move object from the session.moves array
                 req.session.user.moves.splice(moveIndexToDelete, 1); 

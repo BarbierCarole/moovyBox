@@ -19,7 +19,7 @@ import Home from 'src/components/Home';
 import HomeMoveSelected from 'src/components/HomeMoveSelected';
 import Research from 'src/components/Research';
 import UpdateMove from 'src/components/UpdateMove';
-import Task from 'src/components/Task';
+import TasksList from 'src/components/TasksList';
 
 // == Composant
 const App = () => {
@@ -103,7 +103,7 @@ const App = () => {
         <Route exact path="/create-box" component={CreateBox} />
         <Route exact path="/box/:id" component={Item} />
         <Route exact path="/move/:id/research" component={Research} />
-        <Route exact path="/move/:id/task" component={Task} />
+        <Route exact path="/move/:id/task" component={TasksList} />
 
         <Route exact path="*"><NotFound /></Route>
       </Switch>
