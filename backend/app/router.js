@@ -107,14 +107,15 @@ router.route('/api/box/:boxId/item/:itemId')
 router.route('/api/move/:moveId/tasksList')
     // get all tasks of a selected move
     .get(authCheckerMW, tasksListController.getTasksList)
-    // To create a new task
-    // .post(authCheckerMW, tasksListController.createTaskList);
+    // la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
+    
 
-//! A DECOMMENTER QUAND LES TASKS DANS LES CONTROLLERS AURONT ETE MODIFIES ...
 router.route('/api/move/:moveId/tasksList/:taskId')
-//     //to modify the selected task
-//     .put(authCheckerMW, taskController.updateCheckedTask);
+    // to modify the the checkboxes
+    .put(authCheckerMW, tasksListController.updateTasksList);
 
+router.route('/api/move/:moveId/NewTasksList')
+    .post(authCheckerMW, tasksListController.createAllTasksInList);
 
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});

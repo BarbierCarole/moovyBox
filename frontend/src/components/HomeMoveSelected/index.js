@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import withRoot from '../modules/withRoot';
 import Header from '../modules/views/Header';
 import Typography from '@material-ui/core/Typography';
@@ -19,14 +20,37 @@ toast.configure();
 
 const HomeMoveSelected = () => {
 
-    
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+
     const isLogged = useSelector((state) => state.isLogged);
     console.log("State of isLogged : ",isLogged);
     const classes = useStyles();
     // test
     const location = useLocation();
     console.log(">> location", location.state.id,location.state.label);
-   
+    const [message, setMessage] = useState('');
+    const [endUrl, setEndUrl] = useState('');
+    console.log(">> message et endUrl :", message, endUrl);
+
+    useEffect(() => {
+        axios.get(BASE_URL+`/api/move/${location.state.id}/tasksList`) // api/move/:moveId/tasksList
+          .then(res => {
+            
+            console.log(">> HomeMoveSeleted : res.data",res.data);
+            console.log(">> res.data.length", res.data.length);
+
+            if (!res.data.length) {
+                setEndUrl("newTasksList");
+                setMessage("Je crée ma checkList !");                
+            } else { 
+                setEndUrl("tasksList");
+                setMessage("Ma checklist");               
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      }, []);
 
     return (
         <div className={classes.root}>
@@ -68,15 +92,14 @@ const HomeMoveSelected = () => {
                         <Grid item xs={12} md={4}>
                             <Link to={{
                                 // pathname:"/move/"+move.id,
-                                pathname:`/move/${location.state.id}/task`,
+                                pathname:`/move/${location.state.id}/${endUrl}`,
                                 state: {
-                                id: location.state.id,
-                                label: location.state.label,
-
+                                    id: location.state.id,
+                                    label: location.state.label,
                                 }
                             }}>
-                                <Typography>Ma checklist</Typography>
-                            </Link>
+                                <Typography>{message}</Typography>
+                            </Link>                        
                             
                         </Grid>
                     </Grid>

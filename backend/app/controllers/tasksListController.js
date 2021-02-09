@@ -2,25 +2,33 @@ const Joi = require('joi');
 const TasksList = require('../models/tasksList');
 
 
-const TaskSchema = Joi.object({
+const taskSchema = Joi.object({
     id: Joi.number().integer()
     .min(1).required(),
     label: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
     .max(250)
     .required(),
-    contact: Joi.string()
+    description: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
     .max(2500),
+    nber_days: Joi.number().integer(),
+    general_task: Joi.boolean()
+    .truthy('true')
+    .falsy('false')
+    .required(),
+
 });
 
-const TasksListSchema = Joi.object({
+const tasksListSchema = Joi.object({
      
     move_id: Joi.number().integer()
     .min(1).required(),
     task_id: Joi.number().integer()
     .min(1).required(),
-    date_completion: Joi.number().integer(),
+    note: Joi.string()
+    .pattern(new RegExp('^[^<>%]{3,}$'))
+    .max(2500),
     contact: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
     .max(250),
@@ -62,207 +70,114 @@ const tasksListController = {
         }
     },
 
-    // createTask: async (req, res) => {
+    createAllTasksInList: async (req, res) => { 
 
-    //     //* Create a new task in DB
-    //     try {
+        //* créer une liste avec toutes les tâches de la table task pour un déménagement donné dans la table de liaison tasks_list
+        try {
             
-    //         const payloadValidation = taskSchema.validate(req.body); 
-    //         // if an error is found 
-    //         if (!!payloadValidation.error) {
-    //             // abort and send error 400 : bad request
-    //             return res.status(400).send(payloadValidation.error); 
-    //         }
+            // Check if the destination move belongs to user
+            /* const move = req.session.user.moves.filter(moveObj => moveObj.id == req.body.move_id); 
+            console.log(">> l.79 tasksListCont move:",move);*/
             
-    //         // form is valid !
+            // If no move matches
+            /* if (!move.length) {
+                // abort and send error 403 : Forbidden action
+                return res.status(403).send({
+                    error : {
+                        statusCode: 403,
+                        message: {
+                            en:"Forbidden action - The requested move doesn't belongs to current user", 
+                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
+                        }
+                    }
+                });
+            }*/
             
-    //         // Check if the destination move belongs to user
-    //         const move = req.session.user.moves.filter(moveObj => moveObj.id == req.body.move_id); 
+            // User is authorized to perform operation ! 
             
-    //         // If no move matches
-    //         if (!move.length) {
-    //             // abort and send error 403 : Forbidden action
-    //             return res.status(403).send({
-    //                 error : {
-    //                     statusCode: 403,
-    //                     message: {
-    //                         en:"Forbidden action - The requested move doesn't belongs to current user", 
-    //                         fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
-    //                     }
-    //                 }
-    //             });
-    //         }
-            
-    //         // User is authorized to perform operation ! 
-            
-    //         //Compare the label field with the DB values
-    //         const taskLabelMatch = await Task.taskLabelExists(req.body); 
-    //         console.log("taskLabelMatch :>>", taskLabelMatch);
-            
-    //         //If the label is the same of the DB value of the same user
-    //         if (taskLabelMatch){
-    //             // send a error to client : 409  COnflict
-    //             return res.status(409).send({
-    //                 error : {
-    //                     statusCode: 409,
-    //                     message: {
-    //                         en:"Conflict - This task label already exists", 
-    //                         fr:"Conflit - Cette étiquette de carton existe déjà"
-    //                     }
-    //                 }
-    //             });
-                
-    //         }
-            
-    //         // The task label in available for this move ! 
-            
-    //         // Add current user_id to payload
-    //         req.body.user_id = req.session.user.id; 
-        
-    //         // create an instance of a task
-    //         const newTask = new Task(req.body); 
-            
-    //         // Save the current task object to DB
-    //         const selectedTask = await newTask.insert(); 
+            //  ! supprimer car pas de user_id ic pour le moment -- Add current user_id to payload
+            // req.body.user_id = req.session.user.id; 
+            // ! reprendre ici --- ↓
+            // create an instance of a task
+            // const newTasksList = new TasksList; 
+            const nberTasksInAll = await TasksList.nberTasksTotal();
+            // Save the current task object to DB
+            // const selectedTasksList = await newTasksList.insert(); 
 
-    //         // Content was updated : on search generate a new item
-    //         req.session.user.contentUpdated = true; 
+            // Content was updated : on search generate a new item
+            //req.session.user.contentUpdated = true; 
             
-    //         // Send the newly added task entry to client            
-    //         return res.send(selectedTask);        
+            // Send the newly added task entry to client            
+            return res.send(nberTasksInAll);        
             
-    //     } catch (error) {
-    //         console.trace(error);
-    //     }
+        } catch (error) {
+            console.trace(error);
+        }
 
         
-    // },
+    },
 
-    // updateTaskAll: async (req, res) => {
-    //     //* Update the task
-    //     try {
+    updateTasksList: async (req, res) => {
+        //* Update the tasksList
+        try {
+            console.log(">> tasksListContr l.144 req.body", req.body); // exemple -> { task_id: '26', move_id: 19, is_realised: false }
+            const tasksListValidation = tasksListSchema.validate(req.body); 
+            // if an error is found 
+            if (!!tasksListValidation.error) {
+                // abort and send error 400 : bad request
+                res.status(400).send(tasksListValidation.error); 
+            }
+            
+            // form is valid !
+            
+            const selectedTaskInList = await TasksList.getByPk(req.params.moveId, req.params.taskId);
+            // If no task
+            if (!selectedTaskInList ) {
+                // Abort and send error : 404 not found
+                return res.status(404).send({
+                    error : {
+                        statusCode: 404,
+                        message: {
+                            en:"Not found - This action doesn't exists", 
+                            fr:"Pas trouvé - Cette tâche n'existe pas"
+                        }
+                    }
+                });
+            }
+            // ! commenter car user n'existe pas ici We have a task 
+            // if (req.session.user.id !== selectedTaskInList.user_id) {
+            //     // prevent action and send an error
+            //     return res.status(403).send({
+            //         error : {
+            //             statusCode: 403,
+            //             message: {
+            //                 en:"Forbidden action - Pointed box doesn't belong to the current user", 
+            //                 fr:"Action interdite - Le carton concerné n'appartient pas à l'utilisateur actuel"
+            //             }
+            //         }
+            //     });
+            // }
 
-    //         const taskValidation = taskSchema.validate(req.body); 
-    //         // if an error is found 
-    //         if (!!taskValidation.error) {
-    //             // abort and send error 400 : bad request
-    //             res.status(400).send(taskValidation.error); 
-    //         }
+            // Update the current task with paylod values
+            for (const prop in req.body) {
+                selectedTaskInList[prop] = req.body[prop]; 
+            }
             
-    //         // form is valid !
+            // Execute request
             
-    //         const selectedTask = await Task.getByPk(req.params.taskId);
-    //         // If no task
-    //         if (!selectedTask ) {
-    //             // Abort and send error : 404 not found
-    //             return res.status(404).send({
-    //                 error : {
-    //                     statusCode: 404,
-    //                     message: {
-    //                         en:"Not found - This action doesn't exists", 
-    //                         fr:"Pas trouvé - Cette tâche n'existe pas"
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //         // We have a task
-    //         if (req.session.user.id !== selectedTask.user_id) {
-    //             // prevent action and send an error
-    //             return res.status(403).send({
-    //                 error : {
-    //                     statusCode: 403,
-    //                     message: {
-    //                         en:"Forbidden action - Pointed box doesn't belong to the current user", 
-    //                         fr:"Action interdite - Le carton concerné n'appartient pas à l'utilisateur actuel"
-    //                     }
-    //                 }
-    //             });
-    //         }
+            const updatedTask = await selectedTaskInList.updateTasksLIst(); 
+            
+            // const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
 
-    //         // Update the current task with paylod values
-    //         for (const prop in req.body) {
-    //             selectedTask[prop] = req.body[prop]; 
-    //         }
+            //req.session.user.contentUpdated = true; 
             
-    //         // Execute request
-            
-    //         const updatedTask = await selectedTask.update(); 
-            
-    //         // const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
-
-    //         // Content was updated : on search generate a new item
-    //         req.session.user.contentUpdated = true; 
-            
-    //         // return the updated task
-    //         return ((updatedTask) ? updatedTask : false);
-    //     } catch (error) {
-    //         console.trace(error);
-    //     }
+            // return the updated task
+            return res.send((updatedTask) ? updatedTask : false);
+        } catch (error) {
+            console.trace(error);
+        }
         
-    // },
-
-    // updateCheckedTask: async (req, res) => {
-    //     //* Update the task
-    //     try {
-
-    //         const taskValidation = checkedtaskSchema.validate(req.body); 
-    //         // if an error is found 
-    //         if (!!taskValidation.error) {
-    //             // abort and send error 400 : bad request
-    //             res.status(400).send(taskValidation.error); 
-    //         }
-            
-    //         // form is valid !
-            
-    //         const selectedTask = await Task.getByPk(req.params.taskId);
-    //         // If no task
-    //         if (!selectedTask ) {
-    //             // Abort and send error : 404 not found
-    //             return res.status(404).send({
-    //                 error : {
-    //                     statusCode: 404,
-    //                     message: {
-    //                         en:"Not found - This action doesn't exists", 
-    //                         fr:"Pas trouvé - Cette tâche n'existe pas"
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //         // We have a task
-    //         if (req.session.user.id !== selectedTask.user_id) {
-    //             // prevent action and send an error
-    //             return res.status(403).send({
-    //                 error : {
-    //                     statusCode: 403,
-    //                     message: {
-    //                         en:"Forbidden action - Pointed box doesn't belong to the current user", 
-    //                         fr:"Action interdite - Le carton concerné n'appartient pas à l'utilisateur actuel"
-    //                     }
-    //                 }
-    //             });
-    //         }
-
-    //         // Update the current task with paylod values
-    //         for (const prop in req.body) {
-    //             selectedTask[prop] = req.body[prop]; 
-    //         }
-            
-    //         // Execute request
-            
-    //         const updatedTask = await selectedTask.update(); 
-            
-    //         // const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
-
-    //         // Content was updated : on search generate a new item
-    //         req.session.user.contentUpdated = true; 
-            
-    //         // return the updated task
-    //         return ((updatedTask) ? updatedTask : false);
-    //     } catch (error) {
-    //         console.trace(error);
-    //     }
-        
-    // },
+    },
 
 };
 

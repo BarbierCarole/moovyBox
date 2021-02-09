@@ -20,6 +20,7 @@ import HomeMoveSelected from 'src/components/HomeMoveSelected';
 import Research from 'src/components/Research';
 import UpdateMove from 'src/components/UpdateMove';
 import TasksList from 'src/components/TasksList';
+import NewTasksList from 'src/components/NewTasksList';
 
 // == Composant
 const App = () => {
@@ -103,7 +104,9 @@ const App = () => {
         <Route exact path="/create-box" component={CreateBox} />
         <Route exact path="/box/:id" component={Item} />
         <Route exact path="/move/:id/research" component={Research} />
-        <Route exact path="/move/:id/task" component={TasksList} />
+        <Route exact path="/move/:id/tasksList" component={TasksList} />
+        {/* Un doute sur l'utilité de la ligne ci-dessous - devrait servir pour la création d'une nouvelle liste*/}
+        <Route exact path="/move/:id/newTasksList" component={NewTasksList} />
 
         <Route exact path="*"><NotFound /></Route>
       </Switch>
