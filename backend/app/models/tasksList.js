@@ -8,12 +8,14 @@ class TasksList {
         this.id = obj.id;
         this.label = obj.label;
         this.description = obj.description;
+        this.nber_days = obj.nbre_days;
+        this.general_task = obj.general_task;
         // tasks_list
         this.move_id = obj.move_id;
         this.task_id = obj.task_id;
         this.contact = obj.contact;
         this.is_realised = obj.is_realised; 
-        this.number_date_completion = obj.number_date_completion;
+        this.note = obj.note;
     }
 
     static async getAllTaskFromMove(moveId) {
@@ -22,18 +24,18 @@ class TasksList {
         SELECT 
             move_id,
             is_realised,
-            number_date_completion,
+            m.date,
             t.label,
             t.description,
-            t.id
+            t.id,
+            t.nber_days
         FROM move m
         INNER JOIN tasks_list tl
             ON tl.move_id = m.id
         INNER JOIN task t
             ON t.id = tl.task_id
-        WHERE move_id = $1`;
+        WHERE move_id = $1;`;
     
-        console.log(">>l.34 tasks : moveId =",moveId);
         const values = [moveId];
         const results = await client.query(query, values);
         const instances = [];
@@ -43,25 +45,28 @@ class TasksList {
         return instances;
     }
 
-    static async getByPk(taskId) {
-        console.log(">> id l.17 : ",id);         
+    static async getByPk(moveId, taskId) {
+                
         const query = ` 
             SELECT 
                 move_id,
                 is_realised,
-                number_date_completion,
+                m.date,
                 t.label,
                 t.description,
-                t.id
+                t.id,
+                t.nber_days
             FROM move m
             INNER JOIN tasks_list tl
                 ON tl.move_id = m.id
             INNER JOIN task t
                 ON t.id = tl.task_id
-            WHERE move_id = $1`;
+            WHERE 
+                move_id = $1 AND task_id = $2`;
 
-        const values = [taskId]; 
+        const values = [moveId,taskId]; 
         const results = await client.query(query, values); 
+        console.log(">> tasksList l.65 : results :", results.rows[0]);
         return (results.rows[0]) ? new this(results.rows[0]) : false; 
     }
 
@@ -99,55 +104,79 @@ class TasksList {
         }
     }
 
-    async insertTaskInTasksList() {
+    // async insertTaskInTasksList() {
+
+    //     try {
+    //         const query = `
+    //             INSERT INTO 
+    //                 tasks_list (
+    //                     is_realised, 
+    //                     contact, 
+    //                     note, 
+    //                     task_id, 
+    //                     move_id
+    //                     )
+    //             VALUES ($1::boolean, $2, $3, $4, $5) 
+    //             RETURNING *;`;
+           
+    //         const values = [ this.is_realised,this.contact, this.note, this.task_id, this.move_id ];
+            
+    //         const results = await client.query(query, values);
+            
+    //         return new TasksList(results.rows[0]);
+
+    //    } catch (error) {
+    //        console.trace(error)
+    //    }
+
+    // }
+    static async insertNewTasks(move_id) { 
 
         try {
+            console.log("ds tasksList.js : plops");
             const query = `
-                INSERT INTO 
-                    tasks_list (
-                        is_realised, 
-                        contact, 
-                        number_date_completion, 
-                        task_id, 
-                        move_id
-                        )
-                VALUES ($1::boolean, $2, $3, $4, $5) 
-                RETURNING *;`;
-           
-            const values = [ this.is_realised,this.contact, this.number_date_completion, this.task_id, this.move_id ];
+            INSERT INTO 
+                tasks_list ( task_id, move_id )
+            SELECT 
+                id,$1 
+            FROM 
+                task
+            WHERE 
+                general_task=true;`;
+            const values = [ move_id ];
             
             const results = await client.query(query, values);
+            //console.log("l.149 ",new TasksList(results.rows[0]));
+            return results;
             
-            return new Task(results.rows[0]);
 
        } catch (error) {
-           console.trace(error)
+           console.trace(error);
        }
 
     }
-
-    async updateTasksLIst() {
+   
+    async updateTasksList() {
         try {
             // Prepare the query
             const query = `
             UPDATE 
                 tasks_list 
             SET 
-                ( move_id, task_id, contact, is_realised, number_date_completion ) = ( $1, $2, $3, $4::boolean, $5 ) 
+                ( move_id, task_id, contact, is_realised, note ) = ( $1, $2, $3, $4::boolean, $5 ) 
             WHERE 
                 move_id = $6
             AND 
                 task_id = $7             
             RETURNING *;`;
-            
             // Set the involved data
-            const values = [this.move_id, this.task_id, this.contact, this.is_realised, this.number_date_completion, this.move_id, this.task_id]; 
-            
+            const values = [this.move_id, this.task_id, this.contact, this.is_realised, this.note, this.move_id, this.task_id]; 
+            console.log(">> tasksList l.176 : values :", values);
             // Query update to DB 
             const results = await client.query(query, values); 
         
             //return the updated move
-            return new Task(results.rows[0]); 
+            return new TasksList(results.rows[0]); 
         } catch (error) {
             console.trace(error);
         }

@@ -115,8 +115,7 @@ router.route('/api/move/:moveId/tasksList/:taskId')
     .put(authCheckerMW, tasksListController.updateTasksList);
 
 router.route('/api/move/:moveId/NewTasksList')
-    .post(authCheckerMW, tasksListController.createAllTasksInList);
-
+    .post(authCheckerMW, tasksListController.createAllTasks);
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});
 

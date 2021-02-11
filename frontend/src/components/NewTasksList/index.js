@@ -19,10 +19,8 @@ import { Checkbox } from '@material-ui/core';
 
 axios.defaults.withCredentials = true;
 
-const TasksList = (props) => { // props : location.state.id:19 et location.state.label:"Caraibes"
+const NewTasksList = (props) => { // props : location.state.id:19 et location.state.label:"Caraibes"
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  const isLogged = useSelector((state) => state.isLogged);
-  console.log("State of isLogged : ",isLogged);
 
   // console.log(">> props boulet", props); 
   const classes = useStyles();
@@ -30,6 +28,8 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
   const [tasks, setTasks] = useState([]); // toutes les taches grace à useEffect setTasks(res.data); 
   console.log(">> tasks l.32", tasks);
 
+  const isLogged = useSelector((state) => state.isLogged);
+  console.log("State of isLogged : ",isLogged);
   if (!isLogged) {
     console.log('isLogged',isLogged);
     //console.log('email,password page App/index',email,password);
@@ -37,6 +37,20 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
   };
 
   useEffect(() => {
+    // on va créer la liste directement
+    console.log(">> l.31 props : ",props);
+    axios.post(BASE_URL+`/api/move/${props.location.state.id}/NewTasksList`)
+      .then(res => {
+        // console.log(res.data);
+        // setTasks(res.data);  
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []); //  [] pour que ça ne boucle pas
+
+  useEffect(() => {
+    // on affiche la liste des tâches 
     console.log(">> l.31 props : ",props);
     axios.get(BASE_URL+`/api/move/${props.location.state.id}/tasksList`)
       .then(res => {
@@ -46,7 +60,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
       .catch(err => {
         console.log(err);
       });
-    }, []); //  [] pour que ça ne boucle pas
+  }, []); //  [] pour que ça ne boucle pas
 
     const handleChange = (e) => {
       console.log(">> l.43 e :", e.target.value);
@@ -68,7 +82,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
       //is_realised: tasks.is_realised,
       is_realised: e.target.checked,
     }
-    console.log(">> l.71 data", data);   
+    console.log(">> l.71 data", data); 
     axios.put(BASE_URL+`/api/move/${props.location.state.id}/tasksList/${e.target.value}`, data)
         .then(res => {
           console.log(">< bien envoyé");
@@ -78,25 +92,6 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
         })
   }
  
-  // const handleChangePut = (props) => {
-  //   console.log(">> l.54 props :", props);
-  //   // const id = props.id;
-  //   // const label = props.label;
-  //   // const date = props.date;
-  //   // const note= props.note;
-  //   // const contact= props.contact;
-  //   // const user_id= props.user_id;
-  //   // const move_id = props.move_id;
-      
-  //   // const data = {label, date, note,contact, user_id, move_id, checked};
-  //   // axios.put(BASE_URL+`/api/move/${move_id}/task/${id}`, data)
-  //   //     .then(res => {console.log(">< bien envoyé");})
-  //   //     .catch(err => {
-  //   //       console.log(err);
-  //   //     })
-  // }
-
-
   return (
     <div className={classes.root}>
       <table className="table table-bordered"> 
@@ -122,4 +117,4 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
   )
 }
 
-export default withRoot(TasksList);
+export default withRoot(NewTasksList);

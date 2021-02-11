@@ -40,6 +40,39 @@ const tasksListSchema = Joi.object({
 
 const tasksListController = {
 
+    createAllTasks: async (req, res) => { 
+
+        //* créer une liste avec toutes les tâches de la table task pour un déménagement donné dans la table de liaison tasks_list
+        try {
+            console.log('>> req.params :>> ', req.params);
+
+            //  user verification
+            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
+            if (!matchedMove.length) {
+                // Abort operation and send error to client;
+                return res.status(403).send({
+                    error : {
+                        statusCode: 403,
+                        message: {
+                            en:"Forbidden action - The requested move doesn't belongs to current user", 
+                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
+                        }
+                    }
+                });
+            }
+
+
+            const tasksList = await TasksList.insertNewTasks(req.params.moveId);
+            
+            return res.send(tasksList);
+            
+        } catch (error) {
+            console.trace(error);
+        }
+
+        
+    },
+
     getTasksList: async(req,res) => {
 
         try {
@@ -70,53 +103,7 @@ const tasksListController = {
         }
     },
 
-    createAllTasksInList: async (req, res) => { 
-
-        //* créer une liste avec toutes les tâches de la table task pour un déménagement donné dans la table de liaison tasks_list
-        try {
-            
-            // Check if the destination move belongs to user
-            /* const move = req.session.user.moves.filter(moveObj => moveObj.id == req.body.move_id); 
-            console.log(">> l.79 tasksListCont move:",move);*/
-            
-            // If no move matches
-            /* if (!move.length) {
-                // abort and send error 403 : Forbidden action
-                return res.status(403).send({
-                    error : {
-                        statusCode: 403,
-                        message: {
-                            en:"Forbidden action - The requested move doesn't belongs to current user", 
-                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
-                        }
-                    }
-                });
-            }*/
-            
-            // User is authorized to perform operation ! 
-            
-            //  ! supprimer car pas de user_id ic pour le moment -- Add current user_id to payload
-            // req.body.user_id = req.session.user.id; 
-            // ! reprendre ici --- ↓
-            // create an instance of a task
-            // const newTasksList = new TasksList; 
-            const nberTasksInAll = await TasksList.nberTasksTotal();
-            // Save the current task object to DB
-            // const selectedTasksList = await newTasksList.insert(); 
-
-            // Content was updated : on search generate a new item
-            //req.session.user.contentUpdated = true; 
-            
-            // Send the newly added task entry to client            
-            return res.send(nberTasksInAll);        
-            
-        } catch (error) {
-            console.trace(error);
-        }
-
-        
-    },
-
+    
     updateTasksList: async (req, res) => {
         //* Update the tasksList
         try {
@@ -165,7 +152,7 @@ const tasksListController = {
             
             // Execute request
             
-            const updatedTask = await selectedTaskInList.updateTasksLIst(); 
+            const updatedTask = await selectedTaskInList.updateTasksList(); 
             
             // const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
 
