@@ -15,7 +15,11 @@ import { Redirect} from 'react-router';
 
 import GoBack from '../modules/components/GoBack'; 
 import { Checkbox } from '@material-ui/core';
-// for the checkbox
+
+import Icon from '@material-ui/core/Icon';
+//to display in a card
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 axios.defaults.withCredentials = true;
 
@@ -27,7 +31,6 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
 
   const [tasks, setTasks] = useState([]); // toutes les taches grace à useEffect setTasks(res.data); 
   console.log(">> tasks l.32", tasks);
-
   const isLogged = useSelector((state) => state.isLogged);
   console.log("State of isLogged : ",isLogged);
   if (!isLogged) {
@@ -94,25 +97,35 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
  
   return (
     <div className={classes.root}>
-      <table className="table table-bordered"> 
-      <tbody>
-          {tasks.map((data,i) => (
-            <tr key={i}>
-              <th scope="row">              
-              <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} /> 
-                {/* handleChangePut(props)
-                <Checkbox
-                  checked={data.checked}
-                  onChange={handleChange(data)                            
-                  }
-                /> */}
-              </th>
-              <td>{data.label}</td>
-            </tr>
-          ))}     
-        </tbody>
-      </table>
-      
+      <Header />
+      <Container component="main" > 
+        {/* <CssBaseline /> */}
+        <div className={classes.paper}>
+          <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
+          <Typography component="h1" variant="h4"  className={classes.title}>
+            Ma checklist
+          </Typography>
+          
+          {/* ↓ research ↓ */}
+          <Card className={classes.card}>
+            <CardContent>
+              <table className="table table-bordered"> 
+                <tbody>
+                    {tasks.map((data,i) => (
+                      <tr key={i}>
+                        <th scope="row">              
+                        <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} /> 
+                        </th>
+                        <td>{data.label}</td>
+                      </tr>
+                    ))}     
+                  </tbody>
+                </table>
+            </CardContent>
+          </Card>
+        </div>
+      </Container>
+      <Footer />
     </div>
   )
 }

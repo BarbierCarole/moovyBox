@@ -15,21 +15,24 @@ import { Redirect} from 'react-router';
 
 import GoBack from '../modules/components/GoBack'; 
 import { Checkbox } from '@material-ui/core';
-// for the checkbox
+
+import Icon from '@material-ui/core/Icon';
+//to display in a card
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 axios.defaults.withCredentials = true;
 
 const TasksList = (props) => { // props : location.state.id:19 et location.state.label:"Caraibes"
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  const isLogged = useSelector((state) => state.isLogged);
-  console.log("State of isLogged : ",isLogged);
 
   // console.log(">> props boulet", props); 
   const classes = useStyles();
 
   const [tasks, setTasks] = useState([]); // toutes les taches grace à useEffect setTasks(res.data); 
   console.log(">> tasks l.32", tasks);
-
+  const isLogged = useSelector((state) => state.isLogged);
+  console.log("State of isLogged : ",isLogged);
   if (!isLogged) {
     console.log('isLogged',isLogged);
     //console.log('email,password page App/index',email,password);
@@ -78,47 +81,61 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
         })
   }
  
-  // const handleChangePut = (props) => {
-  //   console.log(">> l.54 props :", props);
-  //   // const id = props.id;
-  //   // const label = props.label;
-  //   // const date = props.date;
-  //   // const note= props.note;
-  //   // const contact= props.contact;
-  //   // const user_id= props.user_id;
-  //   // const move_id = props.move_id;
-      
-  //   // const data = {label, date, note,contact, user_id, move_id, checked};
-  //   // axios.put(BASE_URL+`/api/move/${move_id}/task/${id}`, data)
-  //   //     .then(res => {console.log(">< bien envoyé");})
-  //   //     .catch(err => {
-  //   //       console.log(err);
-  //   //     })
-  // }
-
-
   return (
+
     <div className={classes.root}>
-      <table className="table table-bordered"> 
-      <tbody>
-          {tasks.map((data,i) => (
-            <tr key={i}>
-              <th scope="row">              
-              <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} /> 
-                {/* handleChangePut(props)
-                <Checkbox
-                  checked={data.checked}
-                  onChange={handleChange(data)                            
-                  }
-                /> */}
-              </th>
-              <td>{data.label}</td>
-            </tr>
-          ))}     
-        </tbody>
-      </table>
-      
-    </div>
+        <Header />
+        <Container component="main" > 
+          {/* <CssBaseline /> */}
+          <div className={classes.paper}>
+            <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
+            <Typography component="h1" variant="h4"  className={classes.title}>
+              Ma checklist
+            </Typography>
+            
+            {/* ↓ research ↓ */}
+            <Card className={classes.card}>
+              <CardContent>
+                <table className="table table-bordered"> 
+                  <tbody>
+                      {tasks.map((data,i) => (
+                        <tr key={i}>
+                          <th scope="row">              
+                          <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} /> 
+                          </th>
+                          <td>{data.label}</td>
+                        </tr>
+                      ))}     
+                    </tbody>
+                  </table>
+              </CardContent>
+            </Card>
+            <Card className={classes.card}>
+              <CardContent>
+              <Typography component="h1" variant="h4"  className={classes.title}>
+                XX Action(s) en attente
+              </Typography>
+              </CardContent>
+            </Card>
+            <Card className={classes.card}>
+              <CardContent>
+              <Typography component="h1" variant="h4"  className={classes.title}>
+                XX action(s) à venir
+              </Typography>
+              </CardContent>
+            </Card>
+            <Card className={classes.card}>
+              <CardContent>
+              <Typography component="h1" variant="h4"  className={classes.title}>
+                XX Action(s) accomplie
+              </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        </Container>
+        <Footer />
+    </div>  
+
   )
 }
 

@@ -11,8 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Button from '../modules/components/Button';
+// Date
 import DateFnsUtils from '@date-io/date-fns';
-// import 'date-fns';
+import { format } from 'date-fns'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -33,16 +34,20 @@ toast.configure();
 const UpdateMove = () => {
 
   const location = useLocation();
-  console.log(">> location", location.state.id,location.state.label);
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const classes = useStyles();
   let history = useHistory();
+  let d = new Date(location.state.date) ;
+  //! ↓ to be use with the time to have a good date if non it's displayed one day less ↓
+  d.setTime( d.getTime() - new Date().getTimezoneOffset()*60*1000 );
+  console.log('>> d : ',d);
+
   // const [moveId, setMoveId] = useState(location.state.id);
   const [label, setLabel] = useState(location.state.label);
   const [address, setAddress] = useState(location.state.address);
-  const [date, setDate] = useState(location.state.date);
-  console.log("location.state.date",date);
+  const [date, setDate] = useState(d);
+  console.log(">> updateMove : date",date);
 
   const successMove = () => {
     toast.success('Votre déménagement a bien été créé !', {
@@ -61,7 +66,8 @@ const UpdateMove = () => {
   }
 
   const handleDateChange = (date) => {
-    setDate(date);
+      setDate(date);
+    
   };
 
   const handleLabelChange = (label) => {
@@ -139,12 +145,15 @@ const UpdateMove = () => {
             <Typography>
               Date du déménagement
             </Typography>
+            
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
+           
             <Grid container justify="space-around">
                 <KeyboardDatePicker
+                    autoOk
                     disableToolbar
                     variant="inline"
-                    format="dd-MM-yyyy"
+                    format="dd/MM/yyyy"
                     // type="date.format"
                     margin="normal"
                     helperText="* Requis"
