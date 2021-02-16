@@ -36,7 +36,8 @@ class TasksList {
             ON tl.move_id = m.id
         INNER JOIN task t
             ON t.id = tl.task_id
-        WHERE move_id = $1;`;
+        WHERE move_id = $1
+        ORDER BY t.nber_days ASC;`;
     
         const values = [moveId];
         const results = await client.query(query, values);

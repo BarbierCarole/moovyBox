@@ -4,7 +4,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       flexDirection: 'column',
-      minHeight: '100vh',
+      // minHeight: '100vh',
+      justifyContent: 'center',
+      
     },
     paper: {
       marginTop: theme.spacing(2),
@@ -20,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
       width: '100%', // Fix IE 11 issue.
       margin: theme.spacing(3, 0),
     },
+
+    // root: {
+    //   maxWidth: 345,
+    // },
+
     // submit: {
     //   marginLeft: theme.spacing(-2),
     // },

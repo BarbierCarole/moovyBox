@@ -17,8 +17,7 @@ import { Checkbox } from '@material-ui/core';
 
 import Icon from '@material-ui/core/Icon';
 //to display in a card
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+import {Card, CardHeader, CardContent } from '@material-ui/core';
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -45,15 +44,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     return <Redirect to="/signin" />;
   };
 
- //! reprendre ici
-  // const dayCalc = (difDay, date) => {
-  //   console.log(">> 55 data.nber_days, data.date",difDay,date);
-  //   // const result = add(new Date(date),{days: 5 });
-  //   const result = difDay + ' et ' + date;
-  //   return result; 
-
-  // };
-
+  // Pour calculer la date d'action par rapport à la date du déménagement et au nbre de jours avant ou après
   const dayCalcT= (date,day) => {
     const result = addDays(parseISO(date), day);
     console.log(">>dayCalc",result);
@@ -113,78 +104,59 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     <div className={classes.root}>
         <Header />
         
-        
-        {/* <Container component="main" > 
-          
-          <div className={classes.paper}>
-            <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
-            <Typography component="h1" variant="h4"  className={classes.title}>
-              Ma checklist
-            </Typography>
-            <Card className={classes.card}>
-              <CardContent>
-                <table className="table table-bordered"> 
-                  <tbody>
-                      {tasks.map((data,i) => (
-                        <tr key={i}>
-                          <th scope="row">              
-                          <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} /> 
-                          </th>
-                          <td>{data.label}</td>
-                        </tr>
-                        
-                      ))}     
-                    </tbody>
-                  </table>
-              </CardContent>
-            </Card>
-            <Card className={classes.card}>
-              <CardContent>
-              <Typography component="h1" variant="h4"  className={classes.title}>
-                XX Action(s) en attente
-              </Typography>
-              </CardContent>
-            </Card>
-            <Card className={classes.card}>
-              <CardContent>
-              <Typography component="h1" variant="h4"  className={classes.title}>
-                XX action(s) à venir
-              </Typography>
-              </CardContent>
-            </Card>
-            <Card className={classes.card}>
-              <CardContent>
-              <Typography component="h1" variant="h4"  className={classes.title}>
-                XX Action(s) accomplie
-              </Typography>
-              </CardContent>
-            </Card>
-          </div>
-        </Container> */}
         <div>
-        {tasks.map((data,i) => (
-          <div key={i}>
-            <Card className={classes.root} key={i}>
-              <CardHeader
-                avatar={
-                  <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
-                }
-                action={
-                  <IconButton aria-label="settings">
-                    
-                  </IconButton>
-                }
-                title={data.label}
-                subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
-              
-              />
-              
-            </Card>
-            
-          </div>  
-          
-        ))}
-          
+          <Card className={classes.card}>
+            <CardContent>
+            <Typography component="h1" variant="h4"  className={classes.title}>
+              A faire
+            </Typography>
+            </CardContent>
+          </Card>
+          {/* afficher les taches a réaliser */}
+          {tasks.map((data,i) => (
+            (!data.is_realised ? (<Card className={classes.root} key={i}>
+                <CardHeader
+                  avatar={
+                    <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
+                  }
+                  action={
+                    <IconButton aria-label="settings">
+                      
+                    </IconButton>
+                  }
+                  title={data.label}
+                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
+                />
+                
+              </Card>) : console.log("tache true"))
+          ))}
+          {/* afficher les taches faites */}
+          <Card className={classes.card}>
+            <CardContent>
+            <Typography component="h1" variant="h4"  className={classes.title}>
+              Tâches réalisées
+            </Typography>
+            </CardContent>
+          </Card>
+         
+          {tasks.map((data,i) => (
+            (data.is_realised >0 ? (<Card className={classes.root} key={i}>
+                <CardHeader
+                  avatar={
+                    <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
+                  }
+                  action={
+                    <IconButton aria-label="settings">
+                      
+                    </IconButton>
+                  }
+                  title={data.label}
+                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
+                />
+                
+              </Card>) : console.log("tache true"))
+          ))}
+
         </div>
         
         <Footer />
