@@ -8,8 +8,10 @@ class TasksList {
         this.id = obj.id;
         this.label = obj.label;
         this.description = obj.description;
-        this.nber_days = obj.nbre_days;
+        this.nber_days = obj.nber_days;
         this.general_task = obj.general_task;
+        // move
+        this.date = obj.date;
         // tasks_list
         this.move_id = obj.move_id;
         this.task_id = obj.task_id;
@@ -42,6 +44,7 @@ class TasksList {
         for ( const row of results.rows) {
             instances.push(new this(row));
         }
+        console.log('>> l.45 tasksList : instances :',instances);
         return instances;
     }
 

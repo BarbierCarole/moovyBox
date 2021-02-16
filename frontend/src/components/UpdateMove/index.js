@@ -38,15 +38,15 @@ const UpdateMove = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const classes = useStyles();
   let history = useHistory();
-  let d = new Date(location.state.date) ;
-  //! ↓ to be use with the time to have a good date if non it's displayed one day less ↓
-  d.setTime( d.getTime() - new Date().getTimezoneOffset()*60*1000 );
-  console.log('>> d : ',d);
+  // let d = new Date(location.state.date) ;
+  // ↓ to be use with the time to have a good date if non it's displayed one day less ↓
+  // d.setTime( d.getTime() - new Date().getTimezoneOffset()*60*1000 );
+ 
 
   // const [moveId, setMoveId] = useState(location.state.id);
   const [label, setLabel] = useState(location.state.label);
   const [address, setAddress] = useState(location.state.address);
-  const [date, setDate] = useState(d);
+  const [date, setDate] = useState(location.state.date);
   console.log(">> updateMove : date",date);
 
   const successMove = () => {
