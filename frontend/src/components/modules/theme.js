@@ -33,7 +33,7 @@ const rawTheme = createMuiTheme({
   },
   typography: {
     fontFamily: "'Spartan', sans-serif",
-    fontSize: 14,
+    fontSize: 16,
     fontWeightLight: 300, // Work Sans
     fontWeightRegular: 500, // Work Sans
     fontWeightMedium: 700, // Roboto Condensed
@@ -125,7 +125,7 @@ const theme = {
     },
     body2: {
       ...rawTheme.typography.body1,
-      fontSize: 14,
+      fontSize: 16,
       color: rawTheme.text.primary.main, 
     },
   },

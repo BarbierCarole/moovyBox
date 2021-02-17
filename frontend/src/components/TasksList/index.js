@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import Typography from '@material-ui/core/Typography';
 import useStyles from './styles/styles';
-import Container from '@material-ui/core/Container';
 import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
@@ -12,12 +11,14 @@ import Header from '../modules/views/Header';
 // to redirection signin
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
+import {Link} from "react-router-dom";
 
-import { Checkbox } from '@material-ui/core';
-
-import Icon from '@material-ui/core/Icon';
 //to display in a card
-import {Card, CardHeader, CardContent } from '@material-ui/core';
+import {Card, CardHeader, CardContent, Checkbox } from '@material-ui/core';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -52,6 +53,12 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     return result;
   }
 
+  // pour afficher déplié le premier accordéon
+  const [expanded, setExpanded] = React.useState('panel1');
+
+  const handleChangePanel = (panel) => (event, newExpanded) => {
+    setExpanded(newExpanded ? panel : false);
+  };
 
   useEffect(() => {
     console.log(">> l.31 props : ",props);
@@ -103,61 +110,79 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
 
     <div className={classes.root}>
         <Header />
-        
-        <div>
-          <Card className={classes.card}>
-            <CardContent>
-            <Typography component="h1" variant="h4"  className={classes.title}>
-              A faire
-            </Typography>
-            </CardContent>
-          </Card>
-          {/* afficher les taches a réaliser */}
-          {tasks.map((data,i) => (
-            (!data.is_realised ? (<Card className={classes.root} key={i}>
-                <CardHeader
-                  avatar={
-                    <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
-                  }
-                  action={
-                    <IconButton aria-label="settings">
-                      
-                    </IconButton>
-                  }
-                  title={data.label}
-                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
-                />
-                
-              </Card>) : console.log("tache true"))
-          ))}
-          {/* afficher les taches faites */}
-          <Card className={classes.card}>
-            <CardContent>
-            <Typography component="h1" variant="h4"  className={classes.title}>
-              Tâches réalisées
-            </Typography>
-            </CardContent>
-          </Card>
-         
-          {tasks.map((data,i) => (
-            (data.is_realised >0 ? (<Card className={classes.root} key={i}>
-                <CardHeader
-                  avatar={
-                    <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
-                  }
-                  action={
-                    <IconButton aria-label="settings">
-                      
-                    </IconButton>
-                  }
-                  title={data.label}
-                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
-                />
-                
-              </Card>) : console.log("tache true"))
-          ))}
-
-        </div>
+          <Accordion square expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')} className={classes.accordion}>
+            <AccordionSummary 
+              className={classes.accordionSummary}
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography component="h1" variant="h4"  className={classes.title}>
+                Mes tâches à réaliser
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              {tasks.map((data,i) => (
+                (!data.is_realised ? (
+                  <Card className={classes.root} key={i}>
+                    <CardHeader
+                      avatar={
+                        <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
+                      }
+                      action={
+                        <IconButton aria-label="settings">
+                        </IconButton>
+                      }
+                      title={
+                        // data.label
+                        <Link to ={{
+                            pathname:`/move/${data.move_id}/task/${data.id}`,
+                                state: {
+                                id: data.id,
+                                label: data.label,                                
+                                }
+                        }} >
+                            <Typography component="h1" variant="h5" className={classes.title}>
+                              {data.label}
+                            </Typography>
+                        </Link>                        
+                      }
+                      subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
+                    />
+                  </Card>) : console.log("tache true"))
+              ))}
+            </AccordionDetails>
+          </Accordion>
+          <Accordion square expanded={expanded === 'panel2'} onChange={handleChangePanel('panel2')} className={classes.accordion}>
+            <AccordionSummary 
+              className={classes.accordionSummary}
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2a-content"
+              id="panel2a-header"
+            >
+              <Typography component="h1" variant="h4"  className={classes.title}>
+                Mes tâches accomplies
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordionDetails}>
+              {tasks.map((data,i) => (
+                (data.is_realised >0 ? (
+                  <Card className={classes.root} key={i}>
+                  <CardHeader
+                      avatar={
+                        <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
+                      }
+                      action={
+                        <IconButton aria-label="settings">
+                        </IconButton>
+                      }
+                      title={data.label}
+                      subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}                      
+                    />
+                  </Card>) : console.log("tache true"))
+              ))}
+            </AccordionDetails>
+          </Accordion>
         
         <Footer />
     </div>  

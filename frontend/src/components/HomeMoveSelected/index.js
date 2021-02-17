@@ -2,11 +2,15 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import withRoot from '../modules/withRoot';
 import Header from '../modules/views/Header';
+import Footer from '../modules/views/Footer';
 import Typography from '@material-ui/core/Typography';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 // for the icon fontasome
-import Icon from '@material-ui/core/Icon';
+import {Icon, Card, CardContent, Button, Fab, Tooltip} from '@material-ui/core';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import SearchIcon from '@material-ui/icons/Search';
+import UnarchiveIcon from '@material-ui/icons/Unarchive';
 // to confirm
 // to redirection signin
 import { useSelector } from 'react-redux';
@@ -62,49 +66,65 @@ const HomeMoveSelected = () => {
                     <Typography component="h1" variant="h4"  className={classes.title}>
                     Déménagement : {location.state.label}
                     </Typography>
-                    <Grid container>
-                        <Grid item xs={12} md={4}>
-                            <Link to={{
-                                // pathname:"/move/"+move.id,
-                                pathname:`/move/${location.state.id}`,
+                    <div className={classes.content}>
+                        {/* ↓ lien consulter mes cartons ↓ */}
+                        <Link to ={{
+                            pathname:`/move/${location.state.id}`,
                                 state: {
                                 id: location.state.id,
                                 label: location.state.label,
                                 }
-                            }}>
-                                <Typography>Mes cartons du déménagement</Typography>
-                            </Link>
-                            
-                        </Grid>
-                        <Grid item xs={12} md={4} >
-                            <Link to={{
-                                // pathname:"/move/"+move.id,
-                                pathname:`/move/${location.state.id}/research`,
+                        }} style={{ display: "flex", justifyContent: "left"}}>
+                            <Typography component="h1" variant="h5" className={classes.title}>
+                            <Tooltip title="Ajouter un carton" aria-label="Add">
+                                <Fab color="primary" className={classes.fab}>
+                                <UnarchiveIcon />
+                                </Fab>
+                            </Tooltip>
+                            <Button size="medium" variant="outlined" color="secondary" className={classes.button}>Consulter mes cartons</Button>
+                            </Typography>
+                        </Link>
+                        
+                        <Link to ={{
+                            pathname:`/move/${location.state.id}`,
                                 state: {
                                 id: location.state.id,
                                 label: location.state.label,
                                 }
-                            }}>
-                                <Typography>Rechercher dans mes cartons<br/>{location.state.label}</Typography>
-                            </Link>
-                            
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Link to={{
-                                // pathname:"/move/"+move.id,
-                                pathname:`/move/${location.state.id}/${endUrl}`,
+                        }} style={{ display: "flex", justifyContent: "left" }}>
+                            <Typography component="h1" variant="h5" className={classes.title}>
+                            <Tooltip title="Ajouter un carton" aria-label="Add">
+                                <Fab color="primary" className={classes.fab}>
+                                <SearchIcon />
+                                </Fab>
+                            </Tooltip>
+                            <Button size="medium" variant="outlined" color="secondary" className={classes.button}> Rechercher dans mes cartons</Button>
+                            </Typography>
+                        </Link>
+                        
+                    
+                        
+                        <Link to ={{
+                            pathname:`/move/${location.state.id}/${endUrl}`,
                                 state: {
                                     id: location.state.id,
                                     label: location.state.label,
                                 }
-                            }}>
-                                <Typography>{message}</Typography>
-                            </Link>                        
-                            
-                        </Grid>
-                    </Grid>
+                        }} className={classes.link} >
+                            <Typography component="h1" variant="h5" className={classes.title}>
+                            <Tooltip title="Ajouter un carton" aria-label="Add">
+                                <Fab color="primary" className={classes.fab}>
+                                <ListAltIcon />
+                                </Fab>
+                            </Tooltip>
+                            <Button size="medium" variant="outlined" color="secondary" className={classes.button} >{message}</Button>
+                            </Typography>
+                        </Link>
+                    </div>
+                        
                 </div>
             {/* </Container> */}
+            <Footer />
         </div>    
             
     );

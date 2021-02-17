@@ -12,7 +12,7 @@ const moveController = require('./controllers/moveController');
 const boxController = require('./controllers/boxController'); 
 const itemController = require('./controllers/itemController'); 
 const tasksListController = require('./controllers/tasksListController');
-
+const taskController = require('./controllers/taskController');
 
 /* ACCES RELATED ROUTES */
 
@@ -117,6 +117,10 @@ router.route('/api/move/:moveId/tasksList/:taskId')
 router.route('/api/move/:moveId/NewTasksList')
     .post(authCheckerMW, tasksListController.createAllTasks)
     .get(authCheckerMW, tasksListController.getTasksList);
+ 
+router.route('/api/move/:moveId/task/:taskId')
+    // .post(authCheckerMW, tasksListController.createAllTasks)
+    .get(authCheckerMW, taskController.getTaskById);
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});
 
