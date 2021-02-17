@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
+const Joi = require('joi');
 const Move = require('../models/move');
 
 const moveSchema = Joi.object({
@@ -7,8 +7,7 @@ const moveSchema = Joi.object({
     .max(150)
     .required(), 
     date: Joi.date()
-    .format()
-    .greater('now')
+    .min('now')
     .required(), 
     address: Joi.string()
     .pattern(new RegExp('^[^<>:%]{0,}$'))
@@ -40,14 +39,14 @@ const moveController = {
         try {
             // Validate the data from the form
 
-            const payloadValidation = await moveSchema.validate(req.body);
+            const payloadValidation = moveSchema.validate(req.body);
 
             console.log(' **CB** : req.body', req.body); 
             
             // if no error found then create Move instance and insert data. 
             if (!!payloadValidation.error) {
                 // if an error is found, update status code (400 for bad request)and send the error details
-                res.status(400).send(payloadValidation.error); 
+                return res.status(400).send(payloadValidation.error); 
             }
             
             // Form is valid
@@ -128,7 +127,7 @@ const moveController = {
         
         // payload is valid !! 
         
-        const moveId = req.params.id; 
+        const moveId = req.params.moveId; 
         
         const move = await Move.getByPk(moveId); 
         
@@ -155,7 +154,7 @@ const moveController = {
         // Execute request
         const updatedMove = await move.update(); 
 
-        const sessionMove = req.session.user.moves.filter(move => move.id == req.params.id); 
+        const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
 
         // update session move with the retun info from DB 
         for (const moveProp in updatedMove) {
@@ -229,7 +228,7 @@ const moveController = {
             // get the move object index from session.moves array
             const moveIndexToDelete = req.session.user.moves.indexOf(sessionMove[0])
 
-            // If an idex was found 
+            // If an index has been found 
             if (moveIndexToDelete >= 0) {
                 // Delete the move object from the session.moves array
                 req.session.user.moves.splice(moveIndexToDelete, 1); 

@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
+const Joi = require('joi');
 const Box = require('../models/box');
 const { normalize } = require('diacritics-normalizr');
 const Item = require('../models/item');
@@ -70,7 +70,7 @@ const boxController = {
             
             console.log('CB boxController : boxes :', boxes)
             
-            return res.send(boxes); 
+            return res.send(boxes);             
             
         } catch (error) {
             console.trace(error);

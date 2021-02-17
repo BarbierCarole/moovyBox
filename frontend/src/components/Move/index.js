@@ -8,7 +8,7 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Tooltip from '@material-ui/core/Tooltip';
-import moment from 'moment';
+// import moment from 'moment';
 import {BrowserRouter as Router, Link} from "react-router-dom";
 import axios from 'axios';
 import Container from '@material-ui/core/Container';
@@ -28,6 +28,9 @@ import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // to the style !
 import useStyles from './styles/styles';
+
+// date
+import { format } from 'date-fns'
 
 toast.configure();
 
@@ -129,7 +132,8 @@ const Move = () => {
             <ul className={classes.liste}>
               {moves.map(move => <li key={move.id}>
                 <Link to ={{
-                  pathname:"/move/"+move.id,
+                  // pathname:"/move/"+move.id,
+                  pathname:`/move/${move.id}/homeMoveSelected`,
                   state: {
                     id: move.id,
                     label: move.label,
@@ -150,11 +154,23 @@ const Move = () => {
                   <Typography>{move.address}</Typography>
                   </Grid>
                   <Grid item xs={12}>
-                  <Typography> {moment(move.date).format('DD-MM-YYYY')}</Typography>
+                  <Typography> {format(new Date(move.date),'dd/MM/yyyy')}</Typography>
                   </Grid>
 
                 </Grid>
                 </Button>
+                </Link>
+                <Link to ={{
+                  // pathname:"/move/"+move.id,
+                  pathname:`/move/${move.id}/modify`,
+                  state: {
+                    id: move.id,
+                    label: move.label,
+                    address: move.address,
+                    date: move.date
+                  }
+                }}>
+                <Typography> Modifier</Typography>
                 </Link>
                 <DeleteIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(move.id)}}/>
                 <Dialog

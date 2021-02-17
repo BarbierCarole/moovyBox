@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
+const Joi = require('joi');
 const Box = require('../models/box');
 const Item = require('../models/item');
 

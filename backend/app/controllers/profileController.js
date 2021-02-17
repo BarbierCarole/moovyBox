@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const salt = parseInt(process.env.SALT, 10);

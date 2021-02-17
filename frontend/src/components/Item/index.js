@@ -35,7 +35,7 @@ const Item = (props) => {
   const [name, setName] = useState('');
   const [box_id, setBoxeId] = useState(props.location.state.id);
   const [getItem, setGetItem] = useState(false);
-  const [key, setKey] = useState('');
+
 
   const isLogged = useSelector((state) => state.isLogged);
 
@@ -163,8 +163,8 @@ const Item = (props) => {
           </form>                
             
           <ul>
-              {item.map(elt =>
-              <li key={elt.id}>
+              {item.map((elt, i) =>
+              <li key={i}>
               {console.log("key et name", elt.id, elt.name) }
               <Typography component="p" variant="h5">
                 {elt.name}

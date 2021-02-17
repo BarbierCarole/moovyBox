@@ -11,8 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Button from '../modules/components/Button';
+// Date
 import DateFnsUtils from '@date-io/date-fns';
-// import 'date-fns';
+import { format } from 'date-fns'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -20,20 +21,33 @@ import {
 import { loadCSS } from 'fg-loadcss'; // for the icons
 import Icon from '@material-ui/core/Icon';
 import { toast } from 'react-toastify';
-// to the style
+// the style
 import useStyles from './styles/styles';
+// to know the move_id concerned
+
+import { useLocation } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
 
 toast.configure();
 
-const CreateMove = () => {
+const UpdateMove = () => {
+
+  const location = useLocation();
+
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const classes = useStyles();
   let history = useHistory();
-  const [label, setLabel] = useState('');
-  const [address, setAddress] = useState('');
-  const [date, setDate] = useState(new Date());
+  // let d = new Date(location.state.date) ;
+  // ↓ to be use with the time to have a good date if non it's displayed one day less ↓
+  // d.setTime( d.getTime() - new Date().getTimezoneOffset()*60*1000 );
+ 
+
+  // const [moveId, setMoveId] = useState(location.state.id);
+  const [label, setLabel] = useState(location.state.label);
+  const [address, setAddress] = useState(location.state.address);
+  const [date, setDate] = useState(location.state.date);
+  console.log(">> updateMove : date",date);
 
   const successMove = () => {
     toast.success('Votre déménagement a bien été créé !', {
@@ -52,32 +66,34 @@ const CreateMove = () => {
   }
 
   const handleDateChange = (date) => {
-    setDate(date);
+      setDate(date);
+    
   };
 
-  const handleLabelChange = (e) => {
-      setLabel(e.target.value);
+  const handleLabelChange = (label) => {
+      setLabel(label.target.value);
   };
 
-  const handleAddressChange = (e) => {
-      setAddress(e.target.value);
+  const handleAddressChange = (address) => {
+      setAddress(address.target.value);
   };
 
   const handleSubmit = (e) => {
       e.preventDefault();
       const data = {label, address, date};
-      console.log(data);
-      axios.post( BASE_URL+'/api/move', data)
-            .then(res => {
-              console.log(res);
-              history.push({
-                pathname:"/move/"})
-              successMove();
-            }).catch(err => {
-              console.log(err);
-              errorMove();
-            });
+      console.log(">> data :",data);
+      axios.put( BASE_URL+`/api/move/${location.state.id}`, data)
+        .then(res => {
+          console.log(res);
+          history.push({
+            pathname:"/move/"})
+          successMove();
+        }).catch(err => {
+          console.log(err);
+          errorMove();
+        });
   };
+  
 
   // for the font awesome heavy
   useEffect(() => {
@@ -96,7 +112,7 @@ const CreateMove = () => {
       <div className={classes.paper}>
         <Icon className="fas fa-truck" color="secondary" style={{ fontSize: 30, width: 45 }}/>
         <Typography component="h1" variant="h4"  className={classes.title}>
-        Création d'un déménagement
+        Modification du déménagement {location.state.label}
         </Typography>
         <form
           className={classes.form}
@@ -110,7 +126,7 @@ const CreateMove = () => {
                 required
                 fullWidth
                 helperText="* Requis"
-                label="Entrez un nom pour votre déménagement"
+                label="Nom du déménagement"
                 value={label}
                 onChange={handleLabelChange}
               />
@@ -126,13 +142,18 @@ const CreateMove = () => {
                 onChange={handleAddressChange}
               />
             </Grid>
-
-            <MuiPickersUtilsProvider utils={DateFnsUtils}> 
+            <Typography>
+              Date du déménagement
+            </Typography>
+            
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+           
             <Grid container justify="space-around">
                 <KeyboardDatePicker
+                    autoOk
                     disableToolbar
                     variant="inline"
-                    format="dd-MM-yyyy"
+                    format="dd/MM/yyyy"
                     // type="date.format"
                     margin="normal"
                     helperText="* Requis"
@@ -182,7 +203,7 @@ const CreateMove = () => {
                 className={classes.submit}
                 // href="/move"
               >
-                Valider
+                Corriger
               </Button>
             </Grid>
           </Grid>
@@ -194,4 +215,4 @@ const CreateMove = () => {
   );
 };
 
-export default withRoot(CreateMove);
+export default withRoot(UpdateMove);

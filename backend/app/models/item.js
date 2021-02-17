@@ -13,21 +13,16 @@ class Item {
         // Method to retrieve all user item and send them to client
 
         const query = `SELECT * FROM "item" WHERE id = $1;`; 
-
         const values = [itemId]; 
-
         const results = await client.query(query, values); 
-
         return (results.rows[0]) ? new this(results.rows[0]) : false; 
     }
 
     static async getAllInBox(boxId) {
         // Method to retrieve all user item and send them to client
 
-        const query = `SELECT * FROM "item" WHERE box_id = $1;`; 
-
+        const query = `SELECT * FROM item WHERE box_id = $1;`; 
         const results = await client.query(query, [boxId]); 
-
         const instances = []; 
 
         for(const row of results.rows) {
@@ -41,7 +36,7 @@ class Item {
         //* Check the existence of the item in the same box in the DB
         try {
             // request to find an associated user
-            const query = `SELECT * FROM "item" WHERE "name" = $1 AND user_id = $2 AND box_id=$3;`; 
+            const query = `SELECT * FROM item WHERE name = $1 AND user_id = $2 AND box_id=$3;`; 
             const results = await client.query(query, [form.name, form.user_id, form.box_id]); 
             
             // Returns a boolean 

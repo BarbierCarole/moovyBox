@@ -11,7 +11,8 @@ const profileController = require('./controllers/profileController');
 const moveController = require('./controllers/moveController');
 const boxController = require('./controllers/boxController'); 
 const itemController = require('./controllers/itemController'); 
-
+const tasksListController = require('./controllers/tasksListController');
+const taskController = require('./controllers/taskController');
 
 /* ACCES RELATED ROUTES */
 
@@ -82,19 +83,14 @@ router.route('/api/box/:boxId')
     // Delete the pointed box
     .delete(authCheckerMW, boxController.deleteBox);
 
-// router.route('/api/box/item/:search')
-//     // get boxes which content item
-//     .get(authCheckerMW,boxController.getSearchMoveBoxes);
-
 /* SEARCH */
-// CB : /api/box/${props.location.state.id}/search/${item}
 router.route('/api/move/:moveId/boxes/searchedItem/:searchedItem')
 .get(authCheckerMW, boxController.getSearchItemInBoxes);
 
 /* ITEM RELATED ROUTES  */
 
-router.route('/api/box/:boxId/items') // CB : before modif : "/item"
-    // get all item of a pointed box
+router.route('/api/box/:boxId/items') 
+    // get all items of a pointed box
     .get(authCheckerMW, itemController.getItems)
     // Create a new item in a box
     .post(authCheckerMW, itemController.createItem);
@@ -106,6 +102,25 @@ router.route('/api/box/:boxId/item/:itemId')
     .delete(authCheckerMW, itemController.deleteItem);
 
 
+/* TASK ROUTES */
+// list of the tasks
+router.route('/api/move/:moveId/tasksList')
+    // get all tasks of a selected move
+    .get(authCheckerMW, tasksListController.getTasksList)
+    // la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
+    
+
+router.route('/api/move/:moveId/tasksList/:taskId')
+    // to modify the the checkboxes
+    .put(authCheckerMW, tasksListController.updateTasksList);
+
+router.route('/api/move/:moveId/NewTasksList')
+    .post(authCheckerMW, tasksListController.createAllTasks)
+    .get(authCheckerMW, tasksListController.getTasksList);
+ 
+router.route('/api/move/:moveId/task/:taskId')
+    // .post(authCheckerMW, tasksListController.createAllTasks)
+    .get(authCheckerMW, taskController.getTaskById);
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});
 
