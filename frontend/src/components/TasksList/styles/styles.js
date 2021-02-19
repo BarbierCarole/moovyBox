@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       flexDirection: 'column',
-      // minHeight: '100vh',
+      minHeight: '100vh',
       justifyContent: 'center',      
     },
     
@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
     fab: {
       marginLeft: theme.spacing(-2),
       zIndex:'1000',
+    },
+
+    expandMoreIcon: {
+      color: '#ea2aad',
     },
     
 }));

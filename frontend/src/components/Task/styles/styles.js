@@ -4,39 +4,29 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       flexDirection: 'column',
-      // minHeight: '100vh',
-      justifyContent: 'center',      
+      minHeight: '100vh',
+      justifyContent: 'center', 
+      background:'#eee', 
+      minWidth: 275,    
     },
-    
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-        
-    accordion:{
-      fontSize: theme.typography.pxToRem(30), //15
-      fontWeight: theme.typography.fontWeightRegular,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'left',
-      width:'98%'
+    card: {
       
+      background: '#fff',
+      margin: theme.spacing(2),
     },
-
-    accordionSummary: {
-      backgroundColor: '#ddd',
+    cardContent: {
+      width:'80%',
+      padding: theme.spacing(2),
     },
+    typography:{
+      whiteSpace: 'pre-line', // pour afficcher à la ligne, sinon les sauts de ligne ne s'affichent pas
+    }, 
 
-    accordionDetails: {
-      backgroundColor: '#eee',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'left',
+    title: {
+      fontSize: 24,
     },
-
-    fab: {
-      marginLeft: theme.spacing(-2),
-      zIndex:'1000',
+    pos: {
+      margin:theme.spacing(2),
     },
     
 }));

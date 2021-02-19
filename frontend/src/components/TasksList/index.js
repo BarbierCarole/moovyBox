@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import IconButton from '@material-ui/core/IconButton';
 
-import { add, addDays, parseISO, format } from 'date-fns';
+import { addDays, parseISO, format } from 'date-fns';
 
 
 axios.defaults.withCredentials = true;
@@ -109,84 +109,83 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
   return (
 
     <div className={classes.root}>
-        <Header />
-          <Accordion square expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')} className={classes.accordion}>
-            <AccordionSummary 
-              className={classes.accordionSummary}
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography component="h1" variant="h4"  className={classes.title}>
-                Mes tâches à réaliser
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.accordionDetails}>
-              {tasks.map((data,i) => (
-                (!data.is_realised ? (
-                  <Card className={classes.root} key={i}>
-                    <CardHeader
-                      avatar={
-                        <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
-                      }
-                      action={
-                        <IconButton aria-label="settings">
-                        </IconButton>
-                      }
-                      title={
-                        // data.label
-                        <Link to ={{
-                            pathname:`/move/${data.move_id}/task/${data.id}`,
-                                state: {
-                                id: data.id,
-                                label: data.label,                                
-                                }
-                        }} >
-                            <Typography component="h1" variant="h5" className={classes.title}>
-                              {data.label}
-                            </Typography>
-                        </Link>                        
-                      }
-                      subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
-                    />
-                  </Card>) : console.log("tache true"))
-              ))}
-            </AccordionDetails>
-          </Accordion>
-          <Accordion square expanded={expanded === 'panel2'} onChange={handleChangePanel('panel2')} className={classes.accordion}>
-            <AccordionSummary 
-              className={classes.accordionSummary}
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2a-content"
-              id="panel2a-header"
-            >
-              <Typography component="h1" variant="h4"  className={classes.title}>
-                Mes tâches accomplies
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.accordionDetails}>
-              {tasks.map((data,i) => (
-                (data.is_realised >0 ? (
-                  <Card className={classes.root} key={i}>
-                  <CardHeader
-                      avatar={
-                        <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
-                      }
-                      action={
-                        <IconButton aria-label="settings">
-                        </IconButton>
-                      }
-                      title={data.label}
-                      subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}                      
-                    />
-                  </Card>) : console.log("tache true"))
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        
-        <Footer />
+      <Header />
+      <Accordion square expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')} className={classes.accordion}>
+        <AccordionSummary 
+          className={classes.accordionSummary}
+          expandIcon={<ExpandMoreIcon style={{color: '#ea2aad'}} />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography component="h1" variant="h4"  className={classes.title}>
+            Mes tâches à réaliser
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails className={classes.accordionDetails}>
+          {tasks.map((data,i) => (
+            (!data.is_realised ? (
+              <Card className={classes.card} key={i}>
+                <CardHeader
+                  avatar={
+                    <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
+                  }
+                  action={
+                    <IconButton aria-label="settings">
+                    </IconButton>
+                  }
+                  title={
+                    // data.label
+                    <Link to ={{
+                        pathname:`/move/${data.move_id}/task/${data.id}`,
+                            state: {
+                            id: data.id,
+                            label: data.label,                                
+                            }
+                    }} >
+                        <Typography component="h1" variant="h5" className={classes.title}>
+                          {data.label}
+                        </Typography>
+                    </Link>                        
+                  }
+                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
+                />
+              </Card>) : console.log("tache true"))
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      <Accordion square expanded={expanded === 'panel2'} onChange={handleChangePanel('panel2')} className={classes.accordion}>
+        <AccordionSummary 
+          className={classes.accordionSummary}
+          expandIcon={<ExpandMoreIcon style={{color: '#ea2aad'}}/>}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography component="h1" variant="h4"  className={classes.title}>
+            Mes tâches accomplies
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails className={classes.accordionDetails}>
+          {tasks.map((data,i) => (
+            (data.is_realised >0 ? (
+              <Card className={classes.card} key={i}>
+              <CardHeader
+                  avatar={
+                    <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
+                  }
+                  action={
+                    <IconButton aria-label="settings">
+                    </IconButton>
+                  }
+                  title={data.label}
+                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}                      
+                />
+              </Card>) : console.log("tache true"))
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      
+      <Footer />
     </div>  
-
   )
 }
 
