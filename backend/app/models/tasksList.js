@@ -134,6 +134,7 @@ class TasksList {
     //    }
 
     // }
+    // Pour insérer toutes les taches d'un bloc dans la checklist du déménagement
     static async insertNewTasks(move_id) { 
 
         try {
@@ -184,6 +185,29 @@ class TasksList {
         } catch (error) {
             console.trace(error);
         }
+    }
+
+    async insertInTasksList(move_id) { 
+
+        try {
+            
+            console.log("task.js l.142 : this.label, this.description, move_id, this.note, this.date, this.contact => ",this.label, this.description, move_id, this.note, this.date, this.contact);
+            const query = `
+            INSERT INTO 
+                tasks_list ( task_id, move_id, note, date, contact )
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *;`;
+            const values = [ this.task_id, move_id, this.note, this.date, this.contact ];
+            
+            const results = await client.query(query, values);
+            //console.log("l.149 ",new TasksList(results.rows[0]));
+            return new TasksList(results.rows[0]); 
+            
+
+       } catch (error) {
+           console.trace(error);
+       }
+
     }
 
 }

@@ -107,7 +107,8 @@ router.route('/api/box/:boxId/item/:itemId')
 router.route('/api/move/:moveId/tasksList')
     // get all tasks of a selected move
     .get(authCheckerMW, tasksListController.getTasksList)
-    // la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
+    // creation d'une tache pour un utilisateur pour un déménagement
+
     
 
 router.route('/api/move/:moveId/tasksList/:taskId')
@@ -115,12 +116,16 @@ router.route('/api/move/:moveId/tasksList/:taskId')
     .put(authCheckerMW, tasksListController.updateTasksList);
 
 router.route('/api/move/:moveId/NewTasksList')
+// la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
+    
     .post(authCheckerMW, tasksListController.createAllTasks)
     .get(authCheckerMW, tasksListController.getTasksList);
  
 router.route('/api/move/:moveId/task/:taskId')
-    // .post(authCheckerMW, tasksListController.createAllTasks)
     .get(authCheckerMW, taskController.getTaskById);
+
+router.route('/api/move/:moveId/task')
+    .post(authCheckerMW, tasksListController.createTaskInTasksList);
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});
 

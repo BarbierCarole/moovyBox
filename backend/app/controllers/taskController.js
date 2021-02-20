@@ -36,10 +36,12 @@ const tasksListSchema = Joi.object({
     .truthy('true')
     .falsy('false')
     .required(),
+    date: Joi.date(),
 });
 
 const taskController = {
 
+    // /api/move/:moveId/task/:taskId pour afficher le détail de la tache
     getTaskById: async(req,res) => {
 
         try {
@@ -64,6 +66,29 @@ const taskController = {
             const task = await Task.getTaskByPk(req.params.moveId, req.params.taskId);
     
             return res.send(task);
+
+        } catch (err) {
+            console.trace(err);
+        }
+    },
+    
+    // pour enregistrer une nouvelle tache
+    createTaskinTask: async(req,res) => {
+
+        try {
+
+            console.log('>> req.params :>> ', req.params);
+
+            // create an instance of a task
+            const newTask = new Task(req.body); 
+            
+            console.log(">> l.98 taskcontroller req.body", req.body,'>><<', newTask);
+
+            const moveId = req.params.moveId;
+            // Save the current box object to DB
+            const storedTask = await newTask.insertInTask(moveId);
+            res.send(storedTask);    
+            
 
         } catch (err) {
             console.trace(err);

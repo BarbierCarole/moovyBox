@@ -18,140 +18,114 @@ class Task {
         this.contact = obj.contact;
         this.is_realised = obj.is_realised; 
         this.note = obj.note;
+        this.date = obj.date;
     }
 
-    static async getAllTaskFromMove(moveId) {
+    // static async getAllTaskFromMove(moveId) {
 
-        const query = `
-        SELECT 
-            move_id,
-            is_realised,
-            m.date,
-            t.label,
-            t.description,
-            t.id,
-            t.nber_days
-        FROM move m
-        INNER JOIN tasks_list tl
-            ON tl.move_id = m.id
-        INNER JOIN task t
-            ON t.id = tl.task_id
-        WHERE move_id = $1
-        ORDER BY t.nber_days ASC;`;
+    //     const query = `
+    //     SELECT 
+    //         move_id,
+    //         is_realised,
+    //         m.date,
+    //         t.label,
+    //         t.description,
+    //         t.id,
+    //         t.nber_days
+    //     FROM move m
+    //     INNER JOIN tasks_list tl
+    //         ON tl.move_id = m.id
+    //     INNER JOIN task t
+    //         ON t.id = tl.task_id
+    //     WHERE move_id = $1
+    //     ORDER BY t.nber_days ASC;`;
     
-        const values = [moveId];
-        const results = await client.query(query, values);
-        const instances = [];
-        for ( const row of results.rows) {
-            instances.push(new this(row));
-        }
-        console.log('>> l.45 tasksList : instances :',instances);
-        return instances;
-    }
+    //     const values = [moveId];
+    //     const results = await client.query(query, values);
+    //     const instances = [];
+    //     for ( const row of results.rows) {
+    //         instances.push(new this(row));
+    //     }
+    //     console.log('>> l.45 tasksList : instances :',instances);
+    //     return instances;
+    // }
 
-    static async getTaskByPk(moveId, taskId) {
+    // static async getTaskByPk(moveId, taskId) {
                 
-        const query = ` 
-            SELECT 
-                move_id,
-                is_realised,
-                m.date,
-                t.label,
-                t.description,
-                t.id,
-                t.nber_days
-            FROM move m
-            INNER JOIN tasks_list tl
-                ON tl.move_id = m.id
-            INNER JOIN task t
-                ON t.id = tl.task_id
-            WHERE 
-                move_id = $1 AND task_id = $2;`;
+    //     const query = ` 
+    //         SELECT 
+    //             move_id,
+    //             is_realised,
+    //             m.date,
+    //             t.label,
+    //             t.description,
+    //             t.id,
+    //             t.nber_days
+    //         FROM move m
+    //         INNER JOIN tasks_list tl
+    //             ON tl.move_id = m.id
+    //         INNER JOIN task t
+    //             ON t.id = tl.task_id
+    //         WHERE 
+    //             move_id = $1 AND task_id = $2;`;
 
-        const values = [moveId,taskId]; 
-        const results = await client.query(query, values); 
-        console.log(">> tasksList l.65 : results :", results.rows[0]);
-        return (results.rows[0]) ? new this(results.rows[0]) : false; 
-    }
+    //     const values = [moveId,taskId]; 
+    //     const results = await client.query(query, values); 
+    //     console.log(">> tasksList l.65 : results :", results.rows[0]);
+    //     return (results.rows[0]) ? new this(results.rows[0]) : false; 
+    // }
 
     // to see if the label enter exist yet in the move or not
-    static async taskLabelExists (dataForm) {
-        try {
-            const query = `
-                SELECT 
-                    t.label
-                FROM move m
-                INNER JOIN tasks_list tl
-                    ON tl.move_id = m.id
-                INNER JOIN task t
-                    ON t.id = tl.task_id
-                WHERE task_id = 15 AND move_id = 19`;
-            const results = await client.query(query,[dataForm.label,dataForm.move_id])
-            return !!results.rowCount;
-        } catch (error) {
-            return console.trace(error); 
-        }
-    
-    }
-
-    async save() {
-        try {
-
-            if(!!this.task_id) {
-               return this.update(); 
-            } else {
-               return this.insert(); 
-            }
-            
-        } catch (error) {
-            console.log(error); 
-        }
-    }
-
-    // async insertTaskInTasksList() {
-
+    // static async taskLabelExists (dataForm) {
     //     try {
     //         const query = `
-    //             INSERT INTO 
-    //                 tasks_list (
-    //                     is_realised, 
-    //                     contact, 
-    //                     note, 
-    //                     task_id, 
-    //                     move_id
-    //                     )
-    //             VALUES ($1::boolean, $2, $3, $4, $5) 
-    //             RETURNING *;`;
-           
-    //         const values = [ this.is_realised,this.contact, this.note, this.task_id, this.move_id ];
-            
-    //         const results = await client.query(query, values);
-            
-    //         return new TasksList(results.rows[0]);
-
-    //    } catch (error) {
-    //        console.trace(error)
-    //    }
-
+    //             SELECT 
+    //                 t.label
+    //             FROM move m
+    //             INNER JOIN tasks_list tl
+    //                 ON tl.move_id = m.id
+    //             INNER JOIN task t
+    //                 ON t.id = tl.task_id
+    //             WHERE task_id = 15 AND move_id = 19`;
+    //         const results = await client.query(query,[dataForm.label,dataForm.move_id])
+    //         return !!results.rowCount;
+    //     } catch (error) {
+    //         return console.trace(error); 
+    //     }
+    
     // }
-    static async insertNewTasks(move_id) { 
+
+    // async save() {
+    //     try {
+
+    //         if(!!this.task_id) {
+    //            return this.update(); 
+    //         } else {
+    //            return this.insert(); 
+    //         }
+            
+    //     } catch (error) {
+    //         console.log(error); 
+    //     }
+    // }
+
+    
+    async insertInTask(move_id) { 
 
         try {
-            console.log("ds tasksList.js : plops");
+            
+            console.log("task.js l.142 : this.label, this.description, move_id, this.note, this.date, this.contact => ",this.label, this.description, move_id, this.note, this.date, this.contact);
+            
             const query = `
-            INSERT INTO 
-                tasks_list ( task_id, move_id )
-            SELECT 
-                id,$1 
-            FROM 
-                task
-            WHERE 
-                general_task=true;`;
-            const values = [ move_id ];
+            INSERT INTO task (label,description) VALUES ( 
+                $1,$2
+                )
+            RETURNING *;`;
+            const values = [ this.label, this.description];
             
             const results = await client.query(query, values);
-            //console.log("l.149 ",new TasksList(results.rows[0]));
-            return results;
+           // console.log("l.149 ",new TasksList(results.rows[0]));
+            return new Task(results.rows[0]); 
             
 
        } catch (error) {
@@ -159,7 +133,7 @@ class Task {
        }
 
     }
-   
+       
     async updateTasksList() {
         try {
             // Prepare the query

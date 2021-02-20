@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const TasksList = require('../models/tasksList');
-
+const Task = require('../models/task');
 
 const taskSchema = Joi.object({
     id: Joi.number().integer()
@@ -35,7 +35,9 @@ const tasksListSchema = Joi.object({
     is_realised: Joi.boolean()
     .truthy('true')
     .falsy('false')
-    .required(),
+    .required(), 
+    date: Joi.date()
+
 });
 
 const tasksListController = {
@@ -165,6 +167,28 @@ const tasksListController = {
         }
         
     },
+    // pour enregistrer une nouvelle tache
+    createTaskInTasksList: async(req,res) => {
+
+        try {
+            console.log('>> req.params :>> ', req.params);
+            const moveId = req.params.moveId;
+            
+            const newTask = new Task(req.body); 
+            const storedTask = await newTask.insertInTask(moveId);
+            console.log("storedTask",storedTask.id);
+            // create an instance of a task
+            const newTasksList = new TasksList(req.body); 
+            newTasksList.task_id = storedTask.id;
+            // Save the current box object to DB
+            const storedTasksList = await newTasksList.insertInTasksList(moveId);
+            res.send(storedTask);                
+
+        } catch (err) {
+            console.trace(err);
+        }
+    },
+    
 
 };
 
