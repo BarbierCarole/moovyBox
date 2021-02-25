@@ -5,7 +5,9 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100vh',
-      justifyContent: 'center',      
+      justifyContent: 'center',  
+      transform: 'translateZ(0px)',
+      flexGrow: 1,    
     },
     
     avatar: {
@@ -20,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
       alignItems: 'left',
       width:'98%'
-      
     },
 
     accordionSummary: {
@@ -41,6 +42,19 @@ const useStyles = makeStyles((theme) => ({
 
     expandMoreIcon: {
       color: '#ea2aad',
+    },
+        
+    speedDial: {
+      bottom: theme.spacing(6),
+      right: theme.spacing(2),
+      position:'fixed',
+    },
+    appBar: {
+      position: 'relative',
+    },
+    title: {
+      marginLeft: theme.spacing(2),
+      flex: 1,
     },
     
 }));

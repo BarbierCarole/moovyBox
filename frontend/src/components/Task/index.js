@@ -23,7 +23,9 @@ import {Card, CardHeader, CardContent, Avatar } from '@material-ui/core';
 
 import IconButton from '@material-ui/core/IconButton';
 
-import { add, addDays, parseISO, format, toDate } from 'date-fns';
+import { add, addDays, parseISO, format, toDate, } from 'date-fns';
+import { frFR } from 'date-fns/locale';
+import { addYears, formatWithOptions } from 'date-fns/fp';
 
 
 axios.defaults.withCredentials = true;
@@ -32,7 +34,6 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   console.log('>>l.28 props : ',props);
-
 
   const classes = useStyles();
  
@@ -48,13 +49,13 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
 
     
   const dayCalcT= (date,day) => {
+    // if (!date)... sert pour l'erreur "invalide value" car serveur n'a encore rien envoyé quand fonction lancée. Pourquoi ?...
     if (!date) {
       return "";
     }
 
-    const result = addDays(parseISO(date), day);
-    console.log(">>dayCalc",result);
-    return format(result,'dd/MM/yyyy');
+    const result = addDays(parseISO(date), day);    
+    return format(result,'dd/MM/yyyy');    
   }
 
   useEffect(() => {
@@ -77,31 +78,14 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
 
     <div className={classes.root}>
         <Header />
-        
-          <div>
-            
-                  
-            {/* {format(dayCalcT('2021-02-21T23:00:00.000Z',7),'dd/MM/yyyy')}
-            {console.log('>> l.80task.date', task.date)} */}
-            {dayCalcT(task.date, task.nber_days)}
-            {/* {format(dayCalcT(task.date,task.nber_days),'dd/MM/yyyy')}  */}
-          
-          {console.log("task.date et task.nber_days",task.date, task.nber_days)}
-            {/* {console.log('l l.87typeof date : ', typeof task.date, ' et typeof task.nber_days :',typeof task.nber_days)}
-            {format(dayCalcT(task.date,task.day),'dd/MM/yyyy')}  */}
-            {/* {format(task.date,'dd/MM/yyyy')} */}
-          </div>  
-        
         <Card className={classes.card}>
           
           <CardContent>
             
-            <Typography variant="h3" component="h1" gutterBottom>
-              
+            <Typography variant="h4" component="h1" gutterBottom>
              
-              
-              
-              {task.label}
+              {task.label}<br/>
+              {dayCalcT(task.date, task.nber_days)}
             </Typography>       
         
             <Typography variant="body2" component="p" className={classes.typography}>

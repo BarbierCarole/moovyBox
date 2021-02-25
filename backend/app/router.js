@@ -31,9 +31,7 @@ router.post('/api/reset-token', authController.resetToken);
 router.put('/api/profile/reset-password',authController.resetPassword); 
 
 
-/* 
-    TODO : Should redirect towards password renewal page 
-*/
+
 router.get('/api/profile/reset-password/:token', authController.resetPasswordRedirection); 
 
 
@@ -107,22 +105,20 @@ router.route('/api/box/:boxId/item/:itemId')
 router.route('/api/move/:moveId/tasksList')
     // get all tasks of a selected move
     .get(authCheckerMW, tasksListController.getTasksList)
-    // creation d'une tache pour un utilisateur pour un déménagement
-
-    
 
 router.route('/api/move/:moveId/tasksList/:taskId')
     // to modify the the checkboxes
-    .put(authCheckerMW, tasksListController.updateTasksList);
+    .put(authCheckerMW, tasksListController.updateTasksList)
+    .delete(authCheckerMW, tasksListController.deleteTaskInList);
 
 router.route('/api/move/:moveId/NewTasksList')
 // la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
-    
     .post(authCheckerMW, tasksListController.createAllTasks)
     .get(authCheckerMW, tasksListController.getTasksList);
  
 router.route('/api/move/:moveId/task/:taskId')
-    .get(authCheckerMW, taskController.getTaskById);
+    .get(authCheckerMW, tasksListController.getTaskById);
+
 
 router.route('/api/move/:moveId/task')
     .post(authCheckerMW, tasksListController.createTaskInTasksList);

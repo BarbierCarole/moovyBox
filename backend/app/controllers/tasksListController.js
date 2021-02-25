@@ -36,12 +36,13 @@ const tasksListSchema = Joi.object({
     .truthy('true')
     .falsy('false')
     .required(), 
-    date: Joi.date()
+    date_perso: Joi.date()
 
 });
 
 const tasksListController = {
 
+    
     createAllTasks: async (req, res) => { 
 
         //* créer une liste avec toutes les tâches de la table task pour un déménagement donné dans la table de liaison tasks_list
@@ -73,6 +74,35 @@ const tasksListController = {
         }
 
         
+    },
+    // /api/move/:moveId/task/:taskId pour afficher le détail de la tache dans un déménagement
+    getTaskById: async(req,res) => {
+
+        try {
+
+            console.log('>> req.params :>> ', req.params);
+            //  user verification
+            const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
+            if (!matchedMove.length) {
+                // Abort operation and send error to client;
+                return res.status(403).send({
+                    error : {
+                        statusCode: 403,
+                        message: {
+                            en:"Forbidden action - The requested move doesn't belongs to current user", 
+                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
+                        }
+                    }
+                });
+            }
+            console.log("taskListCOntroller l.98 req.params.moveId, req.params.taskId",req.params.moveId, req.params.taskId);
+            const task = await TasksList.getByPk(req.params.moveId, req.params.taskId);
+    
+            return res.send(task);
+
+        } catch (err) {
+            console.trace(err);
+        }
     },
 
     getTasksList: async(req,res) => {
@@ -158,7 +188,7 @@ const tasksListController = {
             
             // const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
 
-            //req.session.user.contentUpdated = true; 
+            req.session.user.contentUpdated = true; 
             
             // return the updated task
             return res.send((updatedTask) ? updatedTask : false);
@@ -169,12 +199,13 @@ const tasksListController = {
     },
     // pour enregistrer une nouvelle tache
     createTaskInTasksList: async(req,res) => {
-
+    
         try {
-            console.log('>> req.params :>> ', req.params);
-            const moveId = req.params.moveId;
             
+            const moveId = req.params.moveId;
+
             const newTask = new Task(req.body); 
+
             const storedTask = await newTask.insertInTask(moveId);
             console.log("storedTask",storedTask.id);
             // create an instance of a task
@@ -182,13 +213,77 @@ const tasksListController = {
             newTasksList.task_id = storedTask.id;
             // Save the current box object to DB
             const storedTasksList = await newTasksList.insertInTasksList(moveId);
-            res.send(storedTask);                
+            res.send(storedTasksList);                
 
         } catch (err) {
             console.trace(err);
         }
     },
-    
+
+    deleteTaskInList: async(req,res) => {
+        try {
+
+            // 1er -> pour supprimer la liaison tache <-> demenagement
+            const storedTaskInList = await TasksList.getByPk(req.params.moveId, req.params.taskId);
+           
+            // If no box was found 
+            if (!storedTaskInList ) {
+                // Abort and send error : 404 not found
+                return res.status(404).send({
+                    error : {
+                        statusCode: 404,
+                        message: {
+                            en:"Not found - This task in list doesn't exists", 
+                            fr:"Pas trouvé - cette tache n'existe pas dans la liste"
+                        }
+                    }
+                });
+            }
+            // on supprime la liaison
+            const successTaskInList = await storedTaskInList.delete();      
+            if (!successTaskInList) {
+                return res.status(500).send({
+                    statusCode : 500,
+                    message:  {
+                        en:"Something went wrong", 
+                        fr:"Quelque chose s'est mal passée"
+                    }
+                });
+            } else { console.log("étape 1 bien passée");}
+
+            // 2e -> pour supprimer la tache
+            const storedTask = await Task.getTaskByPk(req.params.taskId);
+            console.log(">> l.195 storedTask",req.params.taskId);
+             // If no box was found 
+             if (!storedTask ) {
+                 // Abort and send error : 404 not found
+                 return res.status(404).send({
+                     error : {
+                         statusCode: 404,
+                         message: {
+                             en:"Not found - This task in list doesn't exists", 
+                             fr:"Pas trouvé - cette tache n'existe pas dans la liste"
+                         }
+                     }
+                 });
+             }
+             // on supprime la liaison
+             const successTask = await storedTask.delete();      
+             if (!successTask) {
+                 return res.status(500).send({
+                     statusCode : 500,
+                     message:  {
+                         en:"Something went wrong", 
+                         fr:"Quelque chose s'est mal passée"
+                     }
+                 });
+             }
+
+            res.send(successTaskInList);
+        } catch (err) {
+            console.trace(err);
+        }
+    }
 
 };
 

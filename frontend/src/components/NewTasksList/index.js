@@ -96,6 +96,7 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
   }
  
   return (
+    
     <div className={classes.root}>
       <Header />
       <Container component="main" > 
@@ -128,6 +129,7 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
       <Footer />
     </div>
   )
+    
 }
 
 export default withRoot(NewTasksList);

@@ -50,30 +50,17 @@ class Task {
     //     return instances;
     // }
 
-    // static async getTaskByPk(moveId, taskId) {
+    // Pour afficher le détail d'une tache
+    static async getTaskByPk(id) {
                 
-    //     const query = ` 
-    //         SELECT 
-    //             move_id,
-    //             is_realised,
-    //             m.date,
-    //             t.label,
-    //             t.description,
-    //             t.id,
-    //             t.nber_days
-    //         FROM move m
-    //         INNER JOIN tasks_list tl
-    //             ON tl.move_id = m.id
-    //         INNER JOIN task t
-    //             ON t.id = tl.task_id
-    //         WHERE 
-    //             move_id = $1 AND task_id = $2;`;
+        const query = ` 
+            SELECT * FROM task WHERE id = $1;`;
 
-    //     const values = [moveId,taskId]; 
-    //     const results = await client.query(query, values); 
-    //     console.log(">> tasksList l.65 : results :", results.rows[0]);
-    //     return (results.rows[0]) ? new this(results.rows[0]) : false; 
-    // }
+        const values = [id]; 
+        const results = await client.query(query, values); 
+        console.log(">> tasksList l.65 : results :", results.rows[0]);
+        return (results.rows[0]) ? new this(results.rows[0]) : false; 
+    }
 
     // to see if the label enter exist yet in the move or not
     // static async taskLabelExists (dataForm) {
@@ -156,6 +143,18 @@ class Task {
             //return the updated move
             return new TasksList(results.rows[0]); 
         } catch (error) {
+            console.trace(error);
+        }
+    }
+
+    async delete() {
+        try {
+            const query = `DELETE FROM task WHERE id=$1;`;
+            const values = [this.id];
+            const result = await client.query(query,values);
+            return !! result.rowCount;
+        }
+        catch (error) {
             console.trace(error);
         }
     }

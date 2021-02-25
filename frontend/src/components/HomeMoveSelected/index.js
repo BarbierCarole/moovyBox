@@ -5,9 +5,9 @@ import Header from '../modules/views/Header';
 import Footer from '../modules/views/Footer';
 import Typography from '@material-ui/core/Typography';
 import {BrowserRouter as Router, Link} from "react-router-dom";
-import Grid from '@material-ui/core/Grid';
+
 // for the icon fontasome
-import {Icon, Card, CardContent, Button, Fab, Tooltip} from '@material-ui/core';
+import {Icon, Button, Fab, Tooltip} from '@material-ui/core';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import SearchIcon from '@material-ui/icons/Search';
 import UnarchiveIcon from '@material-ui/icons/Unarchive';
@@ -76,7 +76,7 @@ const HomeMoveSelected = () => {
                                 }
                         }} style={{ display: "flex", justifyContent: "left"}}>
                             <Typography component="h1" variant="h5" className={classes.title}>
-                            <Tooltip title="Ajouter un carton" aria-label="Add">
+                            <Tooltip title="Consulter mes cartons" aria-label="Add">
                                 <Fab color="primary" className={classes.fab}>
                                 <UnarchiveIcon />
                                 </Fab>
@@ -93,7 +93,7 @@ const HomeMoveSelected = () => {
                                 }
                         }} style={{ display: "flex", justifyContent: "left" }}>
                             <Typography component="h1" variant="h5" className={classes.title}>
-                            <Tooltip title="Ajouter un carton" aria-label="Add">
+                            <Tooltip title="Je veux rechercher un objet" aria-label="Add">
                                 <Fab color="primary" className={classes.fab}>
                                 <SearchIcon />
                                 </Fab>
@@ -112,7 +112,7 @@ const HomeMoveSelected = () => {
                                 }
                         }} className={classes.link} >
                             <Typography component="h1" variant="h5" className={classes.title}>
-                            <Tooltip title="Ajouter un carton" aria-label="Add">
+                            <Tooltip title="Je crée ou je regarde ma checkliste" aria-label="Add">
                                 <Fab color="primary" className={classes.fab}>
                                 <ListAltIcon />
                                 </Fab>

@@ -47,7 +47,6 @@ const taskController = {
         try {
 
             console.log('>> req.params :>> ', req.params);
-
             //  user verification
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {
@@ -63,7 +62,7 @@ const taskController = {
                 });
             }
 
-            const task = await Task.getTaskByPk(req.params.moveId, req.params.taskId);
+            const task = await Task.getTaskByPk(req.params.taskId);
     
             return res.send(task);
 
@@ -71,7 +70,7 @@ const taskController = {
             console.trace(err);
         }
     },
-    
+
     // pour enregistrer une nouvelle tache
     createTaskinTask: async(req,res) => {
 

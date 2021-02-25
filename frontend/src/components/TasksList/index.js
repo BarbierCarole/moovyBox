@@ -14,7 +14,7 @@ import { Redirect} from 'react-router';
 import {Link} from "react-router-dom";
 
 //to display in a card
-import {Card, CardHeader, CardContent, Checkbox } from '@material-ui/core';
+import {Card, CardHeader, CardContent, Checkbox, Fab } from '@material-ui/core';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -22,10 +22,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import IconButton from '@material-ui/core/IconButton';
 
-import { addDays, parseISO, format } from 'date-fns';
+import { addDays, parseISO, format, formatDistanceToNow } from 'date-fns';
 
+import {SpeedDial,SpeedDialIcon } from '@material-ui/lab';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 axios.defaults.withCredentials = true;
+
 
 const TasksList = (props) => { // props : location.state.id:19 et location.state.label:"Caraibes"
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -34,9 +37,10 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
   const classes = useStyles();
 
   const [tasks, setTasks] = useState([]); // toutes les taches grace à useEffect setTasks(res.data); 
-  console.log(">> tasks l.32", tasks);
-
-
+  console.log(">> tasks l.40", tasks);
+  const [dateOfAction, setDateOfAction] = useState([]);
+  console.log(">> l.42 dateOfAction", dateOfAction)
+  
   const isLogged = useSelector((state) => state.isLogged);
   console.log("State of isLogged : ",isLogged);
   if (!isLogged) {
@@ -45,20 +49,35 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     return <Redirect to="/signin" />;
   };
 
+  
   // Pour calculer la date d'action par rapport à la date du déménagement et au nbre de jours avant ou après
   const dayCalcT= (date,day) => {
-    const result = addDays(parseISO(date), day);
-    console.log(">>dayCalc",result);
-    
+    console.log("date, day", date, day);
+    const result = addDays(parseISO(date), day);    
     return result;
   }
 
-  // pour afficher déplié le premier accordéon
-  const [expanded, setExpanded] = React.useState('panel1');
+  const dayOfAction = (date, day, date_perso, general_task, id) => {
+    
+    console.log(">> l.143 tasks.general_task, date, day, date_perso",general_task, date, day, date_perso)
+    if (general_task) {
+      const result = addDays(parseISO(date), day);
+    return result; 
+    }
+    else {
+      if(!date_perso){return parseISO(date);} 
+      console.log("dateP ", date_perso, " et : ",parseISO(date_perso));
+      const result = parseISO(date_perso);
+      return result;
+    } 
+    
+  }  
+  // pour afficher déplié l'accordéon en fonction de l'autre
+  // const [expanded, setExpanded] = React.useState('panel1');
 
-  const handleChangePanel = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
+  // const handleChangePanel = (panel) => (event, newExpanded) => {
+  //   setExpanded(newExpanded ? panel : false);
+  // };
 
   useEffect(() => {
     console.log(">> l.31 props : ",props);
@@ -76,7 +95,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
 
   const handleChange = (e) => {
     console.log(">> l.43 e :", e.target.value);
-    console.log(">> l.44 e :", e.target.checked);
+    
     const t = tasks.map((v) => (
       {
       id: v.id,
@@ -106,11 +125,13 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
         })
   }
 
-  return (
 
+  return (
+    <>
     <div className={classes.root}>
       <Header />
-      <Accordion square expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')} className={classes.accordion}>
+      <Accordion square expanded className={classes.accordion}> 
+      {/* Dans <Accordion pour que l'accordeon se déplie ou replie en fonction de l'autre : "expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')}" */}
         <AccordionSummary 
           className={classes.accordionSummary}
           expandIcon={<ExpandMoreIcon style={{color: '#ea2aad'}} />}
@@ -123,6 +144,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
           {tasks.map((data,i) => (
+            
             (!data.is_realised ? (
               <Card className={classes.card} key={i}>
                 <CardHeader
@@ -147,13 +169,15 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
                         </Typography>
                     </Link>                        
                   }
-                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}
+                  subheader={format(dayOfAction(data.date,data.nber_days, data.date_perso, data.general_task, data.id),'dd/MM/yyyy')}
+                  // subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}  
                 />
               </Card>) : console.log("tache true"))
           ))}
         </AccordionDetails>
       </Accordion>
-      <Accordion square expanded={expanded === 'panel2'} onChange={handleChangePanel('panel2')} className={classes.accordion}>
+      <Accordion square  className={classes.accordion}>
+      {/* expanded={expanded === 'panel2'} onChange={handleChangePanel('panel2')} */}
         <AccordionSummary 
           className={classes.accordionSummary}
           expandIcon={<ExpandMoreIcon style={{color: '#ea2aad'}}/>}
@@ -183,9 +207,27 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
           ))}
         </AccordionDetails>
       </Accordion>
-      
       <Footer />
-    </div>  
+      </div> 
+      {/* Boutton + */}
+      <Link to ={{
+          pathname:`/move/${props.location.state.id}/create-task`,
+              state: {
+              moveId: props.location.state.id,                        
+              }
+      }} >
+        <SpeedDial
+        ariaLabel="SpeedDial example"
+        className={classes.speedDial}
+        icon={<AddCircleOutlineIcon />}
+        //onClose={handleClose}
+        //onOpen={handleOpen}
+        open={open}
+        >   
+        </SpeedDial>
+        
+      </Link>
+    </> 
   )
 }
 
