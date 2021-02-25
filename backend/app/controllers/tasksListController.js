@@ -267,7 +267,7 @@ const tasksListController = {
                      }
                  });
              }
-             // on supprime la liaison
+             // on supprime la tache
              const successTask = await storedTask.delete();      
              if (!successTask) {
                  return res.status(500).send({
