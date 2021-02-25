@@ -13,13 +13,28 @@ import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
 import {Link} from "react-router-dom";
 
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import Grid from '@material-ui/core/Grid';
 
 import { makeStyles } from '@material-ui/core/styles';
 
 
 //to display in a card
 import {Card, CardHeader, CardContent, Avatar } from '@material-ui/core';
+// bouton correction
+import SpeedDial from '@material-ui/lab/SpeedDial';
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import ButtonCustom from '../modules/components/Button';
+
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -27,17 +42,19 @@ import { add, addDays, parseISO, format, toDate, } from 'date-fns';
 import { frFR } from 'date-fns/locale';
 import { addYears, formatWithOptions } from 'date-fns/fp';
 
-
 axios.defaults.withCredentials = true;
 
 const Task = (props) => { // props : location.state.id:19 et location.state.label:"Caraibes"
-
+    const taskId = props.match.params.taskId;
+    const id = props.match.params.id;
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  console.log('>>l.28 props : ',props);
+  console.log('>>l.28 props id, taskId : ',id, taskId);
 
   const classes = useStyles();
- 
+  // For button modify
+  const [open, setOpen] = useState(false);
   const [task, setTask] = useState('');
+  // const [selectedId, setSelectedId] = useState();
  
   const isLogged = useSelector((state) => state.isLogged);
   console.log("State of isLogged : ",isLogged);
@@ -47,7 +64,29 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
     return <Redirect to="/signin" />;
   };
 
-    
+  const goBack= () =>{
+    window.history.back();
+  }
+
+  const handleDelete = () => {
+    console.log('id et taskId: ', id, taskId);
+    axios.delete(BASE_URL+`/api/move/${id}/tasksList/${taskId}`)
+        .then(res => {
+          setOpen(false);
+        }).catch(err => {
+          console.log(err);
+        })
+    goBack();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = (value) => {
+    setOpen(true);
+  };
+
   const dayCalcT= (date,day) => {
     // if (!date)... sert pour l'erreur "invalide value" car serveur n'a encore rien envoyé quand fonction lancée. Pourquoi ?...
     if (!date) {
@@ -68,31 +107,63 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
     });
   }, []); //  [] pour que ça ne boucle pas
 
- // ################### 
- // test date
- // Pour calculer la date d'action par rapport à la date du déménagement et au nbre de jours avant ou après
- 
-  
-  // ############# fin test
   return (
 
     <div className={classes.root}>
         <Header />
         <Card className={classes.card}>
-          
           <CardContent>
-            
-            <Typography variant="h4" component="h1" gutterBottom>
-             
-              {task.label}<br/>
-              {dayCalcT(task.date, task.nber_days)}
-            </Typography>       
-        
-            <Typography variant="body2" component="p" className={classes.typography}>
-              {task.description}   
-            </Typography>
+          <Grid container spacing={0}>
+            <Grid item xs={10}> 
+              <Typography variant="h4" component="h1" gutterBottom className={classes.title}>            
+                {task.label}<br/>
+                {dayCalcT(task.date, task.nber_days)}
+              </Typography>   
+            </Grid>
+            <Grid item xs={2}>   
+              <DeleteForeverIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(task.id)}}/>
+            </Grid> 
+            <Grid item xs={12}> 
+              <Typography variant="body2" component="p" className={classes.typography}>
+                {task.description}   
+              </Typography>
+            </Grid>
+          </Grid>
           </CardContent>
         </Card> 
+
+        {/*----------  popup modale de confirmation  -------- */}
+          
+          
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title" className={classes.dialogTitle} color="secondary">{"Confirmation de suppression"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Etes-vous sûr de vouloir supprimer ce carton et tout son contenu définitivement ?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} variant="outlined" color="primary" >
+              Annuler
+            </Button>
+            <ButtonCustom
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={() => {handleDelete()} }
+              color="secondary"
+              // className={classes.submit}
+            >
+              Confirmation de suppression
+            </ButtonCustom>
+          </DialogActions>
+        </Dialog>
+      
         
         <Footer />
     </div>  

@@ -23,10 +23,19 @@ const useStyles = makeStyles((theme) => ({
     }, 
 
     title: {
-      fontSize: 24,
+      fontSize: 18,
+      maxWidth: '85%'
     },
     pos: {
       margin:theme.spacing(2),
+    },
+
+    speedDial: {
+      position: 'absolute',
+      '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
+        top: theme.spacing(0),
+        right: theme.spacing(0),
+      },
     },
     
 }));
