@@ -23,6 +23,7 @@ import TasksList from 'src/components/TasksList';
 import NewTasksList from 'src/components/NewTasksList';
 import Task from 'src/components/Task';
 import CreateTask from 'src/components/CreateTask';
+import UpdateTask from 'src/components/UpdateTask';
 
 // == Composant
 const App = () => {
@@ -110,6 +111,7 @@ const App = () => {
         {/* Un doute sur l'utilité de la ligne ci-dessous - devrait servir pour la création d'une nouvelle liste*/}
         <Route exact path="/move/:id/newTasksList" component={NewTasksList} />
         <Route exact path="/move/:id/task/:taskId" component={Task} />
+        <Route exact path="/move/:id/task/:taskId/modify" component={UpdateTask} />
         <Route exact path="/move/:id/create-task" component={CreateTask} />
         <Route exact path="*"><NotFound /></Route>
       </Switch>

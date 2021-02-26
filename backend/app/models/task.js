@@ -62,25 +62,7 @@ class Task {
         return (results.rows[0]) ? new this(results.rows[0]) : false; 
     }
 
-    // to see if the label enter exist yet in the move or not
-    // static async taskLabelExists (dataForm) {
-    //     try {
-    //         const query = `
-    //             SELECT 
-    //                 t.label
-    //             FROM move m
-    //             INNER JOIN tasks_list tl
-    //                 ON tl.move_id = m.id
-    //             INNER JOIN task t
-    //                 ON t.id = tl.task_id
-    //             WHERE task_id = 15 AND move_id = 19`;
-    //         const results = await client.query(query,[dataForm.label,dataForm.move_id])
-    //         return !!results.rowCount;
-    //     } catch (error) {
-    //         return console.trace(error); 
-    //     }
-    
-    // }
+
 
     // async save() {
     //     try {
@@ -120,22 +102,19 @@ class Task {
        }
 
     }
-       
-    async updateTasksList() {
+    
+    async updateTask() {
         try {
             // Prepare the query
             const query = `
             UPDATE 
-                tasks_list 
+                task 
             SET 
-                ( move_id, task_id, contact, is_realised, note ) = ( $1, $2, $3, $4::boolean, $5 ) 
-            WHERE 
-                move_id = $6
-            AND 
-                task_id = $7             
+                ( label, description ) = ( $1, $2 ) 
+            WHERE id = $3          
             RETURNING *;`;
             // Set the involved data
-            const values = [this.move_id, this.task_id, this.contact, this.is_realised, this.note, this.move_id, this.task_id]; 
+            const values = [this.label, this.description, this.id]; 
             console.log(">> tasksList l.176 : values :", values);
             // Query update to DB 
             const results = await client.query(query, values); 

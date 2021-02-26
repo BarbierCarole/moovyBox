@@ -94,6 +94,44 @@ const taskController = {
         }
     },
 
+    updateTask: async (req, res) => {
+        //* Update the tasksList
+        try {
+            console.log(">> tasksListContr l.144 req.body", req.body); // exemple -> { task_id: '26', move_id: 19, is_realised: false }
+           
+            const selectedTask = await Task.getTaskByPk( req.params.taskId);
+            // If no task
+            if (!selectedTask ) {
+                // Abort and send error : 404 not found
+                return res.status(404).send({
+                    error : {
+                        statusCode: 404,
+                        message: {
+                            en:"Not found - This action doesn't exists", 
+                            fr:"Pas trouvé - Cette tâche n'existe pas"
+                        }
+                    }
+                });
+            }
+
+            // Update the current task with paylod values
+            for (const prop in req.body) {
+                selectedTask[prop] = req.body[prop]; 
+            }
+            console.log('l.183 tasklisController : req.body',req.body)
+            // Execute request
+            
+            const updatedTask = await selectedTask.updateTask(); 
+            
+            // const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
+            req.session.user.contentUpdated = true; 
+            
+            // return the updated task
+            return res.send((updatedTask) ? updatedTask : false);
+        } catch (error) {
+            console.trace(error);
+        }
+    },
 };
 
 module.exports = taskController;

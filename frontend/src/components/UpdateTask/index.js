@@ -27,17 +27,21 @@ import {
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 axios.defaults.withCredentials = true;
-const CreateTask = (props) => {
+const UpdateTask = (props) => {
   const classes = useStyles();
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  
-  const [label, setLabel] = useState('');
-  const [date_perso, setDatePerso] = useState(new Date());
-  const [contact, setContact] = useState('');
-  const [note, setNote] = useState('');
-  const [description,setDescription] = useState('');
+  console.log('>> l.33 updateTask props :',props);
+  const [label, setLabel] = useState(props.location.state.label);
+  const [date_perso, setDatePerso] = useState(props.location.state.date_perso);
+  const [contact, setContact] = useState(props.location.state.contact);
+  const [note, setNote] = useState(props.location.state.note);
+  const [description,setDescription] = useState(props.location.state.description);
+  const [is_realised, SetIsRealised] = useState(props.location.state.is_realised);
   const [moveId, setMoveId] = useState(props.location.state.moveId);
-
+  
+  const taskId = props.location.state.taskId;
+  const id = props.location.state.id;
+ 
   const isLogged = useSelector((state) => state.isLogged);
   console.log("State of isLogged : ",isLogged);
   if (!isLogged) {
@@ -59,31 +63,32 @@ const CreateTask = (props) => {
     setNote(e.target.value);
   }
   function handleContactChange(e) {
-    e.preventDefault();
     console.log('input au onChange', e.target.value);
     setContact(e.target.value);
   }
   function handleDescriptionChange(e) {
-    e.preventDefault();
     console.log('input au onChange', e.target.value);
     setDescription(e.target.value);
   }
   function handleSubmit(e) {
     e.preventDefault(); // stops default reloading behaviour
     axios
-      // .post(BASE_URL+`/api/move/${props.location.state.moveId}/task`, { label, note, description, contact, date:new Date(), })
-      .post(BASE_URL+`/api/move/${props.location.state.moveId}/task`, { label, note, description, contact, date_perso })
+      .put(BASE_URL+`/api/move/${id}/tasksList/${taskId}`, { note, contact, date_perso, is_realised })
       .then((res => {
-        console.log(res);
-        console.log("res.data",res.data);
-        console.log(">> l.170 moveId", moveId);
-        console.log("cb res.data.id", res.data.id); 
-        window.history.back();
-      })
+        })
       )
       .catch(err => {
         console.log(err);
       });
+    axios
+    .put(BASE_URL+`/api/move/${id}/task/${taskId}`, { label, description })
+    .then((res => {
+      window.history.back();
+    })
+    )
+    .catch(err => {
+      console.log(err);
+    });
   }
   return (
 
@@ -94,8 +99,7 @@ const CreateTask = (props) => {
           <CardContent>
             
             <Typography variant="h4" component="h1" gutterBottom>
-             
-              Création d'une nouvelle tâche
+              Modification de la tâche
             </Typography>       
         
             <form
@@ -188,7 +192,7 @@ const CreateTask = (props) => {
                     color="secondary"
                     className={classes.submit}
                   >
-                    Ajouter
+                    Modifier
                   </Button>
 
               </Grid>
@@ -202,4 +206,4 @@ const CreateTask = (props) => {
     </div> 
   );
 }
-export default withRoot(CreateTask);
+export default withRoot(UpdateTask);

@@ -28,6 +28,8 @@ class TasksList {
             move_id,
             is_realised,
             date_perso,
+            note,
+            contact,
             m.date,
             t.label,
             t.description,
@@ -58,6 +60,9 @@ class TasksList {
                 move_id,
                 task_id,
                 is_realised,
+                note,
+                contact,
+                date_perso,
                 m.date,
                 t.label,
                 t.description,
@@ -144,14 +149,14 @@ class TasksList {
             UPDATE 
                 tasks_list 
             SET 
-                ( move_id, task_id, contact, is_realised, note ) = ( $1, $2, $3, $4::boolean, $5 ) 
+                ( move_id, task_id, contact, is_realised, note, date_perso ) = ( $1, $2, $3, $4::boolean, $5, $6 ) 
             WHERE 
-                move_id = $6
+                move_id = $7
             AND 
-                task_id = $7             
+                task_id = $8             
             RETURNING *;`;
             // Set the involved data
-            const values = [this.move_id, this.task_id, this.contact, this.is_realised, this.note, this.move_id, this.task_id]; 
+            const values = [this.move_id, this.task_id, this.contact, this.is_realised, this.note, this.date_perso, this.move_id, this.task_id]; 
             console.log(">> tasksList l.176 : values :", values);
             // Query update to DB 
             const results = await client.query(query, values); 

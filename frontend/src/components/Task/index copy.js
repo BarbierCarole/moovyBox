@@ -71,35 +71,25 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
         }).catch(err => {
           console.log(err);
         })
+    
   };
 
-  const handleCloseDel = () => {
+  const handleClose = () => {
     setOpen(false);
   };
 
-  const handleClickOpenDel = (value) => {
+  const handleClickOpen = (value) => {
     setOpen(true);
   };
 
   const dayCalcT= (date,day) => {
-    if (task.generalTask) {
-        // if (!date)... sert pour l'erreur "invalide value" car serveur n'a encore rien envoyé quand fonction lancée. Pourquoi ?...
-      if (!date) {
-        return "";
-      }
+    // if (!date)... sert pour l'erreur "invalide value" car serveur n'a encore rien envoyé quand fonction lancée. Pourquoi ?...
+    if (!date) {
+      return "";
+    }
 
-      const result = addDays(parseISO(date), day);    
-      return format(result,'dd/MM/yyyy');
-     
-      } else {
-        if (!task.date_perso) {
-          return "";
-        }
-        const goodDate = new Date(task.date_perso);
-        console.log('l.96 >> goodDate', goodDate)
-        return format(goodDate,'dd/MM/yyyy');
-      } 
-        
+    const result = addDays(parseISO(date), day);    
+    return format(result,'dd/MM/yyyy');    
   }
 
   useEffect(() => {
@@ -125,27 +115,9 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
                 {dayCalcT(task.date, task.nber_days)}
               </Typography>   
             </Grid>
-            <Grid item xs={1}>   
-              <DeleteForeverIcon fontSize="large" color="secondary" onClick={() => {handleClickOpenDel(task.id)}}/>
+            <Grid item xs={2}>   
+              <DeleteForeverIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(task.id)}}/>
             </Grid> 
-            <Grid item xs={1}>   
-              <Link to ={{
-                // pathname:"/move/"+move.id,
-                pathname:`/move/${id}/task/${taskId}/modify`,
-                state: {
-                  id: id,
-                  taskId: taskId,
-                  label: task.label,
-                  note: task.note,
-                  description: task.description,
-                  contact: task.contact,
-                  date_perso: task.date_perso,
-                  is_realised: task.is_realised
-                }
-              }}>
-                <CreateIcon fontSize="large" color="secondary" />
-              </Link>
-            </Grid>
             <Grid item xs={12}> 
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.description}   
@@ -161,7 +133,6 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
                 {task.contact}   
               </Typography>
             </Grid>
-            
           </Grid>
           </CardContent>
         </Card> 
@@ -171,7 +142,7 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
           
         <Dialog
           open={open}
-          onClose={handleCloseDel}
+          onClose={handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -182,7 +153,7 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDel} variant="outlined" color="primary" >
+            <Button onClick={handleClose} variant="outlined" color="primary" >
               Annuler
             </Button>
             <ButtonCustom

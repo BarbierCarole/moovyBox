@@ -106,7 +106,8 @@ router.route('/api/move/:moveId/tasksList')
     // get all tasks of a selected move
     .get(authCheckerMW, tasksListController.getTasksList)
 
-router.route('/api/move/:moveId/tasksList/:taskId')
+   
+router.route('/api/move/:moveId/tasksList/:taskId') 
     // to modify the the checkboxes
     .put(authCheckerMW, tasksListController.updateTasksList)
     .delete(authCheckerMW, tasksListController.deleteTaskInList);
@@ -117,8 +118,9 @@ router.route('/api/move/:moveId/NewTasksList')
     .get(authCheckerMW, tasksListController.getTasksList);
  
 router.route('/api/move/:moveId/task/:taskId')
-    .get(authCheckerMW, tasksListController.getTaskById);
-
+    .get(authCheckerMW, tasksListController.getTaskById)
+    // .get(authCheckerMW, taskController.getTaskById)
+    .put(authCheckerMW, taskController.updateTask);
 
 router.route('/api/move/:moveId/task')
     .post(authCheckerMW, tasksListController.createTaskInTasksList);
