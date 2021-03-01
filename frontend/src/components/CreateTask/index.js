@@ -96,8 +96,7 @@ const CreateTask = (props) => {
             <Typography variant="h4" component="h1" gutterBottom>
              
               Création d'une nouvelle tâche
-            </Typography>       
-        
+            </Typography>  
             <form
               className={classes.form}
               noValidate
@@ -106,6 +105,9 @@ const CreateTask = (props) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                label="Multiline"
+                  multiline
+                  rowsMax={4}
                   autoComplete="label"
                   name="label"
                   variant="outlined"
@@ -142,13 +144,16 @@ const CreateTask = (props) => {
               </MuiPickersUtilsProvider>
               <Grid item xs={12}>
                 <TextField
+                label="Multiline"
+                  multiline
+                  rowsMax={4}
                   autoComplete="Description"
                   name="description"
                   variant="outlined"          
                   fullWidth
                   id="description"
                   label="Description de la tâche"
-                  autoFocus          
+                            
                   value={description}
                   onChange={handleDescriptionChange}
                 />{' '}
@@ -156,13 +161,16 @@ const CreateTask = (props) => {
               {/* Mettre ici le champ de date */}
               <Grid item xs={12}>
                 <TextField
+                label="Multiline"
+                  multiline
+                  rowsMax={4}
                   autoComplete="Mes notes"
                   name="note"
                   variant="outlined"          
                   fullWidth
                   id="note"
                   label="Mes notes"
-                  autoFocus          
+                           
                   value={note}
                   onChange={handleNoteChange}
                 />{' '}
@@ -175,7 +183,7 @@ const CreateTask = (props) => {
                   fullWidth
                   id="contact"
                   label="Mes contacts"
-                  autoFocus          
+                          
                   value={contact}
                   onChange={handleContactChange}
                 />{' '}

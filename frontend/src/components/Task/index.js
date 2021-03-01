@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -15,11 +14,8 @@ import {Link} from "react-router-dom";
 
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-
 //to display in a card
 import {Card, CardContent } from '@material-ui/core';
 // bouton correction
@@ -112,8 +108,8 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
     });
   }, []); //  [] pour que ça ne boucle pas
 
+  
   return (
-
     <div className={classes.root}>
         <Header />
         <Card className={classes.card}>
@@ -125,27 +121,36 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
                 {dayCalcT(task.date, task.nber_days)}
               </Typography>   
             </Grid>
-            <Grid item xs={1}>   
-              <DeleteForeverIcon fontSize="large" color="secondary" onClick={() => {handleClickOpenDel(task.id)}}/>
+            <Grid item xs={1}> 
+              <IconButton aria-label="delete" onClick={() => {handleClickOpenDel(task.id)}}>
+                <DeleteForeverIcon size="medium" color="secondary" />
+              </IconButton>  
             </Grid> 
-            <Grid item xs={1}>   
-              <Link to ={{
-                // pathname:"/move/"+move.id,
-                pathname:`/move/${id}/task/${taskId}/modify`,
-                state: {
-                  id: id,
-                  taskId: taskId,
-                  label: task.label,
-                  note: task.note,
-                  description: task.description,
-                  contact: task.contact,
-                  date_perso: task.date_perso,
-                  is_realised: task.is_realised
-                }
-              }}>
-                <CreateIcon fontSize="large" color="secondary" />
-              </Link>
-            </Grid>
+            { !task.general_task ? (            
+              
+              <Grid item xs={1}>   
+              <IconButton aria-label="update">
+                <Link to ={{
+                  // pathname:"/move/"+move.id,
+                  pathname:`/move/${id}/task/${taskId}/modify`,
+                  state: {
+                    id: id,
+                    taskId: taskId,
+                    label: task.label,
+                    note: task.note,
+                    description: task.description,
+                    contact: task.contact,
+                    date_perso: task.date_perso,
+                    is_realised: task.is_realised
+                  }
+                }}>
+                  <CreateIcon size="medium" color="secondary" />
+                </Link>
+
+              </IconButton>
+              </Grid>) : null
+            }
+
             <Grid item xs={12}> 
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.description}   

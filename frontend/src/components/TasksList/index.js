@@ -37,10 +37,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
   const classes = useStyles();
 
   const [tasks, setTasks] = useState([]); // toutes les taches grace à useEffect setTasks(res.data); 
-  console.log(">> tasks l.40", tasks);
-  const [dateOfAction, setDateOfAction] = useState([]);
-  console.log(">> l.42 dateOfAction", dateOfAction)
-  
+
   const isLogged = useSelector((state) => state.isLogged);
   console.log("State of isLogged : ",isLogged);
   if (!isLogged) {
@@ -49,7 +46,6 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     return <Redirect to="/signin" />;
   };
 
-  
   // Pour calculer la date d'action par rapport à la date du déménagement et au nbre de jours avant ou après
   const dayCalcT= (date,day) => {
     console.log("date, day", date, day);
@@ -84,14 +80,24 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     axios.get(BASE_URL+`/api/move/${props.location.state.id}/tasksList`)
       .then(res => {
         setTasks(res.data); 
-        
         console.log(">> l.46 tasks",tasks);
-        
+
       })
       .catch(err => {
         console.log(err);
       });
   }, []); //  [] pour que ça ne boucle pas
+
+  function getNotRealisedCount() {
+    console.log(tasks);
+    return tasks.filter(x => x.is_realised==false).length;
+  }
+  
+  function getRealisedCount() {
+    console.log(tasks);
+    return tasks.filter(x => x.is_realised==true).length;
+
+  }
 
   const handleChange = (e) => {
     console.log(">> l.43 e :", e.target.value);
@@ -130,7 +136,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     <>
     <div className={classes.root}>
       <Header />
-      <Accordion square expanded className={classes.accordion}> 
+      <Accordion square className={classes.accordion}> 
       {/* Dans <Accordion pour que l'accordeon se déplie ou replie en fonction de l'autre : "expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')}" */}
         <AccordionSummary 
           className={classes.accordionSummary}
@@ -139,13 +145,12 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
           id="panel1a-header"
         >
           <Typography component="h1" variant="h4"  className={classes.title}>
-            Mes tâches à réaliser
+          {getNotRealisedCount()} Tâches à réaliser
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
           {tasks.map((data,i) => (
-            
-            (!data.is_realised ? (
+             (!data.is_realised ? (
               <Card className={classes.card} key={i}>
                 <CardHeader
                   avatar={
@@ -176,23 +181,24 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
           ))}
         </AccordionDetails>
       </Accordion>
-      <Accordion square  className={classes.accordion}>
-      {/* expanded={expanded === 'panel2'} onChange={handleChangePanel('panel2')} */}
+      {/* -------- 2 --------- */}
+      <Accordion square className={classes.accordion}> 
+      {/* Dans <Accordion pour que l'accordeon se déplie ou replie en fonction de l'autre : "expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')}" */}
         <AccordionSummary 
           className={classes.accordionSummary}
-          expandIcon={<ExpandMoreIcon style={{color: '#ea2aad'}}/>}
+          expandIcon={<ExpandMoreIcon style={{color: '#ea2aad'}} />}
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
           <Typography component="h1" variant="h4"  className={classes.title}>
-            Mes tâches accomplies
+          {getRealisedCount()} Tâches à réaliser
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
           {tasks.map((data,i) => (
-            (data.is_realised >0 ? (
+             (data.is_realised ? (
               <Card className={classes.card} key={i}>
-              <CardHeader
+                <CardHeader
                   avatar={
                     <Checkbox color="primary" checked={data.is_realised} value={data.id} onChange={handleChange} />
                   }
@@ -200,13 +206,30 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
                     <IconButton aria-label="settings">
                     </IconButton>
                   }
-                  title={data.label}
-                  subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}                      
+                  title={
+                    // data.label
+                    <Link to ={{
+                        pathname:`/move/${data.move_id}/task/${data.id}`,
+                            state: {
+                            id: data.id,
+                            label: data.label,                                
+                            }
+                    }} >
+                        <Typography component="h1" variant="h5" className={classes.title}>
+                          {data.label}
+                        </Typography>
+                    </Link>                        
+                  }
+                  subheader={format(dayOfAction(data.date,data.nber_days, data.date_perso, data.general_task, data.id),'dd/MM/yyyy')}
+                  // subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}  
                 />
               </Card>) : console.log("tache true"))
           ))}
         </AccordionDetails>
       </Accordion>
+      {/* -------------------------- */}
+
+      
       <Footer />
       </div> 
       {/* Boutton + */}
@@ -216,15 +239,10 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
               moveId: props.location.state.id,                        
               }
       }} >
-        <SpeedDial
-        ariaLabel="SpeedDial example"
-        className={classes.speedDial}
-        icon={<AddCircleOutlineIcon />}
-        //onClose={handleClose}
-        //onOpen={handleOpen}
-        open={open}
-        >   
-        </SpeedDial>
+        <IconButton aria-label="add a task"> 
+          <AddCircleOutlineIcon size="large" color="primary" className={classes.buttonAdd}/>
+        </IconButton>  
+        
         
       </Link>
     </> 

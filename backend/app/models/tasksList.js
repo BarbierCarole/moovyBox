@@ -67,7 +67,8 @@ class TasksList {
                 t.label,
                 t.description,
                 t.nber_days,
-                t.id
+                t.id, 
+                t.general_task
                 
             FROM move m
             INNER JOIN tasks_list tl

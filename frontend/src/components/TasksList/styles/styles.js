@@ -44,10 +44,13 @@ const useStyles = makeStyles((theme) => ({
       color: '#ea2aad',
     },
         
-    speedDial: {
-      bottom: theme.spacing(6),
-      right: theme.spacing(2),
+    buttonAdd: {
+      bottom: theme.spacing(12),
+      right: theme.spacing(3),
       position:'fixed',
+      width: '60px;',
+      height:'60px',
+      borderRadius: '30px',
     },
     appBar: {
       position: 'relative',
