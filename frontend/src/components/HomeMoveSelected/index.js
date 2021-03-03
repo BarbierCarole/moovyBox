@@ -91,13 +91,13 @@ const HomeMoveSelected = () => {
                                 id: location.state.id,
                                 label: location.state.label,
                                 }
-                        }} style={{ display: "flex", justifyContent: "left" }}>
+                            }} style={{ display: "flex", justifyContent: "left" }}>
                             <Typography component="h1" variant="h5" className={classes.title}>
-                            <Tooltip title="Je veux rechercher un objet" aria-label="Add">
-                                <Fab color="primary" className={classes.fab}>
-                                <SearchIcon />
-                                </Fab>
-                            </Tooltip>
+                                <Tooltip title="Je veux rechercher un objet" aria-label="Add">
+                                    <Fab color="primary" className={classes.fab}>
+                                    <SearchIcon />
+                                    </Fab>
+                                </Tooltip>
                             <Button size="medium" variant="outlined" color="secondary" className={classes.button}> Rechercher dans mes cartons</Button>
                             </Typography>
                         </Link>

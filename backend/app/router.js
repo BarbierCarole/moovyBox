@@ -20,7 +20,7 @@ const taskController = require('./controllers/taskController');
 router.post('/api/signup', authController.signup);
 // Signin
 router.post('/api/signin', authController.signin);
-// Signin
+// Signout
 router.post('/api/signout', authController.signout);
 
 // Validate user account
@@ -30,10 +30,7 @@ router.post('/api/reset-token', authController.resetToken);
 // Validate request for password renewal
 router.put('/api/profile/reset-password',authController.resetPassword); 
 
-
-
 router.get('/api/profile/reset-password/:token', authController.resetPasswordRedirection); 
-
 
 /* PROFILE RELATED ROUTES */ 
 

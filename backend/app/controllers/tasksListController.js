@@ -22,10 +22,6 @@ const taskSchema = Joi.object({
 
 const tasksListSchema = Joi.object({
      
-    move_id: Joi.number().integer()
-    .min(1).required(),
-    task_id: Joi.number().integer()
-    .min(1).required(),
     note: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
     .max(2500),
@@ -34,8 +30,7 @@ const tasksListSchema = Joi.object({
     .max(250),
     is_realised: Joi.boolean()
     .truthy('true')
-    .falsy('false')
-    .required(), 
+    .falsy('false'),    
     date_perso: Joi.date()
     .min('now')
     .required(),
@@ -65,8 +60,6 @@ const tasksListController = {
                     }
                 });
             }
-
-
             const tasksList = await TasksList.insertNewTasks(req.params.moveId);
             
             return res.send(tasksList);
@@ -74,15 +67,12 @@ const tasksListController = {
         } catch (error) {
             console.trace(error);
         }
-
-        
     },
     // /api/move/:moveId/task/:taskId pour afficher le détail de la tache dans un déménagement
     getTaskById: async(req,res) => {
 
         try {
 
-            console.log('>> req.params :>> ', req.params);
             //  user verification
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {
@@ -97,9 +87,7 @@ const tasksListController = {
                     }
                 });
             }
-            console.log("taskListCOntroller l.98 req.params.moveId, req.params.taskId",req.params.moveId, req.params.taskId);
-            const task = await TasksList.getByPk(req.params.moveId, req.params.taskId);
-    
+            const task = await TasksList.getByPk(req.params.moveId, req.params.taskId);    
             return res.send(task);
 
         } catch (err) {
@@ -141,15 +129,15 @@ const tasksListController = {
     updateTasksList: async (req, res) => {
         //* Update the tasksList
         try {
-            console.log(">> tasksListContr l.144 req.body", req.body); // exemple -> { task_id: '26', move_id: 19, is_realised: false }
+            console.log(">> *** tasksListContr l.144 req.body", req.body); // exemple -> { task_id: '26', move_id: 19, is_realised: false }
             // --------->>>> la validation rencontre un problème, la reprendre
-            // const tasksListValidation = tasksListSchema.validate(req.body); 
-            // // if an error is found 
-            // if (!!tasksListValidation.error) {
-            //     // abort and send error 400 : bad request
-            //     res.status(400).send(tasksListValidation.error); 
-            // }
-            // form is valid !
+            const tasksListValidation = tasksListSchema.validate(req.body); 
+            // if an error is found 
+            if (!!tasksListValidation.error) {
+                // abort and send error 400 : bad request
+                res.status(400).send(tasksListValidation.error); 
+            }
+            // données du formulaire valides
             
             const selectedTaskInList = await TasksList.getByPk(req.params.moveId, req.params.taskId);
             // If no task
@@ -255,7 +243,7 @@ const tasksListController = {
 
             // 2e -> pour supprimer la tache
             const storedTask = await Task.getTaskByPk(req.params.taskId);
-            console.log(">> l.195 storedTask.general_task",storedTask.general_task);
+            console.log(">> l.195 storedTask.general_task",storedTask);
              // If no box was found 
              if (!storedTask ) {
                  // Abort and send error : 404 not found

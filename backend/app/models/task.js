@@ -10,45 +10,7 @@ class Task {
         this.description = obj.description;
         this.nber_days = obj.nber_days;
         this.general_task = obj.general_task;
-        // move
-        this.date = obj.date;
-        // tasks_list
-        this.move_id = obj.move_id;
-        this.task_id = obj.task_id;
-        this.contact = obj.contact;
-        this.is_realised = obj.is_realised; 
-        this.note = obj.note;
-        this.date = obj.date;
     }
-
-    // static async getAllTaskFromMove(moveId) {
-
-    //     const query = `
-    //     SELECT 
-    //         move_id,
-    //         is_realised,
-    //         m.date,
-    //         t.label,
-    //         t.description,
-    //         t.id,
-    //         t.nber_days
-    //     FROM move m
-    //     INNER JOIN tasks_list tl
-    //         ON tl.move_id = m.id
-    //     INNER JOIN task t
-    //         ON t.id = tl.task_id
-    //     WHERE move_id = $1
-    //     ORDER BY t.nber_days ASC;`;
-    
-    //     const values = [moveId];
-    //     const results = await client.query(query, values);
-    //     const instances = [];
-    //     for ( const row of results.rows) {
-    //         instances.push(new this(row));
-    //     }
-    //     console.log('>> l.45 tasksList : instances :',instances);
-    //     return instances;
-    // }
 
     // Pour afficher le détail d'une tache
     static async getTaskByPk(id) {
@@ -61,30 +23,11 @@ class Task {
         console.log(">> tasksList l.65 : results :", results.rows[0]);
         return (results.rows[0]) ? new this(results.rows[0]) : false; 
     }
-
-
-
-    // async save() {
-    //     try {
-
-    //         if(!!this.task_id) {
-    //            return this.update(); 
-    //         } else {
-    //            return this.insert(); 
-    //         }
-            
-    //     } catch (error) {
-    //         console.log(error); 
-    //     }
-    // }
-
     
     async insertInTask(move_id) { 
 
         try {
-            
-            console.log("task.js l.142 : this.label, this.description, move_id, this.note, this.date, this.contact => ",this.label, this.description, move_id, this.note, this.date, this.contact);
-            
+                        
             const query = `
             INSERT INTO task (label,description) VALUES ( 
                 $1,$2
@@ -111,7 +54,7 @@ class Task {
                 task 
             SET 
                 ( label, description ) = ( $1, $2 ) 
-            WHERE id = $3          
+            WHERE id = $3       
             RETURNING *;`;
             // Set the involved data
             const values = [this.label, this.description, this.id]; 
@@ -120,7 +63,7 @@ class Task {
             const results = await client.query(query, values); 
         
             //return the updated move
-            return new TasksList(results.rows[0]); 
+            return new Task(results.rows[0]); 
         } catch (error) {
             console.trace(error);
         }
