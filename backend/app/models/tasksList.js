@@ -84,45 +84,26 @@ class TasksList {
         return (results.rows[0]) ? new this(results.rows[0]) : false; 
     }
 
-    // to see if the label enter exist yet in the move or not
-    static async taskLabelExists (dataForm) {
-        try {
-            const query = `
-                SELECT 
-                    t.label
-                FROM move m
-                INNER JOIN tasks_list tl
-                    ON tl.move_id = m.id
-                INNER JOIN task t
-                    ON t.id = tl.task_id
-                WHERE task_id = 15 AND move_id = 19`;
-            const results = await client.query(query,[dataForm.label,dataForm.move_id])
-            return !!results.rowCount;
-        } catch (error) {
-            return console.trace(error); 
-        }
-    
-    }
 
-    async save() {
-        try {
+    // async save() {
+    //     try {
 
-            if(!!this.task_id) {
-               return this.update(); 
-            } else {
-               return this.insert(); 
-            }
+    //         if(!!this.task_id) {
+    //            return this.update(); 
+    //         } else {
+    //            return this.insert(); 
+    //         }
             
-        } catch (error) {
-            console.log(error); 
-        }
-    }
+    //     } catch (error) {
+    //         console.log(error); 
+    //     }
+    // }
     
     // Pour insérer toutes les taches d'un bloc dans la checklist du déménagement
     static async insertNewTasks(move_id) { 
 
         try {
-            console.log("ds tasksList.js : plops");
+            
             const query = `
             INSERT INTO 
                 tasks_list ( task_id, move_id )
