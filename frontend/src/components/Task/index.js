@@ -121,11 +121,7 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
                 {dayCalcT(task.date, task.nber_days)}
               </Typography>   
             </Grid>
-            <Grid item xs={1}> 
-              <IconButton aria-label="delete" onClick={() => {handleClickOpenDel(task.id)}}>
-                <DeleteForeverIcon size="medium" color="secondary" />
-              </IconButton>  
-            </Grid> 
+             
             { !task.general_task ? (            
               
               <Grid item xs={1}>   
@@ -150,18 +146,33 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
               </IconButton>
               </Grid>) : null
             }
-
+            <Grid item xs={1}> 
+              <IconButton aria-label="delete" onClick={() => {handleClickOpenDel(task.id)}}>
+                <DeleteForeverIcon size="medium" color="secondary" />
+              </IconButton>  
+            </Grid>
             <Grid item xs={12}> 
+              <Typography variant="h4" component="h3" className={classes.typography}>
+                Description  
+              </Typography>
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.description}   
               </Typography>
             </Grid>
             <Grid item xs={12}> 
+              <Typography variant="h4" component="h3" className={classes.typography}>
+                Mes notes  
+              </Typography>
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.note}   
               </Typography>
             </Grid>
             <Grid item xs={12}> 
+              
+              <Typography variant="h4" component="h3" className={classes.typography}>
+                Mes contacts  
+              </Typography>
+              
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.contact}   
               </Typography>

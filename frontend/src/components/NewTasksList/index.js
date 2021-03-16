@@ -54,6 +54,9 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
   useEffect(() => {
     // on affiche la liste des tâches 
     console.log(">> l.31 props : ",props);
+    if (!tasks) {
+      return "";
+    }
     axios.get(BASE_URL+`/api/move/${props.location.state.id}/tasksList`)
       .then(res => {
         console.log(res.data);

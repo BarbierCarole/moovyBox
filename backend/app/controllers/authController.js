@@ -96,7 +96,6 @@ const authControlleur = {
             const newUser = new User(req.body); 
             // Save new user in DB 
             const storedUser = await newUser.insert(); 
-            console.log('storedUser :>> ', storedUser);
             // Returning the user as an object
             delete storedUser.password; 
             
@@ -199,7 +198,7 @@ const authControlleur = {
             req.session.user.contentUpdated = false; 
 
             
-            console.log('req.session :>> ', req.session);
+            console.log('req.session :>> ', req.session.user);
             
             delete storedUser.password; 
             return res.send(storedUser); 

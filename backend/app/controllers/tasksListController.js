@@ -2,62 +2,78 @@ const Joi = require('joi');
 const TasksList = require('../models/tasksList');
 const Task = require('../models/task');
 
-const taskSchema = Joi.object({
-    id: Joi.number().integer()
-    .min(1).required(),
+const addSchema = Joi.object({
     label: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
     .max(250)
     .required(),
+    note: Joi.string()
+    .pattern(new RegExp('^[^<>%]{3,}$'))
+    .max(2500)
+    .allow(""),
     description: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
-    .max(2500),
-    nber_days: Joi.number().integer(),
-    general_task: Joi.boolean()
-    .truthy('true')
-    .falsy('false')
+    .max(2500)
+    .allow(""),
+    contact: Joi.string()
+    .pattern(new RegExp('^[^<>%]{3,}$'))
+    .max(250)
+    .allow(""),
+    date_perso: Joi.date()    
+    .min('now')
     .required(),
-
+    is_realised: Joi.boolean()
+    .truthy('true')
+    .falsy('false'),
 });
 
 const tasksListSchema = Joi.object({
      
     note: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
-    .max(2500),
+    .max(2500)
+    .allow(""),
     contact: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
-    .max(250),
-    is_realised: Joi.boolean()
-    .truthy('true')
-    .falsy('false'),    
+    .max(250)
+    .allow(""),   
     date_perso: Joi.date()
     .min('now')
     .required(),
+    is_realised: Joi.boolean()
+    .truthy('true')
+    .falsy('false'), 
+
+});
+
+const checkboxTasksListSchema = Joi.object({
+    move_id: Joi.number().integer()
+    .min(1).required(),
+    task_id:Joi.number().integer()
+    .min(1).required(),    
+    is_realised: Joi.boolean()
+    .truthy('true')
+    .falsy('false'), 
 
 });
 
 const tasksListController = {
 
-    
+    // pour déployer toutes les taches générales dans un déménagement
     createAllTasks: async (req, res) => { 
 
         //* créer une liste avec toutes les tâches de la table task pour un déménagement donné dans la table de liaison tasks_list
         try {
             console.log('>> req.params :>> ', req.params);
 
-            //  user verification
+            //  vérification de l'utilisateur
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {
-                // Abort operation and send error to client;
+                // opération arrétée et envoi de message d'erreur
                 return res.status(403).send({
                     error : {
                         statusCode: 403,
-                        message: {
-                            en:"Forbidden action - The requested move doesn't belongs to current user", 
-                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
-                        }
-                    }
+                        message: "Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"}
                 });
             }
             const tasksList = await TasksList.insertNewTasks(req.params.moveId);
@@ -73,17 +89,14 @@ const tasksListController = {
 
         try {
 
-            //  user verification
+            //  vérification d'utilisateur
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {
-                // Abort operation and send error to client;
+                // opération avortée et envoi message au client
                 return res.status(403).send({
                     error : {
                         statusCode: 403,
-                        message: {
-                            en:"Forbidden action - The requested move doesn't belongs to current user", 
-                            fr:"Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
-                        }
+                        message: "Action interdite - Le déménagement concerné n'appartient pas à l'utilisateur actuel"
                     }
                 });
             }
@@ -99,9 +112,8 @@ const tasksListController = {
 
         try {
 
-            console.log('>> req.params :>> ', req.params);
-
             //  user verification
+            console.log(">> l.101 req.session.user",req.session);
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {
                 // Abort operation and send error to client;
@@ -125,84 +137,125 @@ const tasksListController = {
         }
     },
 
-    
     updateTasksList: async (req, res) => {
-        //* Update the tasksList
+        
         try {
-            console.log(">> *** tasksListContr l.144 req.body", req.body); // exemple -> { task_id: '26', move_id: 19, is_realised: false }
-            // --------->>>> la validation rencontre un problème, la reprendre
+                            
+            // validation des données du formulaire
             const tasksListValidation = tasksListSchema.validate(req.body); 
-            // if an error is found 
+            // si erreur trouvée
             if (!!tasksListValidation.error) {
-                // abort and send error 400 : bad request
-                res.status(400).send(tasksListValidation.error); 
+                // message d'erreur retourné
+                return res.status(400).send(tasksListValidation.error); 
             }
             // données du formulaire valides
             
+            // on recherche la tâche dans la table de liaison avec les paramètres passés dans l'URL moveId et taskId qui sont les 2 clés primaires
             const selectedTaskInList = await TasksList.getByPk(req.params.moveId, req.params.taskId);
-            // If no task
+
+            // On vérifie que la tâche existe
             if (!selectedTaskInList ) {
-                // Abort and send error : 404 not found
+                // si tâche non trouvée, opération avortée et envoi message 404 au client
                 return res.status(404).send({
                     error : {
                         statusCode: 404,
-                        message: {
-                            en:"Not found - This action doesn't exists", 
-                            fr:"Pas trouvé - Cette tâche n'existe pas"
-                        }
+                        message: "Pas trouvé - Cette tâche n'existe pas"
                     }
                 });
             }
-            // ! commenter car user n'existe pas ici We have a task 
-            // if (req.session.user.id !== selectedTaskInList.user_id) {
-            //     // prevent action and send an error
-            //     return res.status(403).send({
-            //         error : {
-            //             statusCode: 403,
-            //             message: {
-            //                 en:"Forbidden action - Pointed box doesn't belong to the current user", 
-            //                 fr:"Action interdite - Le carton concerné n'appartient pas à l'utilisateur actuel"
-            //             }
-            //         }
-            //     });
-            // }
-
-            // Update the current task with paylod values
+            
+            // maj de la tâche avec les nouvelles valeurs
             for (const prop in req.body) {
                 selectedTaskInList[prop] = req.body[prop]; 
             }
-            console.log('l.183 tasklisController : req.body',req.body)
-            // Execute request
+            console.log('>> l.160 tasksListController : req.body',req.body);
             
             const updatedTask = await selectedTaskInList.updateTasksList(); 
             
-            // const sessionMove = req.session.user.moves.filter(move => move.id == req.params.moveId); 
-
             req.session.user.contentUpdated = true; 
-            
-            // return the updated task
+            console.log(">> l.164 tasksListController updatedTask => ",updatedTask);
+            // envoi de la maj au client
             return res.send((updatedTask) ? updatedTask : false);
         } catch (error) {
             console.trace(error);
         }
         
     },
+
+    // pour la maj des checkbox
+    updatecheckboxTasksList: async (req, res) => {
+        
+        try {
+                            
+            // validation des données du formulaire
+            const checkboxTasksListValidation = checkboxTasksListSchema.validate(req.body); 
+            // si erreur trouvée
+            if (!!checkboxTasksListValidation.error) {
+                // message d'erreur retourné
+                return res.status(400).send(checkboxTasksListValidation.error); 
+            }
+            // données du formulaire valides
+            
+            // on recherche la tâche dans la table de liaison avec les paramètres passés dans l'URL moveId et taskId qui sont les 2 clés primaires
+            const selectedTaskInList = await TasksList.getByPk(req.params.moveId, req.params.taskId);
+
+            // On vérifie que la tâche existe
+            if (!selectedTaskInList ) {
+                // si tâche non trouvée, opération avortée et envoi message 404 au client
+                return res.status(404).send({
+                    error : {
+                        statusCode: 404,
+                        message: "Pas trouvé - Cette tâche n'existe pas"
+                    }
+                });
+            }
+            
+            // maj de la tâche avec les nouvelles valeurs
+            for (const prop in req.body) {
+                selectedTaskInList[prop] = req.body[prop]; 
+            }
+            console.log('>> l.160 tasksListController : req.body',req.body);
+            
+            const updatedTask = await selectedTaskInList.updateTasksList(); 
+            
+            req.session.user.contentUpdated = true; 
+            console.log(">> l.164 tasksListController updatedTask => ",updatedTask);
+            // envoi de la maj au client
+            return res.send((updatedTask) ? updatedTask : false);
+        } catch (error) {
+            console.trace(error);
+        }
+        
+    },
+
     // pour enregistrer une nouvelle tache
     createTaskInTasksList: async(req,res) => {
     
         try {
             
+            const payloadValidation = addSchema.validate(req.body);
+            
+            if (!!payloadValidation.error) {
+                // if an error is found, update status code (400 for bad request)and send the error details
+                return res.status(400).send(payloadValidation.error); 
+            }
             const moveId = req.params.moveId;
 
             const newTask = new Task(req.body); 
+            // création d'une instance de Task
+            console.log(">> tasksListController l.185 newTask", newTask);
 
             const storedTask = await newTask.insertInTask(moveId);
-            console.log("storedTask",storedTask.id);
-            // create an instance of a task
-            const newTasksList = new TasksList(req.body); 
+            console.log(">> tasksListController l.188 storedTask", storedTask);
+            // création d'une instance de TasksList
+            const newTasksList = new TasksList(req.body);
+            console.log(">> tasksListController l.191 newTasksList", newTasksList);
+
             newTasksList.task_id = storedTask.id;
-            // Save the current box object to DB
+            
             const storedTasksList = await newTasksList.insertInTasksList(moveId);
+            console.log(">> tasksListController l.196 storedTasksList", storedTasksList);
+
             res.send(storedTasksList);                
 
         } catch (err) {
@@ -222,38 +275,29 @@ const tasksListController = {
                 return res.status(404).send({
                     error : {
                         statusCode: 404,
-                        message: {
-                            en:"Not found - This task in list doesn't exists", 
-                            fr:"Pas trouvé - cette tache n'existe pas dans la liste"
-                        }
+                        message: "Pas trouvé - cette tache n'existe pas dans la liste"
                     }
                 });
             }
-            // on supprime la liaison
+            // on supprime la liaison dans la table tasks_list
             const successTaskInList = await storedTaskInList.delete();      
             if (!successTaskInList) {
                 return res.status(500).send({
                     statusCode : 500,
-                    message:  {
-                        en:"Something went wrong", 
-                        fr:"Quelque chose s'est mal passée"
-                    }
+                    message: "Quelque chose s'est mal passé"
                 });
             } else { console.log("étape 1 bien passée");}
 
-            // 2e -> pour supprimer la tache
+            // 2e -> pour supprimer la tache dans la table task
             const storedTask = await Task.getTaskByPk(req.params.taskId);
             console.log(">> l.195 storedTask.general_task",storedTask);
-             // If no box was found 
+             // Si aucune tâche trouvée 
              if (!storedTask ) {
-                 // Abort and send error : 404 not found
+                 // exit méthode et envoi message d'erreur
                  return res.status(404).send({
                      error : {
                          statusCode: 404,
-                         message: {
-                             en:"Not found - This task in list doesn't exists", 
-                             fr:"Pas trouvé - cette tache n'existe pas dans la liste"
-                         }
+                         message: "Pas trouvé - cette tache n'existe pas dans la liste"
                      }
                  });
              }
@@ -262,17 +306,12 @@ const tasksListController = {
                  const successTask = await storedTask.delete();      
                  if (!successTask) {
                      return res.status(500).send({
-                         statusCode : 500,
-                         message:  {
-                             en:"Something went wrong", 
-                             fr:"Quelque chose s'est mal passée"
-                         }
+                         statusCode:"Quelque chose s'est mal passé"
                      });
                  }
              }
 
             res.send(successTaskInList);
-            
             
         } catch (err) {
             console.trace(err);

@@ -12,6 +12,7 @@ const authChecker = (req, res, next) => {
             }
         });
     }
+    console.log(">> la session est bien associée à l'utilisateur");
     // if that's the case then move on
     next(); 
     

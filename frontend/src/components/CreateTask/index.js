@@ -10,8 +10,8 @@ import Button from '@material-ui/core/Button';
 import {Card, CardHeader, CardContent, Avatar } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-
-
+// pour message d'erreur
+import { toast } from 'react-toastify';
 // to redirection signin
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
@@ -24,9 +24,8 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
-
 axios.defaults.withCredentials = true;
+
 const CreateTask = (props) => {
   const classes = useStyles();
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -46,6 +45,14 @@ const CreateTask = (props) => {
     return <Redirect to="/signin" />;
   };
 
+  // message d'erreur
+  const errorDelete = () => {
+    toast.error('Le label est obligatoire', {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 5000,
+      closeOnClick: true
+    })
+  }
   // soumission du formulaire
   function handleLabelChange(e) {
     console.log('input au onChange label ', e.target.value);
@@ -71,18 +78,14 @@ const CreateTask = (props) => {
   function handleSubmit(e) {
     e.preventDefault(); // stops default reloading behaviour
     axios
-      // .post(BASE_URL+`/api/move/${props.location.state.moveId}/task`, { label, note, description, contact, date:new Date(), })
       .post(BASE_URL+`/api/move/${props.location.state.moveId}/task`, { label, note, description, contact, date_perso })
-      .then((res => {
-        console.log(res);
-        console.log("res.data",res.data);
-        console.log(">> l.170 moveId", moveId);
-        console.log("cb res.data.id", res.data.id); 
+      .then((res => {   
         window.history.back();
       })
       )
       .catch(err => {
         console.log(err);
+        errorDelete();
       });
   }
   return (
