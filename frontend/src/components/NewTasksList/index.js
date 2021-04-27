@@ -44,8 +44,7 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
     console.log(">> l.31 props : ",props);
     axios.post(BASE_URL+`/api/move/${props.location.state.id}/NewTasksList`)
       .then(res => {
-        // console.log(res.data);
-        // setTasks(res.data);  
+        window.history.back();
       })
       .catch(err => {
         console.log(err);
@@ -96,6 +95,7 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
   }
  
   return (
+    
     <div className={classes.root}>
       <Header />
       <Container component="main" > 
@@ -128,6 +128,7 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
       <Footer />
     </div>
   )
+    
 }
 
 export default withRoot(NewTasksList);

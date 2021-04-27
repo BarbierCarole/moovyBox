@@ -20,7 +20,7 @@ const taskController = require('./controllers/taskController');
 router.post('/api/signup', authController.signup);
 // Signin
 router.post('/api/signin', authController.signin);
-// Signin
+// Signout
 router.post('/api/signout', authController.signout);
 
 // Validate user account
@@ -30,12 +30,7 @@ router.post('/api/reset-token', authController.resetToken);
 // Validate request for password renewal
 router.put('/api/profile/reset-password',authController.resetPassword); 
 
-
-/* 
-    TODO : Should redirect towards password renewal page 
-*/
 router.get('/api/profile/reset-password/:token', authController.resetPasswordRedirection); 
-
 
 /* PROFILE RELATED ROUTES */ 
 
@@ -107,20 +102,25 @@ router.route('/api/box/:boxId/item/:itemId')
 router.route('/api/move/:moveId/tasksList')
     // get all tasks of a selected move
     .get(authCheckerMW, tasksListController.getTasksList)
-    // la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
-    
 
-router.route('/api/move/:moveId/tasksList/:taskId')
+   
+router.route('/api/move/:moveId/tasksList/:taskId') 
     // to modify the the checkboxes
-    .put(authCheckerMW, tasksListController.updateTasksList);
+    .put(authCheckerMW, tasksListController.updateTasksList)
+    .delete(authCheckerMW, tasksListController.deleteTaskInList);
 
 router.route('/api/move/:moveId/NewTasksList')
+// la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
     .post(authCheckerMW, tasksListController.createAllTasks)
     .get(authCheckerMW, tasksListController.getTasksList);
  
 router.route('/api/move/:moveId/task/:taskId')
-    // .post(authCheckerMW, tasksListController.createAllTasks)
-    .get(authCheckerMW, taskController.getTaskById);
+    .get(authCheckerMW, tasksListController.getTaskById)
+    // .get(authCheckerMW, taskController.getTaskById)
+    .put(authCheckerMW, taskController.updateTask);
+
+router.route('/api/move/:moveId/task')
+    .post(authCheckerMW, tasksListController.createTaskInTasksList);
 
 router.get('/session', (req,res) => {return res.send(req.session.user)});
 

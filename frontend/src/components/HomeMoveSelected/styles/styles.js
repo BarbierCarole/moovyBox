@@ -1,3 +1,4 @@
+import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import { fade} from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
@@ -12,16 +13,17 @@ const useStyles = makeStyles((theme) => ({
       },
       backgroundColor:'#eee',
       justifyContent:'center',
+      
     },
   
     content: {
-      width: '70%',
       margin: theme.spacing(1),
       display: 'flex', 
       flexDirection: 'column',
-      justifyContent: 'left',
-      //marginLeft:theme.spacing(10),
-      //paddingLeft:'30%',
+      justifyContent: 'center',
+      alignContent: 'center',
+      
+      
     },
     // btn for the button of moves and boxes
    
@@ -80,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(3),
       marginLeft: theme.spacing(2),
       background: '#fff',
+      width: "400px",
+      [theme.breakpoints.down('sm')]: {
+        width: "300px",
+      },
     },
       
     searchIcon: {
@@ -99,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
       display: "flex", 
       justifyContent: "left", 
     },
+   
   }));
 
   export default useStyles;

@@ -4,39 +4,38 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       flexDirection: 'column',
-      // minHeight: '100vh',
-      justifyContent: 'center',      
+      minHeight: '100vh',
+      justifyContent: 'center', 
+      background:'#eee', 
+      minWidth: 275,    
     },
-    
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-        
-    accordion:{
-      fontSize: theme.typography.pxToRem(30), //15
-      fontWeight: theme.typography.fontWeightRegular,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'left',
-      width:'98%'
+    card: {
       
+      background: '#fff',
+      margin: theme.spacing(2),
+    },
+    cardContent: {
+      width:'80%',
+      padding: theme.spacing(2),
+    },
+    typography:{
+      whiteSpace: 'pre-line', // pour afficcher à la ligne, sinon les sauts de ligne ne s'affichent pas
+    }, 
+
+    title: {
+      fontSize: 18,
+      maxWidth: '85%'
+    },
+    pos: {
+      margin:theme.spacing(2),
     },
 
-    accordionSummary: {
-      backgroundColor: '#ddd',
-    },
-
-    accordionDetails: {
-      backgroundColor: '#eee',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'left',
-    },
-
-    fab: {
-      marginLeft: theme.spacing(-2),
-      zIndex:'1000',
+    speedDial: {
+      position: 'absolute',
+      '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
+        top: theme.spacing(0),
+        right: theme.spacing(0),
+      },
     },
     
 }));
