@@ -17,6 +17,9 @@ import Grid from '@material-ui/core/Grid';
 import { loadCSS } from 'fg-loadcss'; // for th icons
 import Icon from '@material-ui/core/Icon';
 import CssBaseline from '@material-ui/core/Icon';
+import CreateIcon from '@material-ui/icons/Create';
+import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton';
 // to confirm
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -44,16 +47,16 @@ const Move = () => {
 
   const successDelete = () => {
     toast.success('Votre déménagement a bien été supprimé !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
 
   const errorDelete = () => {
     toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
@@ -148,13 +151,18 @@ const Move = () => {
                 >
                 <Grid container>
                   <Grid item xs={12}>
-                  <Typography>{move.label}</Typography>
+                  <IconButton color="primary" aria-label="To display my move" component="span">
+                    <SearchIcon /> 
+                  </IconButton> Consulter mon déménagement
                   </Grid>
                   <Grid item xs={12}>
-                  <Typography>{move.address}</Typography>
+                  <Typography> nom : {move.label}</Typography>
                   </Grid>
                   <Grid item xs={12}>
-                  <Typography> {format(new Date(move.date),'dd/MM/yyyy')}</Typography>
+                  <Typography>Adresse : {move.address}</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                  <Typography>Date : {format(new Date(move.date),'dd/MM/yyyy')}</Typography>
                   </Grid>
 
                 </Grid>
@@ -170,7 +178,7 @@ const Move = () => {
                     date: move.date
                   }
                 }}>
-                <Typography> Modifier</Typography>
+                <CreateIcon fontSize="large" color="secondary"/> 
                 </Link>
                 <DeleteIcon fontSize="large" color="secondary" onClick={() => {handleClickOpen(move.id)}}/>
                 <Dialog

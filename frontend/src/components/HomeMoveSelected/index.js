@@ -39,16 +39,13 @@ const HomeMoveSelected = () => {
     useEffect(() => {
         axios.get(BASE_URL+`/api/move/${location.state.id}/tasksList`) // api/move/:moveId/tasksList
           .then(res => {
-            
-            console.log(">> HomeMoveSeleted : res.data",res.data);
-            console.log(">> res.data.length", res.data.length);
 
             if (!res.data.length) {
                 setEndUrl("newTasksList");
                 setMessage("Je crée ma checkList !");                
             } else { 
                 setEndUrl("tasksList");
-                setMessage("Ma checklist");               
+                setMessage("J'accède à ma checklist");               
             }
           })
           .catch(err => {
@@ -81,7 +78,7 @@ const HomeMoveSelected = () => {
                                 <UnarchiveIcon />
                                 </Fab>
                             </Tooltip>
-                            <Button size="medium" variant="outlined" color="secondary" className={classes.button}>Consulter mes cartons</Button>
+                            <Button size="medium" variant="outlined" color="secondary" className={classes.button}>Créer ou consulter mes cartons</Button>
                             </Typography>
                         </Link>
                         
@@ -101,9 +98,7 @@ const HomeMoveSelected = () => {
                             <Button size="medium" variant="outlined" color="secondary" className={classes.button}> Rechercher dans mes cartons</Button>
                             </Typography>
                         </Link>
-                        
-                    
-                        
+                                                
                         <Link to ={{
                             pathname:`/move/${location.state.id}/${endUrl}`,
                                 state: {
@@ -112,7 +107,7 @@ const HomeMoveSelected = () => {
                                 }
                         }} className={classes.link} >
                             <Typography component="h1" variant="h5" className={classes.title}>
-                            <Tooltip title="Je crée ou je regarde ma checkliste" aria-label="Add">
+                            <Tooltip title="Je crée ou je regarde ma checklist" aria-label="Add">
                                 <Fab color="primary" className={classes.fab}>
                                 <ListAltIcon />
                                 </Fab>

@@ -64,7 +64,7 @@ const tasksListController = {
 
         //* créer une liste avec toutes les tâches de la table task pour un déménagement donné dans la table de liaison tasks_list
         try {
-            console.log('>> req.params :>> ', req.params);
+            console.log('>> tasksListController.createAllTasks : req.params => ', req.params);
 
             //  vérification de l'utilisateur
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
@@ -77,7 +77,7 @@ const tasksListController = {
                 });
             }
             const tasksList = await TasksList.insertNewTasks(req.params.moveId);
-            
+            console.log(">> Ma checklist a bien été créée");
             return res.send(tasksList);
             
         } catch (error) {
@@ -113,7 +113,7 @@ const tasksListController = {
         try {
 
             //  user verification
-            console.log(">> l.101 req.session.user",req.session);
+            // console.log(">> l.101 req.session.user");
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {
                 // Abort operation and send error to client;
@@ -173,7 +173,7 @@ const tasksListController = {
             const updatedTask = await selectedTaskInList.updateTasksList(); 
             
             req.session.user.contentUpdated = true; 
-            console.log(">> l.164 tasksListController updatedTask => ",updatedTask);
+            console.log(">> tasksListController.updatedTasksList l.176 maj de la tâche avec nvelles valeurs => ",updatedTask);
             // envoi de la maj au client
             return res.send((updatedTask) ? updatedTask : false);
         } catch (error) {
@@ -214,12 +214,12 @@ const tasksListController = {
             for (const prop in req.body) {
                 selectedTaskInList[prop] = req.body[prop]; 
             }
-            console.log('>> l.160 tasksListController : req.body',req.body);
+            console.log('>> tasksListCOntroller.updatecheckboxTasksList l.217 => req.body : ',req.body);
             
             const updatedTask = await selectedTaskInList.updateTasksList(); 
             
             req.session.user.contentUpdated = true; 
-            console.log(">> l.164 tasksListController updatedTask => ",updatedTask);
+            console.log(">> tasksListController.updatecheckboxTasksList l.222 updatedTask => ",updatedTask);
             // envoi de la maj au client
             return res.send((updatedTask) ? updatedTask : false);
         } catch (error) {
@@ -232,29 +232,28 @@ const tasksListController = {
     createTaskInTasksList: async(req,res) => {
     
         try {
-            
+            // contrôle des données reçues par le body
             const payloadValidation = addSchema.validate(req.body);
-            
             if (!!payloadValidation.error) {
                 // if an error is found, update status code (400 for bad request)and send the error details
                 return res.status(400).send(payloadValidation.error); 
             }
             const moveId = req.params.moveId;
 
-            const newTask = new Task(req.body); 
-            // création d'une instance de Task
-            console.log(">> tasksListController l.185 newTask", newTask);
-
+            // étape 1 => création d'une instance de Task
+            const newTask = new Task(req.body);             
+            console.log(">> tasksListController.createTaskInTasksList création instance Task", newTask);
+            //  Insertion nouvelle tache dans table Task
             const storedTask = await newTask.insertInTask(moveId);
-            console.log(">> tasksListController l.188 storedTask", storedTask);
-            // création d'une instance de TasksList
-            const newTasksList = new TasksList(req.body);
-            console.log(">> tasksListController l.191 newTasksList", newTasksList);
+            console.log(">> tasksListController Insertion nouvelle tache dans table Task", storedTask);
 
+            // étape 2 => création d'une instance de TasksList
+            const newTasksList = new TasksList(req.body);
+            console.log(">> tasksListController.createTaskInTasksList création instance de TasksList", newTasksList);
             newTasksList.task_id = storedTask.id;
-            
+            //  Insertion nouvelle liaison dans table de liaison
             const storedTasksList = await newTasksList.insertInTasksList(moveId);
-            console.log(">> tasksListController l.196 storedTasksList", storedTasksList);
+            console.log(">> tasksListController.createTaskInTasksList Insertion dans table de liaison", storedTasksList);
 
             res.send(storedTasksList);                
 
@@ -286,7 +285,7 @@ const tasksListController = {
                     statusCode : 500,
                     message: "Quelque chose s'est mal passé"
                 });
-            } else { console.log("étape 1 bien passée");}
+            } else { console.log("1/ tasksListController.deleteTaskInList : on supprime la liaison dans la table tasks_list => bien passé");}
 
             // 2e -> pour supprimer la tache dans la table task
             const storedTask = await Task.getTaskByPk(req.params.taskId);
@@ -300,7 +299,7 @@ const tasksListController = {
                          message: "Pas trouvé - cette tache n'existe pas dans la liste"
                      }
                  });
-             }
+             } else { console.log("2/tasksListController.deleteTaskInList : on supprime la tâche perso dans la table task => bien passé");}
              // on supprime la tache si elle n'est pas générale
              if (!storedTask.general_task) {
                  const successTask = await storedTask.delete();      

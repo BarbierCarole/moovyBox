@@ -26,7 +26,6 @@ const taskController = {
 
         try {
 
-            console.log('>> req.params :>> ', req.params);
             //  user verification
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {

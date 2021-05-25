@@ -55,7 +55,7 @@ class TasksList {
     }
 
     static async getByPk(moveId, taskId) {
-        console.log(">> tasksList l.55 clés primaires moveId, taskId => ",moveId, taskId);        
+                
         const query = ` 
             SELECT 
                 move_id,
@@ -84,6 +84,21 @@ class TasksList {
         return (results.rows[0]) ? new this(results.rows[0]) : false; 
     }
 
+
+    // async save() {
+    //     try {
+
+    //         if(!!this.task_id) {
+    //            return this.update(); 
+    //         } else {
+    //            return this.insert(); 
+    //         }
+            
+    //     } catch (error) {
+    //         console.log(error); 
+    //     }
+    // }
+    
     // Pour insérer toutes les taches d'un bloc dans la checklist du déménagement
     static async insertNewTasks(move_id) { 
         try {
@@ -121,7 +136,7 @@ class TasksList {
             RETURNING *;`;
             // Set the involved data
             const values = [this.move_id, this.task_id, this.contact, this.is_realised, this.note, this.date_perso, this.move_id, this.task_id]; 
-            console.log(">> tasksList l.139 : values :", values);
+            console.log(">> modèle tasksList.updateTasksList l.139 : valeurs envoyées dans requete :", values);
             // Query update to DB 
             const results = await client.query(query, values); 
         

@@ -83,16 +83,16 @@ const BoxesByMove = (props) => {
 
   const successDelete = () => {
     toast.success('Votre carton a bien été supprimé !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
 
   const errorDelete = () => {
     toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
@@ -224,6 +224,14 @@ const BoxesByMove = (props) => {
               </Link>
             </CardContent>
           </Card>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography variant="body2" >
+                Cliquer sur les boîtes ci-dessous pour consulter ou ajouter du contenu.
+              </Typography>
+              
+            </CardContent>
+          </Card>
           {/* ↓ research ↓ */}
           <Card className={classes.card}>
             <CardContent>
@@ -239,13 +247,14 @@ const BoxesByMove = (props) => {
               </form>
               {/* CB : display all the boxes */}
               <ButtonCustom
-                type="submit"
-                fullWidth
-                variant="contained"
+                type="submit"                
+                variant="outlined"
                 onClick={() => {displayAllBoxes()} }
                 color="secondary"
+                size="small"
+                className={classes.ButtonCustom}
               >
-                Annuler la recherche<br/>et tout afficher
+                Annuler et tout afficher
               </ButtonCustom>
             </CardContent>
           </Card>
@@ -257,17 +266,17 @@ const BoxesByMove = (props) => {
                 </Typography>
                 <FormGroup row style={{ display: "flex", justifyContent: "center" }}>
                   <FormControlLabel
-                    control={
-                    <Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} 
+                    labelPlacement="bottom"
+                    control={<Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} 
                     label="Fragile"
                   />
                   <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={stateOptionChecked.heavy} onChange={handleChange} name="heavy" />}
+                    labelPlacement="bottom"
+                    control={<Checkbox checked={stateOptionChecked.heavy} onChange={handleChange} name="heavy" />}
                     label="Lourd"
                   />
                   <FormControlLabel
+                    labelPlacement="bottom"
                     control={<Checkbox checked={stateOptionChecked.floor} onChange={handleChange} name="floor" />}
                     label="A l'étage"
                   />
@@ -275,14 +284,7 @@ const BoxesByMove = (props) => {
               </div>
             </CardContent>
           </Card>
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography variant="h5"  className={classes.title}>
-                Cliquer sur les boîtes ci-dessous représentant un carton pour consulter ou ajouter du contenu.
-              </Typography>
-              
-            </CardContent>
-          </Card>
+          
           
           
           {/* ------------- CB new interface of box ---------------- */}
@@ -300,7 +302,7 @@ const BoxesByMove = (props) => {
                   justify="space-between"
                   alignItems="center"
                 >
-                  <Grid item xs={12} style={{ width: "inherit" }}>
+                  <Grid item xs={12} className={classes.box_center} >
                     <Link to={{
                       pathname:"/box/"+boxe.id,
                       state: {
@@ -308,7 +310,8 @@ const BoxesByMove = (props) => {
                         label: boxe.label,
                         code:boxe.code
                         }
-                      }}>
+                      }}
+                    >
 
                       <Button 
                       variant="outlined" 

@@ -5,7 +5,6 @@ import useStyles from './styles/styles';
 import withRoot from '../modules/withRoot';
 import Footer from '../modules/views/Footer';
 import Header from '../modules/views/Header';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {Card, CardHeader, CardContent, Avatar } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -15,8 +14,6 @@ import { toast } from 'react-toastify';
 // to redirection signin
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
-import {Link} from "react-router-dom";
-
 import DateFnsUtils from '@date-io/date-fns';
 // import 'date-fns';
 import {
@@ -48,8 +45,8 @@ const CreateTask = (props) => {
   // message d'erreur
   const errorDelete = () => {
     toast.error('Le label est obligatoire', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }

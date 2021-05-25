@@ -233,7 +233,7 @@ const BoxesByMove = (props) => {
   const successDelete = () => {
     toast.success('Votre carton a bien été supprimé !', {
       position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
@@ -241,7 +241,7 @@ const BoxesByMove = (props) => {
   const errorDelete = () => {
     toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
       position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      autoClose: 3000,
       closeOnClick: true
     })
   }

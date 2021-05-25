@@ -52,16 +52,16 @@ function CreateBox(props) {
 
   const successBox = () => {
     toast.success('Votre carton a bien été créé !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
 
   const errorBox = () => {
     toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }

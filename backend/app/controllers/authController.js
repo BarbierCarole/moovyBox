@@ -136,8 +136,7 @@ const authControlleur = {
             
             // I query to get user from DB with email address 
             const storedUser = await User.findByEmail(req.body.email); 
-            console.log('storedUser :>> ', storedUser);
-            
+                        
             // If the user exists  
             if (!storedUser) {
                 return res.status(401).send({
@@ -197,10 +196,10 @@ const authControlleur = {
             // set a content modified value for research update 
             req.session.user.contentUpdated = false; 
 
-            
             console.log('req.session :>> ', req.session.user);
             
             delete storedUser.password; 
+            console.log('storedUser :>> ', storedUser);
             return res.send(storedUser); 
             
             
