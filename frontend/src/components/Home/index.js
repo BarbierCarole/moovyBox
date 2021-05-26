@@ -6,7 +6,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import withRoot from '../modules/withRoot';
 // import Button from '../modules/components/Button';
 import Footer from '../modules/views/Footer';
@@ -18,7 +17,7 @@ import useStyles from './styles/styles';
 const Home = () => {
     const classes = useStyles();
     return(
-        <div>
+        <div className={classes.root}>
             <HeaderHome />
             <Card className={classes.card} variant="outlined">
                 <CardContent>
@@ -26,23 +25,20 @@ const Home = () => {
                         MoovyBox
                     </Typography>
                     <Typography variant="h5" component="h2">
-                        Pour mieux gérer vos déménagements
+                        Une application qui facilitera la gestion de vos déménagements
                     </Typography>
-                    <Typography variant="body2" component="p">
-                        Et rechercher facilement vos objets dans vos cartons.
+                    <Typography variant="h5" component="h2">
+                        et la recherche d'objets dans vos cartons.
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button className={classes.button} size="small" variant="contained" color="primary" href="/signIn">Je suis déjà inscrit·e, je me connecte</Button>
+                    <Button className={classes.button} size="medium" variant="contained" color="primary" href="/signIn">Je suis déjà inscrit·e,<br /> je me connecte</Button>
                 </CardActions>
                 <CardActions>
-                    <Button className={classes.button2} size="small" variant="contained" color="primary" href="/signUp">Je m'inscris</Button>
+                    <Button className={classes.button2} size="small" variant="contained" color="secondary" href="/signUp">Je m'inscris</Button>
                 </CardActions>
             </Card>
-            <Slideshow />
-            <div className="contain-btn">
-                <Button className="btn2" size="small" variant="contained" color="primary" href="/signUp" endIcon={<ChevronRightIcon />}>Ca cartonne</Button>
-            </div>
+            {/* <Slideshow /> */}
             <Footer />
 
         </div>

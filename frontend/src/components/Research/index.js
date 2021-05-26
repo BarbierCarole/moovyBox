@@ -83,16 +83,16 @@ const Research = (props) => {
 
   const successDelete = () => {
     toast.success('Votre carton a bien été supprimé !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
 
   const errorDelete = () => {
     toast.error('Une erreur est survenue. Veuillez réessayer ultérieurement !', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }

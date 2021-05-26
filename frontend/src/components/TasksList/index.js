@@ -47,11 +47,11 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
   };
 
   // Pour calculer la date d'action par rapport à la date du déménagement et au nbre de jours avant ou après
-  const dayCalcT= (date,day) => {
-    console.log("date, day", date, day);
-    const result = addDays(parseISO(date), day);    
-    return result;
-  }
+  // const dayCalcT= (date,day) => {
+  //   console.log("date, day", date, day);
+  //   const result = addDays(parseISO(date), day);    
+  //   return result;
+  // }
 
   const dayOfAction = (date, day, date_perso, general_task, id) => {
     
@@ -68,12 +68,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     } 
     
   }  
-  // pour afficher déplié l'accordéon en fonction de l'autre
-  // const [expanded, setExpanded] = React.useState('panel1');
 
-  // const handleChangePanel = (panel) => (event, newExpanded) => {
-  //   setExpanded(newExpanded ? panel : false);
-  // };
 
   useEffect(() => {
     console.log(">> l.31 props : ",props);
@@ -90,12 +85,14 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
 
   function getNotRealisedCount() {
     console.log(tasks);
-    return tasks.filter(x => x.is_realised==false).length;
+    const nber = tasks.filter(x => x.is_realised==false).length;
+    return (nber <2)? `${nber} tâche à réaliser` :`${nber} tâches à réaliser`;
   }
   
   function getRealisedCount() {
     console.log(tasks);
-    return tasks.filter(x => x.is_realised==true).length;
+    const nber = tasks.filter(x => x.is_realised==true).length;
+    return (nber <2)? `${nber} tâche déjà réalisée` :`${nber} tâches déjà réalisées`;
 
   }
 
@@ -110,27 +107,28 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
       is_realised: (e.target.value == v.id ) ? e.target.checked : v.is_realised,
       date: v.date,
       nber_days: v.nber_days,
+      date_perso: v.date_perso, 
+      general_task: v.general_task,
     }));
     
     setTasks(t);
         
     const data = {
       task_id: e.target.value,
-      move_id: props.location.state.id,      
-      //is_realised: tasks.is_realised,
+      move_id: props.location.state.id, 
       is_realised: e.target.checked,
     }
 
-    console.log(">> l.71 data", data);   
-    axios.put(BASE_URL+`/api/move/${props.location.state.id}/tasksList/${e.target.value}`, data)
+    console.log(">> l.119 data", data);   
+    axios.put(BASE_URL+`/api/move/${props.location.state.id}/tasksList/${e.target.value}/checkbox`, data)
         .then(res => {
           console.log(">< bien envoyé");
         })
         .catch(err => {
           console.log(err);
+          console.log(">< Erreur dans handleChange de la checkbox de tasksList");
         })
   }
-
 
   return (
     <>
@@ -145,7 +143,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
           id="panel1a-header"
         >
           <Typography component="h1" variant="h4"  className={classes.title}>
-          {getNotRealisedCount()} Tâches à réaliser
+          {getNotRealisedCount()}
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
@@ -175,13 +173,12 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
                     </Link>                        
                   }
                   subheader={format(dayOfAction(data.date,data.nber_days, data.date_perso, data.general_task, data.id),'dd/MM/yyyy')}
-                  // subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}  
                 />
               </Card>) : console.log("tache true"))
           ))}
         </AccordionDetails>
       </Accordion>
-      {/* -------- 2 --------- */}
+     
       <Accordion square className={classes.accordion}> 
       {/* Dans <Accordion pour que l'accordeon se déplie ou replie en fonction de l'autre : "expanded={expanded === 'panel1'} onChange={handleChangePanel('panel1')}" */}
         <AccordionSummary 
@@ -191,7 +188,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
           id="panel2a-header"
         >
           <Typography component="h1" variant="h4"  className={classes.title}>
-          {getRealisedCount()} Tâches à réaliser
+          {getRealisedCount()} 
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.accordionDetails}>
@@ -220,8 +217,7 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
                         </Typography>
                     </Link>                        
                   }
-                  subheader={format(dayOfAction(data.date,data.nber_days, data.date_perso, data.general_task, data.id),'dd/MM/yyyy')}
-                  // subheader={format(dayCalcT(data.date,data.nber_days),'dd/MM/yyyy')}  
+                  subheader={format(dayOfAction(data.date,data.nber_days, data.date_perso, data.general_task, data.id),'dd/MM/yyyy')}  
                 />
               </Card>) : console.log("tache true"))
           ))}

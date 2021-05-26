@@ -117,7 +117,7 @@ const UpdateTask = (props) => {
                   fullWidth
                   id="label"
                   label="Titre de la tâche"
-                  autoFocus
+                  
                   helperText="Un texte est requis"
                   value={label}
                   onChange={handleLabelChange}
@@ -152,7 +152,7 @@ const UpdateTask = (props) => {
                   fullWidth
                   id="description"
                   label="Description de la tâche"
-                  autoFocus          
+                           
                   value={description}
                   onChange={handleDescriptionChange}
                 />{' '}
@@ -166,7 +166,7 @@ const UpdateTask = (props) => {
                   fullWidth
                   id="note"
                   label="Mes notes"
-                  autoFocus          
+                           
                   value={note}
                   onChange={handleNoteChange}
                 />{' '}
@@ -179,7 +179,7 @@ const UpdateTask = (props) => {
                   fullWidth
                   id="contact"
                   label="Mes contacts"
-                  autoFocus          
+                          
                   value={contact}
                   onChange={handleContactChange}
                 />{' '}

@@ -145,6 +145,11 @@ const useStyles = makeStyles((theme) => ({
     boxLi: {
       width: '100%',
       backgroundColor: '#ffffff',    
+    },
+    box_center: {
+      textAlign: 'center',
+      width: 'inherit',
+      height: 'inherit'
     }  
     
   }));

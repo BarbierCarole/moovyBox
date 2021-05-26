@@ -43,7 +43,7 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
   // For button modify
   const [open, setOpen] = useState(false);
   const [task, setTask] = useState('');
-  console.log(">> l.57 task : ", task);
+  console.log(">> l.46 task : ", task);
   // const [selectedId, setSelectedId] = useState();
  
   const isLogged = useSelector((state) => state.isLogged);
@@ -78,12 +78,12 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
   };
 
   const dayCalcT= (date,day) => {
-    if (task.generalTask) {
+    if (task.general_task) {
         // if (!date)... sert pour l'erreur "invalide value" car serveur n'a encore rien envoyé quand fonction lancée. Pourquoi ?...
       if (!date) {
         return "";
       }
-
+      console.log(">> date et day", date, day);
       const result = addDays(parseISO(date), day);    
       return format(result,'dd/MM/yyyy');
      
@@ -121,11 +121,7 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
                 {dayCalcT(task.date, task.nber_days)}
               </Typography>   
             </Grid>
-            <Grid item xs={1}> 
-              <IconButton aria-label="delete" onClick={() => {handleClickOpenDel(task.id)}}>
-                <DeleteForeverIcon size="medium" color="secondary" />
-              </IconButton>  
-            </Grid> 
+             
             { !task.general_task ? (            
               
               <Grid item xs={1}>   
@@ -150,18 +146,33 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
               </IconButton>
               </Grid>) : null
             }
-
+            <Grid item xs={1}> 
+              <IconButton aria-label="delete" onClick={() => {handleClickOpenDel(task.id)}}>
+                <DeleteForeverIcon size="medium" color="secondary" />
+              </IconButton>  
+            </Grid>
             <Grid item xs={12}> 
+              <Typography variant="h4" component="h3" className={classes.typography}>
+                Description  
+              </Typography>
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.description}   
               </Typography>
             </Grid>
             <Grid item xs={12}> 
+              <Typography variant="h4" component="h3" className={classes.typography}>
+                Mes notes  
+              </Typography>
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.note}   
               </Typography>
             </Grid>
             <Grid item xs={12}> 
+              
+              <Typography variant="h4" component="h3" className={classes.typography}>
+                Mes contacts  
+              </Typography>
+              
               <Typography variant="body2" component="p" className={classes.typography}>
                 {task.contact}   
               </Typography>
@@ -183,7 +194,7 @@ const Task = (props) => { // props : location.state.id:19 et location.state.labe
           <DialogTitle id="alert-dialog-title" className={classes.dialogTitle} color="secondary">{"Confirmation de suppression"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Etes-vous sûr de vouloir supprimer ce carton et tout son contenu définitivement ?
+              Etes-vous sûr de vouloir supprimer cette tâche ?
             </DialogContentText>
           </DialogContent>
           <DialogActions>

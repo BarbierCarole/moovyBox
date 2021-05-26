@@ -24,26 +24,19 @@ class Task {
         return (results.rows[0]) ? new this(results.rows[0]) : false; 
     }
     
-    async insertInTask(move_id) { 
-
+    async insertInTask() { 
         try {
-                        
             const query = `
-            INSERT INTO task (label,description) VALUES ( 
-                $1,$2
-                )
-            RETURNING *;`;
+            INSERT INTO task (label,description) VALUES ( $1,$2 ) RETURNING *;`;
             const values = [ this.label, this.description];
             
             const results = await client.query(query, values);
-           // console.log("l.149 ",new TasksList(results.rows[0]));
+            // console.log(">> l.35 new TasksList(results.rows[0]) => ",new TasksList(results.rows[0]));
             return new Task(results.rows[0]); 
             
-
        } catch (error) {
            console.trace(error);
        }
-
     }
     
     async updateTask() {
@@ -58,7 +51,7 @@ class Task {
             RETURNING *;`;
             // Set the involved data
             const values = [this.label, this.description, this.id]; 
-            console.log(">> tasksList l.176 : values :", values);
+            console.log(">> task l.176 : values :", values);
             // Query update to DB 
             const results = await client.query(query, values); 
         

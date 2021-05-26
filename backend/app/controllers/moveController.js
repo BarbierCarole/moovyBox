@@ -27,8 +27,6 @@ const moveController = {
             const moves = await Move.getAllFromUserId(userId); 
             
             res.send(moves); 
-            console.log('cb -> getUserMoves ');
-          
         } catch (error) {
             console.trace(error);
         }

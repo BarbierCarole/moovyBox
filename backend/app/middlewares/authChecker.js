@@ -1,5 +1,5 @@
 const authChecker = (req, res, next) => {
-    // Check if an authentified user is using the session
+    // Vérifie que l'utilisateur actuel est bien celui de la session
     if (!req.session.user) {
         // then request  
         return res.status(403).send({
@@ -12,6 +12,7 @@ const authChecker = (req, res, next) => {
             }
         });
     }
+    console.log(">> la session est bien associée à l'utilisateur");
     // if that's the case then move on
     next(); 
     

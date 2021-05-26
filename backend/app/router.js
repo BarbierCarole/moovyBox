@@ -98,25 +98,27 @@ router.route('/api/box/:boxId/item/:itemId')
 
 
 /* TASK ROUTES */
-// list of the tasks
+// liste des tâches
 router.route('/api/move/:moveId/tasksList')
-    // get all tasks of a selected move
+    // Afficher toutes les tâches d'un déménagement
     .get(authCheckerMW, tasksListController.getTasksList)
 
-   
+router.route('/api/move/:moveId/tasksList/:taskId/checkbox') 
+    // pour modifier les checkbox uniquement
+    .put(authCheckerMW, tasksListController.updatecheckboxTasksList);   
+
 router.route('/api/move/:moveId/tasksList/:taskId') 
-    // to modify the the checkboxes
+    // pour modifier la tâche de la table de liaison
     .put(authCheckerMW, tasksListController.updateTasksList)
     .delete(authCheckerMW, tasksListController.deleteTaskInList);
 
 router.route('/api/move/:moveId/NewTasksList')
-// la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
+    // la liste des tâches se crée automatiquement quand l'utilisateur demande de la créer
     .post(authCheckerMW, tasksListController.createAllTasks)
     .get(authCheckerMW, tasksListController.getTasksList);
  
 router.route('/api/move/:moveId/task/:taskId')
-    .get(authCheckerMW, tasksListController.getTaskById)
-    // .get(authCheckerMW, taskController.getTaskById)
+    .get(authCheckerMW, tasksListController.getTaskById)    
     .put(authCheckerMW, taskController.updateTask);
 
 router.route('/api/move/:moveId/task')

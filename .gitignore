@@ -15,6 +15,6 @@
 /backend/revise
 #/backend/brouillon.js
 /backend/modelTest.js
-
+node_modules
 moovy_carole.pem
 moovybox.pem

@@ -125,7 +125,7 @@ const theme = {
     },
     body2: {
       ...rawTheme.typography.body1,
-      fontSize: 16,
+      fontSize: 14,
       color: rawTheme.text.primary.main, 
     },
   },

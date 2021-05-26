@@ -16,24 +16,16 @@ const taskUpdateSchema = Joi.object({
     description: Joi.string()
     .pattern(new RegExp('^[^<>%]{3,}$'))
     .max(2500)
-    .required(),
+    .allow('') ,
 });
 
 const taskController = {
 
-    // /api/move/:moveId/task/:taskId pour afficher le détail de la tache
+    //api/move/:moveId/task/:taskId pour afficher le détail de la tache
     getTaskById: async(req,res) => {
 
         try {
 
-            const taskValidation = await taskSchema.validate(req.body);
-           
-            // If payload is not correct send error; 
-            if (!!taskValidation.error) {
-                return res.status(400).send(taskValidation.error); 
-            }
-
-            console.log('>> req.params :>> ', req.params);
             //  user verification
             const matchedMove = req.session.user.moves.filter(moveObj => moveObj.id == req.params.moveId); 
             if (!matchedMove.length) {
@@ -60,13 +52,14 @@ const taskController = {
 
 
     updateTask: async (req, res) => {
-        //* Update the tasksList
+        // Update the tasksList
         try {
-            const taskUpdateValidation = await taskUpdateSchema.validate(req.body);
+            const taskUpdateValidation = taskUpdateSchema.validate(req.body);
             console.log(">>> l.97 req.body taskContreoller", req.body);
            
             // If payload is not correct send error; 
             if (!!taskUpdateValidation.error) {
+                console.log("taskController taskUpdateValidation pb");
                 return res.status(400).send(taskUpdateValidation.error); 
             }
             console.log(">> tasksListContr l.144 req.body", req.body); // exemple -> { task_id: '26', move_id: 19, is_realised: false }

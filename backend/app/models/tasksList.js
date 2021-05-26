@@ -22,27 +22,27 @@ class TasksList {
     }
 
     static async getAllTaskFromMove(moveId) {
-
         const query = `
-        SELECT 
-            move_id,
-            is_realised,
-            date_perso,
-            note,
-            contact,
-            m.date,
-            t.label,
-            t.description,
-            t.id,
-            t.nber_days, 
-            t.general_task
-        FROM move m
-        INNER JOIN tasks_list tl
-            ON tl.move_id = m.id
-        INNER JOIN task t
-            ON t.id = tl.task_id
-        WHERE move_id = $1
-        ORDER BY t.nber_days ASC;`;
+            SELECT 
+                move_id,
+                is_realised,
+                date_perso,
+                note,
+                contact,
+                task_id,
+                m.date,
+                t.label,
+                t.description,
+                t.id,
+                t.nber_days, 
+                t.general_task
+            FROM move m
+            INNER JOIN tasks_list tl
+                ON tl.move_id = m.id
+            INNER JOIN task t
+                ON t.id = tl.task_id
+            WHERE move_id = $1
+            ORDER BY t.nber_days ASC;`;
     
         const values = [moveId];
         const results = await client.query(query, values);
@@ -50,11 +50,12 @@ class TasksList {
         for ( const row of results.rows) {
             instances.push(new this(row));
         }
+        // console.log(">> l.52 tasksList : instances → ", instances);
         return instances;
     }
 
     static async getByPk(moveId, taskId) {
-        console.log("tasksList l.55 moveId, taslId",moveId, taskId)        
+                
         const query = ` 
             SELECT 
                 move_id,
@@ -69,7 +70,6 @@ class TasksList {
                 t.nber_days,
                 t.id, 
                 t.general_task
-                
             FROM move m
             INNER JOIN tasks_list tl
                 ON tl.move_id = m.id
@@ -101,9 +101,7 @@ class TasksList {
     
     // Pour insérer toutes les taches d'un bloc dans la checklist du déménagement
     static async insertNewTasks(move_id) { 
-
         try {
-            
             const query = `
             INSERT INTO 
                 tasks_list ( task_id, move_id )
@@ -113,8 +111,7 @@ class TasksList {
                 task
             WHERE 
                 general_task=true;`;
-            const values = [ move_id ];
-            
+            const values = [ move_id ];            
             const results = await client.query(query, values);
             //console.log("l.149 ",new TasksList(results.rows[0]));
             return results;
@@ -139,7 +136,7 @@ class TasksList {
             RETURNING *;`;
             // Set the involved data
             const values = [this.move_id, this.task_id, this.contact, this.is_realised, this.note, this.date_perso, this.move_id, this.task_id]; 
-            console.log(">> tasksList l.176 : values :", values);
+            console.log(">> modèle tasksList.updateTasksList l.139 : valeurs envoyées dans requete :", values);
             // Query update to DB 
             const results = await client.query(query, values); 
         
@@ -154,17 +151,15 @@ class TasksList {
 
         try {
             
-            console.log("task.js l.142 : this.label, this.description, move_id, this.note, this.date_perso, this.contact => ",this.label, this.description, move_id, this.note, this.date_perso, this.contact);
             const query = `
-            INSERT INTO 
-                tasks_list ( task_id, move_id, note, date_perso, contact )
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING *;`;
+                INSERT INTO 
+                    tasks_list ( task_id, move_id, note, date_perso, contact )
+                VALUES ($1, $2, $3, $4, $5)
+                RETURNING *;`;
             const values = [ this.task_id, move_id, this.note, this.date_perso, this.contact ];
             
             const results = await client.query(query, values);
             return new TasksList(results.rows[0]); 
-            
 
        } catch (error) {
            console.trace(error);

@@ -16,7 +16,6 @@ const corsOpts = {
   allowedHeaders : ['Content-Type', 'Authorization', 'Set-Cookie', 'Cookie']
 }; 
 
-
 //app.use(cors(['localhost', '18.206.96.118'])); 
 app.use(cors(corsOpts)); 
 
@@ -28,9 +27,6 @@ app.use(express.urlencoded({extended: true}));
 
 // Bodyparser for json type data
 app.use(express.json()); 
-
-
-
 
 app.use(session({
   secret: 'booxxy', // 'keyboard cat' as a default secret would become easy to hack. 

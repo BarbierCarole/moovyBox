@@ -12,8 +12,8 @@ export default (store) => (next) => (action) => {
   const successAuth = () => {
     // toast is an alert in the dom
     toast.success('Authentification réussie !!!', {
-      position: toast.POSITION.TOP_CENTER,
-      autoClose: 5000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000,
       closeOnClick: true
     })
   }
@@ -21,8 +21,8 @@ export default (store) => (next) => (action) => {
   const errorAuth = () => {
     
     toast.error("Email déjà existant ou Email ou mot de passe incorrect", {
-    position: toast.POSITION.TOP_CENTER,
-    autoClose: 5000,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 3000,
     closeOnClick: true
     });    
   }

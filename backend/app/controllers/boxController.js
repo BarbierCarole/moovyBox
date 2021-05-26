@@ -81,10 +81,9 @@ const boxController = {
     getSearchItemInBoxes: async(req,res) => {
         //* research an item in all the boxes of an move
         try {
-            const searchedItem = await normalize(req.params.searchedItem); 
-            console.log("CB : in controller : searchedItem : ",searchedItem);
-            
-            const boxes = await Box.search(searchedItem); 
+            const searchedItem = await normalize(req.params.searchedItem);                         
+            const moveId = req.params.moveId;           
+            const boxes = await Box.search(searchedItem, moveId); 
             return res.send(boxes); 
                         
         } catch (error) {
