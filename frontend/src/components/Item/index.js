@@ -46,7 +46,7 @@ const Item = (props) => {
   };
 
   const successAdd = () => {
-    toast.success('Votre objet a bien été ajouté au carton !', {
+    toast('Votre objet a bien été ajouté au carton !', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
       closeOnClick: true
@@ -54,7 +54,7 @@ const Item = (props) => {
   }
 
   const successDelete = () => {
-    toast.success('Votre objet a bien été supprimé du carton !', {
+    toast('Votre objet a bien été supprimé du carton !', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
       closeOnClick: true
@@ -152,7 +152,7 @@ const Item = (props) => {
           </Typography>
           {/* new button */}
           
-          <form noValidate autoComplete="on" onSubmit={handleSubmit} className={classes.form}>
+          <form noValidate autoComplete="on" onSubmit={handleSubmit} className={classes.form} style={{textAlign: 'center'}}>
             <Typography component="h1" variant="h5" className={classes.title}>
               <TextField id="outlined-basic" label="Objet à ajouter" variant="outlined" value={name}  onChange={handleItemChange} style={{borderRadius: '11px', background: '#ffffff', boxShadow:  '4px 4px 7px #d9d9d9, -4px -4px 7px #ffffff'}}/>
               

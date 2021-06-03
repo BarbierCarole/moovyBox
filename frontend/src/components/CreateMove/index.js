@@ -36,7 +36,7 @@ const CreateMove = () => {
   const [date, setDate] = useState(new Date());
 
   const successMove = () => {
-    toast.success('Votre déménagement a bien été créé !', {
+    toast('Votre déménagement a bien été créé !', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
       closeOnClick: true

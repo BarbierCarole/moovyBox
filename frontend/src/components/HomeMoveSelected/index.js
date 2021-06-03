@@ -83,7 +83,7 @@ const HomeMoveSelected = () => {
                         </Link>
                         
                         <Link to ={{
-                            pathname:`/move/${location.state.id}`,
+                            pathname:`/move/${location.state.id}/search`,
                                 state: {
                                 id: location.state.id,
                                 label: location.state.label,

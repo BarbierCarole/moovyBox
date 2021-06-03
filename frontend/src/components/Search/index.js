@@ -25,9 +25,7 @@ import ButtonCustom from '../modules/components/Button';
 // to redirection signin
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
-// alerte
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 // search
 
 import TextField from '@material-ui/core/TextField';
@@ -45,10 +43,9 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import useStyles from './styles/styles';
 
-
 toast.configure();
 
-const BoxesByMove = (props) => {
+const Search = (props) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const isLogged = useSelector((state) => state.isLogged);
   console.log("State of isLogged : ",isLogged);
@@ -85,7 +82,7 @@ const BoxesByMove = (props) => {
   };  
 
   const successDelete = () => {
-    toast.success('Votre carton a bien été supprimé !', {
+    toast('Votre carton a bien été supprimé !', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
       closeOnClick: true
@@ -207,7 +204,7 @@ const BoxesByMove = (props) => {
             Listes des cartons de "{props.location.state.label}"
           </Typography>
           {/* ↓ add a box ↓ */}
-          <Card className={classes.card}>
+          {/* <Card className={classes.card}>
             <CardContent>
             <Link to ={{
                   pathname:"/create-box",
@@ -226,17 +223,17 @@ const BoxesByMove = (props) => {
                 </Typography>
               </Link>
             </CardContent>
-          </Card>
+          </Card> */}
           <Card className={classes.card}>
             <CardContent>
-              <Typography variant="body1" >
+              <Typography variant="body2" >
                 Cliquer sur les boîtes ci-dessous pour consulter ou ajouter du contenu.
               </Typography>
               
             </CardContent>
           </Card>
           {/* ↓ research ↓ */}
-          {/* <Card className={classes.card}>
+          <Card className={classes.card}>
             <CardContent>
               <form noValidate autoComplete="on" onSubmit={handleSubmit} >
                 <Typography component="h1" variant="h5" className={classes.title}>
@@ -247,9 +244,9 @@ const BoxesByMove = (props) => {
                     </Fab>
                   </Tooltip>
                 </Typography>
-              </form> */}
+              </form>
               {/* CB : display all the boxes */}
-              {/* <ButtonCustom
+              <ButtonCustom
                 type="submit"                
                 variant="outlined"
                 onClick={() => {displayAllBoxes()} }
@@ -260,36 +257,33 @@ const BoxesByMove = (props) => {
                 Annuler et tout afficher
               </ButtonCustom>
             </CardContent>
-          </Card> */}
-          <Card className={classes.card}>
+          </Card>
+          {/* <Card className={classes.card}>
             <CardContent>
               <div className={classes.title} >
-                <Typography variant="body1" >
+                <Typography variant="h5"  className={classes.title}>
                    Je ne veux séléctionner que les cartons :
                 </Typography>
-                <FormGroup row style={{ display: "flex", justifyContent: "center", marginRight: 0 }} className={classes.labelCheck}>
+                <FormGroup row style={{ display: "flex", justifyContent: "center" }}>
                   <FormControlLabel
                     labelPlacement="bottom"
                     control={<Checkbox checked={stateOptionChecked.fragile} onChange={handleChange} name="fragile" />} 
                     label="Fragile"
-                    color="secondary"
                   />
                   <FormControlLabel
                     labelPlacement="bottom"
                     control={<Checkbox checked={stateOptionChecked.heavy} onChange={handleChange} name="heavy" />}
                     label="Lourd"
-                    color="secondary"
                   />
                   <FormControlLabel
                     labelPlacement="bottom"
                     control={<Checkbox checked={stateOptionChecked.floor} onChange={handleChange} name="floor" />}
                     label="A l'étage"
-                    color="secondary"
                   />
                 </FormGroup>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
           
           
           
@@ -510,4 +504,4 @@ const BoxesByMove = (props) => {
   );
 };
 
-export default withRoot(BoxesByMove);
+export default withRoot(Search);
