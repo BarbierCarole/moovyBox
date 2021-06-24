@@ -101,7 +101,7 @@ router.route('/api/box/:boxId/item/:itemId')
 // liste des tâches
 router.route('/api/move/:moveId/tasksList')
     // Afficher toutes les tâches d'un déménagement
-    .get(authCheckerMW, tasksListController.getTasksList)
+    .get(authCheckerMW, tasksListController.getTasksList);
 
 router.route('/api/move/:moveId/tasksList/:taskId/checkbox') 
     // pour modifier les checkbox uniquement

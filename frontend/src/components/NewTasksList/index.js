@@ -13,7 +13,6 @@ import Header from '../modules/views/Header';
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
 
-import GoBack from '../modules/components/GoBack'; 
 import { Checkbox } from '@material-ui/core';
 
 import Icon from '@material-ui/core/Icon';
@@ -35,21 +34,9 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
   console.log("State of isLogged : ",isLogged);
   if (!isLogged) {
     console.log('isLogged',isLogged);
-    //console.log('email,password page App/index',email,password);
     return <Redirect to="/signin" />;
   };
 
-  useEffect(() => {
-    // on va créer la liste directement
-    console.log(">> l.31 props : ",props);
-    axios.post(BASE_URL+`/api/move/${props.location.state.id}/NewTasksList`)
-      .then(res => {
-        window.history.back();
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []); //  [] pour que ça ne boucle pas
 
   useEffect(() => {
     // on affiche la liste des tâches 
@@ -97,6 +84,18 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
         })
   }
  
+  
+  useEffect(() => {
+    // on va créer la liste directement
+    console.log(">> l.31 props : ",props);
+    axios.post(BASE_URL+`/api/move/${props.location.state.id}/NewTasksList`)
+      .then(res => {
+        window.history.back();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []); //  [] pour que ça ne boucle pas
   return (
     
     <div className={classes.root}>
@@ -130,8 +129,7 @@ const NewTasksList = (props) => { // props : location.state.id:19 et location.st
       </Container>
       <Footer />
     </div>
-  )
-    
+  )    
 }
 
 export default withRoot(NewTasksList);

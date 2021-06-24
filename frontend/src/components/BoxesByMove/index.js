@@ -225,16 +225,18 @@ const BoxesByMove = (props) => {
                   <Button size="medium" variant="outlined" color="secondary" style={{marginLeft: '15px'}}>Ajouter un carton</Button>
                 </Typography>
               </Link>
-            </CardContent>
-          </Card>
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography variant="body1" >
+              <Typography variant="body1" style={{textAlign:"center"}} >
                 Cliquer sur les boîtes ci-dessous pour consulter ou ajouter du contenu.
               </Typography>
-              
             </CardContent>
+            {/* <CardContent>
+              
+              
+            </CardContent> */}
           </Card>
+          {/* <Card className={classes.card}>
+            
+          </Card> */}
           {/* ↓ research ↓ */}
           {/* <Card className={classes.card}>
             <CardContent>

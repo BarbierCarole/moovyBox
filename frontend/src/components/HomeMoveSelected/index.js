@@ -39,7 +39,6 @@ const HomeMoveSelected = () => {
     useEffect(() => {
         axios.get(BASE_URL+`/api/move/${location.state.id}/tasksList`) // api/move/:moveId/tasksList
           .then(res => {
-
             if (!res.data.length) {
                 setEndUrl("newTasksList");
                 setMessage("Je crée ma checkList !");                
