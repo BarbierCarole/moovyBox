@@ -32,7 +32,7 @@ axios.defaults.withCredentials = true;
 
 const TasksList = (props) => { // props : location.state.id:19 et location.state.label:"Caraibes"
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  console.log('>>l.28 props : ',props);
+  console.log('>>l.35 props : ',props);
 
   const classes = useStyles();
 
@@ -75,8 +75,6 @@ const TasksList = (props) => { // props : location.state.id:19 et location.state
     axios.get(BASE_URL+`/api/move/${props.location.state.id}/tasksList`)
       .then(res => {
         setTasks(res.data); 
-        console.log(">> l.46 tasks",tasks);
-
       })
       .catch(err => {
         console.log(err);
