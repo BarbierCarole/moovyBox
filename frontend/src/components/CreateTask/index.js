@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Redirect} from 'react-router';
 import DateFnsUtils from '@date-io/date-fns';
+import fr from 'date-fns/locale/fr';
 // import 'date-fns';
 import {
     MuiPickersUtilsProvider,
@@ -124,10 +125,10 @@ const CreateTask = (props) => {
               <Grid className={classes.margin}>
                 Date de réalisation de ma nouvelle tâche :
               </Grid>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}> 
+              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={fr}> 
                 <Grid container className={classes.margin} >  
                     <KeyboardDatePicker
-                        
+                        cancelLabel="Annuler"
                         format="dd/MM/yyyy"
                         // type="date.format"
                         margin="normal"
