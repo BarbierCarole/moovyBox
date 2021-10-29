@@ -136,6 +136,7 @@ function CreateBox(props) {
       });
 
   }
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -144,7 +145,7 @@ function CreateBox(props) {
         <Typography component="p" variant="h5">
             <GoBack /> Retour à la liste des cartons 
         </Typography>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
            <QueueIcon />
@@ -157,133 +158,146 @@ function CreateBox(props) {
             noValidate
             onSubmit={handleSubmit}
           >
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                    autoComplete="label"
-                    name="label"
-                    variant="outlined"
-                    required
-                    fullWidth
-                    id="label"
-                    label="Nom du carton"
-                    autoFocus
-                    helperText="Un nom est requis"
-                    value={label}
-                    onChange={handleLabelChange}
-                  />{' '}
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="Pièce de destination"
-                name="destinationRoom"
-                variant="outlined"
-                required
-                fullWidth
-                id="destinationRoom"
-                label="Pièce de destination"
-                autoFocus
-                helperText="Un nom est requis"
-                value={destination_room}
-                onChange={handleDestinationRoomChange}
-              />{' '}
-            </Grid>
-            <Grid
-              container
-              direction="column"
-              justify="space-between"
-              alignItems="center"
-            >
-              <Typography component="h1" variant="h5" className={classes.margin}>
-                Mon carton est :
-              </Typography>
-              <Grid item xs={2}></Grid>
-              <Grid 
-                container
-                item
-                xs={8}
-                direction="row"
-                justify="space-evenly"
-                alignItems="center"
-              >
-                <Grid item xs={1}>
-                  <Checkbox
-                    checked={fragile}
-                    onChange={handleFragileChange}
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
-                  />
-                </Grid> 
-                <Grid item xs={5}>
-                <Typography component="p" variant="h5">Fragile </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                    <Icon className="fas fa-wine-glass" color="secondary" />
-                </Grid>
-              </Grid> 
-              <Grid item xs={2}></Grid> 
-              <Grid item xs={2}></Grid>
-              <Grid 
-                container
-                xs={8}
-                item
-                direction="row"
-                justify="space-evenly"
-                alignItems="center"
-              >
-                <Grid item xs={1}>
-                <Checkbox
-                    checked={heavy}
-                    onChange={handleHeavyChange}
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
-                />
-                </Grid> 
-                <Grid item xs={5}>
-                <Typography component="p" variant="h5">Lourd </Typography>
-                </Grid>
-                <Grid item xs={2}>
-                  <Icon className="fas fa-weight-hanging" color="secondary" />
-                </Grid>
-              </Grid> 
-              <Grid item xs={2}></Grid>
-              <Grid  itemxs={2}></Grid>
-              <Grid 
-                container
-                item
-                xs={8}
-                direction="row"
-                justify="space-evenly"
-                alignItems="center"
-              >
-                <Grid item xs={1}>
-                <Checkbox
-                    checked={floor}
-                    onChange={handleFloorChange}
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
-
-                />
-                </Grid> 
-                <Grid item xs={5}>
-                <Typography component="p" variant="h5">A l'étage </Typography> 
-                </Grid>
-                <Grid item xs={2}>
-                  <Icon className="fas fa-level-up-alt" color="secondary" />
-                </Grid>
-              </Grid> 
-              <Grid item xs={2}></Grid>
-              
-            <Grid item xs={12}>
-                <Button
-                  type="submit"
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                      autoComplete="label"
+                      name="label"
+                      variant="outlined"
+                      required
+                      fullWidth
+                      id="label"
+                      label="Nom du carton"
+                      autoFocus
+                      helperText="Un nom est requis"
+                      value={label}
+                      onChange={handleLabelChange}
+                    />{' '}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="Pièce de destination"
+                  name="destinationRoom"
+                  variant="outlined"
+                  required
                   fullWidth
-                  variant="contained"
-                  color="secondary"
-                  className={classes.submit}
+                  id="destinationRoom"
+                  label="Pièce de destination"
+                  autoFocus
+                  helperText="Un nom est requis"
+                  value={destination_room}
+                  onChange={handleDestinationRoomChange}
+                />{' '}
+              </Grid>
+              <Grid
+                container
+                direction="column"
+                justify="space-between"
+                alignItems="center"
+              >
+                <Typography component="h1" variant="h5" className={classes.margin}>
+                  Mon carton est :
+                </Typography>
+                <Grid item xs={2}></Grid>
+                <Grid 
+                  container
+                  item
+                  xs={8}
+                  direction="row"
+                  justify="space-evenly"
+                  alignItems="center"
                 >
-                  Ajouter
-                </Button>
+                  <Grid item xs={1}>
+                    <Checkbox
+                      checked={fragile}
+                      onChange={handleFragileChange}
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />
+                  </Grid> 
+                  <Grid item xs={5}>
+                  <Typography component="p" variant="h5">Fragile </Typography>
+                  </Grid>
+                  <Grid item xs={2}>
+                      <Icon className="fas fa-wine-glass" color="secondary" />
+                  </Grid>
+                </Grid> 
+                <Grid item xs={2}></Grid> 
+                <Grid item xs={2}></Grid>
+                <Grid 
+                  container
+                  xs={8}
+                  item
+                  direction="row"
+                  justify="space-evenly"
+                  alignItems="center"
+                >
+                  <Grid item xs={1}>
+                  <Checkbox
+                      checked={heavy}
+                      onChange={handleHeavyChange}
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                  </Grid> 
+                  <Grid item xs={5}>
+                  <Typography component="p" variant="h5">Lourd </Typography>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Icon className="fas fa-weight-hanging" color="secondary" />
+                  </Grid>
+                </Grid> 
+                <Grid item xs={2}></Grid>
+                <Grid  itemxs={2}></Grid>
+                <Grid 
+                  container
+                  item
+                  xs={8}
+                  direction="row"
+                  justify="space-evenly"
+                  alignItems="center"
+                >
+                  <Grid item xs={1}>
+                  <Checkbox
+                      checked={floor}
+                      onChange={handleFloorChange}
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
 
+                  />
+                  </Grid> 
+                  <Grid item xs={5}>
+                  <Typography component="p" variant="h5">A l'étage </Typography> 
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Icon className="fas fa-level-up-alt" color="secondary" />
+                  </Grid>
+                </Grid> 
+                <Grid item xs={2}></Grid>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    
+                      <Button
+                      variant="outlined"
+                      color="primary"
+                      fullWidth
+                      className={classes.submit}
+                      onClick={() => props.history.goBack()}
+                      >
+                        Annuler
+                      </Button>
+                  
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="secondary"
+                      className={classes.submit}
+                    >
+                      Ajouter
+                    </Button>
+                </Grid>
+              </Grid>
             </Grid>
-          </Grid>
           </Grid>
         </form>
       </div>

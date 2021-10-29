@@ -134,46 +134,44 @@ const Item = (props) => {
       <div className={classes.root}>
           <Header />
           <Container component="main" maxWidth="xs">
-          <Typography component="p" variant="h5">
-              <GoBack /> Retour à la page précédente 
-          </Typography>
-        
-          <div className={classes.paper}>
-          {/* <Avatar className={classes.avatar}>
-              <QueueIcon />
-          </Avatar> */}
-          <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
-          <Typography component="h1" variant="h4">
-              Ajouter un objet au carton n° {deleteZero(props.location.state.code) }
-          </Typography>
-
-          <Typography component="h1" variant="h3">
-              {props.location.state.label}
-          </Typography>
-          {/* new button */}
-          
-          <form noValidate autoComplete="on" onSubmit={handleSubmit} className={classes.form} style={{textAlign: 'center'}}>
-            <Typography component="h1" variant="h5" className={classes.title}>
-              <TextField id="outlined-basic" label="Objet à ajouter" variant="outlined" value={name}  onChange={handleItemChange} style={{borderRadius: '11px', background: '#ffffff', boxShadow:  '4px 4px 7px #d9d9d9, -4px -4px 7px #ffffff'}}/>
-              
-              <Fab type="submit" color="secondary" className={classes.fab}>
-                <AddIcon />
-              </Fab>                   
+            <Typography component="p" variant="h5">
+                <GoBack /> Retour à la page précédente 
             </Typography>
-          </form>                
-            
-          <ul>
-              {item.map((elt, i) =>
-              <li key={i}>
-              {console.log("key et name", elt.id, elt.name) }
-              <Typography component="p" variant="h5">
-                {elt.name}
-                <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
+          
+            <div className={classes.paper}>
+          
+              <Icon className="fas fa-box-open" color="secondary" style={{ fontSize: 30, width: 45 }}/>
+              <Typography component="h1" variant="h4">
+                  Ajouter un objet au carton n° {deleteZero(props.location.state.code) }
               </Typography>
-              </li>)
-              }
-          </ul>
-          </div>
+
+              <Typography component="h1" variant="h3">
+                  {props.location.state.label}
+              </Typography>
+              {/* new button */}
+              
+              <form noValidate autoComplete="on" onSubmit={handleSubmit} className={classes.form} style={{textAlign: 'center'}}>
+                <Typography component="h1" variant="h5" className={classes.title}>
+                  <TextField id="outlined-basic" label="Objet à ajouter" variant="outlined" value={name}  onChange={handleItemChange} style={{borderRadius: '11px', background: '#ffffff', boxShadow:  '4px 4px 7px #d9d9d9, -4px -4px 7px #ffffff'}}/>
+                  
+                  <Fab type="submit" color="secondary" className={classes.fab}>
+                    <AddIcon />
+                  </Fab>                   
+                </Typography>
+              </form>                
+                
+              <ul>
+                  {item.map((elt, i) =>
+                  <li key={i}>
+                  {console.log("key et name", elt.id, elt.name) }
+                  <Typography component="p" variant="h5">
+                    {elt.name}
+                    <HighlightOffIcon fontSize="small" color="inherit" edge="end" onClick={() => {handleDelete(elt.id)}}/>
+                  </Typography>
+                  </li>)
+                  }
+              </ul>
+            </div>
           </Container>
           <Footer />
       </div>

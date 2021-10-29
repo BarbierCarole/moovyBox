@@ -2,7 +2,7 @@
 
 ## Pourquoi MoovyBox ?
 
-L’objectif de notre projet Moovybox est de permettre à l’utilisateur de gérer son déménagement.
+L’objectif du projet Moovybox est de permettre à l’utilisateur de gérer son déménagement.
 
   - D’une part en lui permettant d’organiser ses tâches à réaliser avant, pendant et après son déménagement.
 
@@ -10,7 +10,7 @@ L’objectif de notre projet Moovybox est de permettre à l’utilisateur de gé
 
 ## Le cahier des charges
 
-Nous avons commencé par élaborer le cahier des charges avec : 
+J'ai élaboré le cahier des charges avec mon equipe de cette façon : 
 
   - Les définitions des objectifs,
   - du public visé,
@@ -20,6 +20,8 @@ Nous avons commencé par élaborer le cahier des charges avec :
   - Les Users Stories nécessaires dans un contexte Agile
   - Modèle conceptuel de données MCD 
   - Liste des routes. 
+
+Pour la version 2 que j'ai réalisée seule, j'y ai ajouté un moteur de recherche des objets dans les cartons et une checkiliste.
 
 ## Avec quelles techno ?
 
@@ -39,11 +41,11 @@ Côté backend :
   
 ## Contexte de travail
 
-Nous avons travaillé en équipe dans un contexte agile Scrum avec des réunions stand-up quotidiennes, des démos hebdomadaires et des outils tels
+J'ai travaillé seule pour la V2 et pour la V1 en équipe dans un contexte agile Scrum avec des réunions stand-up quotidiennes, des démos hebdomadaires et des outils tels
   - qu’un Kanban commun : trello pour s’organiser et s’adapter au fur et à mesure du projet,
   - Et Git outil libre de versionning 
 
 
-## Captures de la page d'accueil du démémnagement, du menu des options et de la checkliste des tâches à réalisées ou déjà réalisées.
+## Captures de ma version 2 de la page d'accueil du démémnagement, du menu des options et de la checkliste des tâches à réalisées ou déjà réalisées.
 
 ![capture du projet moovybox](capture-des-rendus.jpg)
