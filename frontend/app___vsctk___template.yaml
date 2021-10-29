@@ -1,0 +1,9 @@
+Resources:
+  awsToolkitSamLocalResource:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/store/actions-with-other-datas.login
+      CodeUri: 'D:/apotheose/moovyBox/frontend'
+      Runtime: nodejs12.x
+      Environment:
+        Variables: {}

@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS "move_generates_general_task" (
    "move_id" INT NOT NULL REFERENCES "move"("id") ON DELETE CASCADE,
    "general_task_id" INT NOT NULL REFERENCES "general_task"("id") ON DELETE CASCADE,
    "date_completion" DATE NOT NULL DEFAULT NOW(), 
-  --  Comment ecrire que c'est égale à la date "move.date"
    "contact" TEXT,
    "is_realised"  BOOLEAN NOT NULL DEFAULT false,
    PRIMARY KEY (move_id,general_task_id)

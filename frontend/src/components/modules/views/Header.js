@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 import GoBack from '../components/GoBack';
 import MenuIcon from '@material-ui/icons/Menu';
 import useStyles from './styles/stylesHeader';
+import bgHeader from '../../../../public/img/bg-header-pink.svg';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,7 +28,8 @@ const Header = () => {
   return (
     <div className={classes.root}>
       {/* <AppBar position="static" style={{background:'radial-gradient( circle 872px at 3.4% -23.5%,  rgba(42,250,223,1) 0%, rgba(37,88,210,1) 44.5%, rgba(29,58,126,1) 97.8% )'}} > ---> cyan and blue*/}
-      <AppBar position="static" style={{background:'radial-gradient(759px at 18.3% -23.5%, rgb(255, 98, 191) 0%, rgb(40, 88, 210) 69.1%)'}} >  
+      {/* <AppBar position="static" style={{background:'radial-gradient(759px at 18.3% -23.5%, rgb(255, 98, 191) 0%, rgb(40, 88, 210) 69.1%)'}} >   */}
+      <AppBar position="static" style={{background:'url('+bgHeader+') no-repeat center,linear-gradient(90deg, #F073C8 0%, #FF6A95 99%)', boxShadow:'0 20px 30px -19px rgb(160 44 219 / 58%)'}} > 
         <Toolbar className={classes.toolbar}>
           <div className={classes.left}>
             <GoBack />

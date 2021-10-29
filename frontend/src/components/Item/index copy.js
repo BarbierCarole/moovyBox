@@ -41,7 +41,7 @@ const Item = (props) => {
     };
 
     const successAdd = () => {
-      toast.success('Votre objet a bien été ajouté au carton !', {
+      toast('Votre objet a bien été ajouté au carton !', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 5000,
         closeOnClick: true
@@ -49,7 +49,7 @@ const Item = (props) => {
     }
 
     const successDelete = () => {
-      toast.success('Votre objet a bien été supprimé du carton !', {
+      toast('Votre objet a bien été supprimé du carton !', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 5000,
         closeOnClick: true

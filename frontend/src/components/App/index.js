@@ -13,6 +13,7 @@ import Profile from 'src/components/Profile';
 import Contact from '../Contact';
 import CreateBox from 'src/components/CreateBox';
 import BoxesByMove from 'src/components/BoxesByMove';
+import Search from 'src/components/Search';
 import Item from 'src/components/Item';
 import NotFound from 'src/components/Notfound';
 import Home from 'src/components/Home';
@@ -103,6 +104,7 @@ const App = () => {
           <Contact />
         </Route>
         <Route exact path="/move/:id" component={BoxesByMove} />
+        <Route exact path="/move/:id/search" component={Search} />
         <Route exact path="/move/:id/modify" component={UpdateMove} />
         <Route exact path="/create-box" component={CreateBox} />
         <Route exact path="/box/:id" component={Item} />

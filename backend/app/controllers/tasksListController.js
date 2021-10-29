@@ -242,18 +242,18 @@ const tasksListController = {
 
             // étape 1 => création d'une instance de Task
             const newTask = new Task(req.body);             
-            console.log(">> tasksListController.createTaskInTasksList création instance Task", newTask);
+            console.log(">>245  création instance Task", newTask);
             //  Insertion nouvelle tache dans table Task
             const storedTask = await newTask.insertInTask(moveId);
-            console.log(">> tasksListController Insertion nouvelle tache dans table Task", storedTask);
+            console.log(">>248 Insertion nouvelle tache dans table Task", storedTask);
 
             // étape 2 => création d'une instance de TasksList
             const newTasksList = new TasksList(req.body);
-            console.log(">> tasksListController.createTaskInTasksList création instance de TasksList", newTasksList);
+            console.log(">>252  création instance de TasksList", newTasksList);
             newTasksList.task_id = storedTask.id;
             //  Insertion nouvelle liaison dans table de liaison
             const storedTasksList = await newTasksList.insertInTasksList(moveId);
-            console.log(">> tasksListController.createTaskInTasksList Insertion dans table de liaison", storedTasksList);
+            console.log(">>256  Insertion dans table de liaison", storedTasksList);
 
             res.send(storedTasksList);                
 

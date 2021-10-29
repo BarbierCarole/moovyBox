@@ -46,7 +46,7 @@ const Move = () => {
   const [selectedId, setSelectedId] = useState();
 
   const successDelete = () => {
-    toast.success('Votre déménagement a bien été supprimé !', {
+    toast('Votre déménagement a bien été supprimé !', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
       closeOnClick: true

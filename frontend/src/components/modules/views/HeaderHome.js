@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import boxy from './images/boxy-ready-detoure.png';
+import bgHeader from '../../../../public/img/bg-header-pink.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +39,8 @@ export default function HeaderHome() {
       <AppBar position="static" 
       // style={{background:'radial-gradient( circle 872px at 3.4% -23.5%,  rgba(42,250,223,1) 0%, rgba(37,88,210,1) 44.5%, rgba(29,58,126,1) 97.8% )'}}  --> cyan - blue
       // style={{background:'radial-gradient( circle farthest-corner at 10% 20%,  rgba(255,37,174,1) 0%, rgba(241,147,55,1) 53.4%, rgba(250,237,56,1) 99.5% )'}} pink and yellow not beautifull
-      style={{background:'radial-gradient( circle 759px at 18.3% -23.5%,  rgba(255,98,191,1) 0%, rgba(40,88,210,1) 69.1% )'}}
+      // style={{background:'radial-gradient( circle 759px at 18.3% -23.5%,  rgba(255,98,191,1) 0%, rgba(40,88,210,1) 69.1% )'}}
+      style={{background:'url('+bgHeader+') no-repeat center,linear-gradient(90deg, #F073C8 0%, #FF6A95 99%)', boxShadow:'0 20px 30px -19px rgb(160 44 219 / 58%)'}}
       >
         <Toolbar className={classes.toolbar}>
         <Link to="/move">

@@ -32,34 +32,13 @@ const Contact = () => {
             <Typography className={classes.title}>Nous contacter</Typography>
             <Grid container spacing={2} className={classes.container}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}  sm={6}>
-                        <Paper className={classes.paper}>
-                            <Grid>
-                                <Avatar src={imgCecile} className={classes.large} />
-                                <Typography className={classes.name}>Cécile Duhain</Typography>
-                                <Typography className={classes.describe} variant='body2'>Product owner</Typography>
-                                <Link href="https://github.com/scroutch?tab=repositories" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
-                                <Link href="https://www.linkedin.com/in/cecile-duhain/" target="_blank"><Icon className="fab fa-linkedin-in" color="primary" /></Link>
-                            </Grid>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Paper className={classes.paper}>
-                            <Grid>
-                                <Avatar src={imgNico} className={classes.large} />
-                                <Typography className={classes.name}>Nicolas Garçon</Typography>
-                                <Typography className={classes.describe} variant='body2'>Scrum master</Typography>
-                                <Link href="https://github.com/ngarcon" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
-                                <Link href="https://www.linkedin.com/in/nicolas-garcon/" target="_blank"><Icon className="fab fa-linkedin-in" color="primary" /></Link>
-                            </Grid>
-                        </Paper>
-                    </Grid>
+                    
                     <Grid item xs={12} sm={6}>
                         <Paper className={classes.paper}>
                             <Grid>
                                 <Avatar src={imgCarole} className={classes.large} />
                                 <Typography className={classes.name}>Carole Barbier</Typography>
-                                <Typography className={classes.describe} variant='body2'>Lead front</Typography>
+                                <Typography className={classes.describe} variant='body2'>Lead front-Back</Typography>
                                 <Link href="https://github.com/BarbierCarole" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
                                 <Link href="https://www.linkedin.com/in/carole-barbier/" target="_blank"><Icon className="fab fa-linkedin-in" color="primary" /></Link>
                             </Grid>
@@ -73,6 +52,29 @@ const Contact = () => {
                                 <Typography className={classes.describe} variant='body2'>Lead back</Typography>
                                 <Link href="https://github.com/Sebastien-Gardes" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
                                 <Link href="https://www.linkedin.com/in/sebgardes/" target="_blank"><Icon className="fab fa-linkedin-in" color="primary" /></Link>
+                            </Grid>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12}  sm={6}>
+                        <Paper className={classes.paper}>
+                            <Grid>
+                                <Avatar src={imgCecile} className={classes.large} />
+                                <Typography className={classes.name}>Cécile Duhain</Typography>
+                                <Typography className={classes.describe} variant='body2'>Product owner</Typography>
+                                <Link href="https://github.com/scroutch?tab=repositories" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
+                                <Link href="https://www.linkedin.com/in/cecile-duhain/" target="_blank"><Icon className="fab fa-linkedin-in" color="primary" /></Link>
+                            </Grid>
+                        </Paper>
+                    </Grid>
+                    
+                    <Grid item xs={12} sm={6}>
+                        <Paper className={classes.paper}>
+                            <Grid>
+                                <Avatar className={classes.large} />
+                                <Typography className={classes.name}>Nicolas Garcon</Typography>
+                                <Typography className={classes.describe} variant='body2'></Typography>
+                                <Link href="https://github.com/" target="_blank"><Icon className="fab fa-github" color="primary" /></Link>
+                                <Link href="https://www.linkedin.com/" target="_blank"><Icon className="fab fa-linkedin-in" color="primary" /></Link>
                             </Grid>
                         </Paper>
                     </Grid>

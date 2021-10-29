@@ -82,7 +82,7 @@ const Research = (props) => {
   };  
 
   const successDelete = () => {
-    toast.success('Votre carton a bien été supprimé !', {
+    toast('Votre carton a bien été supprimé !', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
       closeOnClick: true

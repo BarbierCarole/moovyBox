@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
         right: theme.spacing(0),
       },
     },
+    dialogTitle: {
+      backgroundColor: theme.palette.secondary.main,
+    },
     
 }));
 

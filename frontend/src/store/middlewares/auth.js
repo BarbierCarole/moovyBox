@@ -11,7 +11,7 @@ export default (store) => (next) => (action) => {
 
   const successAuth = () => {
     // toast is an alert in the dom
-    toast.success('Authentification réussie !!!', {
+    toast('Authentification réussie !!!', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 3000,
       closeOnClick: true

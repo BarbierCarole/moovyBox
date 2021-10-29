@@ -20,18 +20,20 @@ const Home = () => {
         <div className={classes.root}>
             <HeaderHome />
             <Card className={classes.card} variant="outlined">
-                <CardContent>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                <CardContent >
+                    <Typography className={classes.title} style={{textAlign: 'center'}} color="textSecondary" gutterBottom>
                         MoovyBox
                     </Typography>
                     <Typography variant="h5" component="h2">
-                        Une application qui facilitera la gestion de vos déménagements
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                        et la recherche d'objets dans vos cartons.
+                        Une application qui facilitera 
+                        <ul>
+                            <li># la gestion de vos déménagements,</li>
+                            <li># de vos tâches à réaliser</li>
+                            <li># et la recherche d'objets dans vos cartons.</li>
+                        </ul>
                     </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions style={{textAlign: 'center'}}>
                     <Button className={classes.button} size="medium" variant="contained" color="primary" href="/signIn">Je suis déjà inscrit·e,<br /> je me connecte</Button>
                 </CardActions>
                 <CardActions>

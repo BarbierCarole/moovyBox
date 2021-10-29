@@ -149,11 +149,8 @@ const useStyles = makeStyles((theme) => ({
     box_center: {
       textAlign: 'center',
       width: 'inherit',
-      height: 'inherit'
-    },
-    labelCheck: {
-      color: theme.palette.secondary.main,
-    }
+      height: ''
+    }  
     
   }));
 

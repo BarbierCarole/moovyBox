@@ -8,7 +8,7 @@ const rawTheme = createMuiTheme({
       light: '#eb61c1',
       // main: '#04309e', //dark blue
       main: '#ea2aad', // pink
-      dark: '#8c0087',
+      dark: '#8c0087', // violet
     },
     secondary: {
       light: '#fff5f8',
