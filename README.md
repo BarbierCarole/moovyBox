@@ -45,6 +45,10 @@ J'ai travaillé seule pour la V2 et pour la V1 en équipe dans un contexte agile
   - qu’un Kanban commun : trello pour s’organiser et s’adapter au fur et à mesure du projet,
   - Et Git outil libre de versionning 
 
+## présentation vidéo 
+
+https://youtu.be/XJC0FduO60c
+[![Video de présentation du projet MoovyBox](https://i9.ytimg.com/vi/XJC0FduO60c/mq2.jpg?sqp=CNjY7osG&rs=AOn4CLBkjuCMSTcfm9HopZNv1bO67ehcBQ)](https://youtu.be/XJC0FduO60c "MoovyBox, présentation")
 
 ## Captures de ma version 2 de la page d'accueil du démémnagement, du menu des options et de la checkliste des tâches à réaliser ou déjà réalisées.
 
