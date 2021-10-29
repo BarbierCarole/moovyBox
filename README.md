@@ -46,6 +46,6 @@ J'ai travaillé seule pour la V2 et pour la V1 en équipe dans un contexte agile
   - Et Git outil libre de versionning 
 
 
-## Captures de ma version 2 de la page d'accueil du démémnagement, du menu des options et de la checkliste des tâches à réalisées ou déjà réalisées.
+## Captures de ma version 2 de la page d'accueil du démémnagement, du menu des options et de la checkliste des tâches à réaliser ou déjà réalisées.
 
 ![capture du projet moovybox](capture-des-rendus.jpg)
