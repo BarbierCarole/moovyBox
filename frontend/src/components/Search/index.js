@@ -288,7 +288,7 @@ const Search = (props) => {
           
           
           {/* ------------- CB new interface of box ---------------- */}
-          <Grid container justify="space-around">
+          <Grid container justify="space-between">
             {filteredItems.map(boxe => 
               <Grid 
                 item  
